@@ -9,6 +9,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
     "@vue/cli-service": "^5.0.8",
     "ant-design-vue": "^4.0.7",
     "antd": "^5.11.1",
