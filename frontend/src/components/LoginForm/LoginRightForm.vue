@@ -105,9 +105,11 @@ const disabled = computed(() => {
       </a-form>
 
       <a-flex :vertical="true" class="login-form-footer" justify="end">
-        <a-row justify="space-between">
-          <a-col :span="12"
-            ><a class="NexonGothicBold FontColorC" href="">회원가입 하기</a>
+        <a-row justify="end">
+          <a-col :span="12">
+            <a-row justify="end">
+              <a class="NexonGothicBold FontColorC" href="">회원가입 하기</a>
+            </a-row>
           </a-col>
         </a-row>
       </a-flex>
