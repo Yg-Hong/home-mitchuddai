@@ -1,9 +1,11 @@
-<script setup></script>
+<script setup>
+import SearchForm from "@/components/MainForm/SearchForm.vue";
+</script>
 
 <template>
   <div>
-    <!-- <SearchForm />
-    <LowerContentForm /> -->
+    <SearchForm />
+    <!-- <LowerContentForm /> -->
   </div>
 </template>
 
