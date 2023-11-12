@@ -8,10 +8,10 @@ const router = createRouter({
       name: "home",
       component: () => import("@/views/MainView.vue"),
       children: [
-        // {
-        //   path: "",
-        //   component: () => import("@/componenets/Main/MainForm.vue"),
-        // },
+        {
+          path: "",
+          component: () => import("@/components/MainForm/MainForm.vue"),
+        },
       ],
     },
     {
