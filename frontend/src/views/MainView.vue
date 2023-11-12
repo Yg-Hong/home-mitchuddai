@@ -7,14 +7,16 @@ import { RouterView } from "vue-router";
   <WithoutLoginNavForm />
 
   <!-- 메인 폼 -->
-  <router-view />
+  <div class="contents">
+    <router-view />
+  </div>
 
   <!-- 푸터 -->
   <FotterForm />
 </template>
 
 <style scoped>
-.loginForm {
-  width: 1280px;
+.contents {
+  padding-top: 75px;
 }
 </style>
