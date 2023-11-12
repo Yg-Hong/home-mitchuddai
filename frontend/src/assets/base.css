@@ -62,25 +62,99 @@ body {
   min-height: 100vh;
   color: var(--color-text);
   background: var(--color-background);
-  transition:
-    color 0.5s,
-    background-color 0.5s;
+  transition: color 0.5s, background-color 0.5s;
   line-height: 1.6;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   font-size: 15px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+  font-family: "NexonGothic";
+  src: url("@/assets/fonts/NEXON_Lv2_Gothic.ttf");
+}
+
+@font-face {
+  font-family: "NexonGothic_Bold";
+  src: url("@/assets/fonts/NEXON_Lv2_Gothic_Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "NexonGothic_Medium";
+  src: url("@/assets/fonts/NEXON_Lv2_Gothic_Medium.ttf") format("truetype");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "NexonGothic_Light";
+  src: url("@/assets/fonts/NEXON_Lv2_Gothic_Light.ttf") format("truetype");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "NexonFootballGothic_Bold";
+  src: url("@/assets/fonts/NEXONFOOTBALLGOTHICB.TTF");
+}
+
+@font-face {
+  font-family: "NexonFootballGothic_Light";
+  src: url("@/assets/fonts/NEXONFOOTBALLGOTHICL.TTF");
+}
+
+.NexonGothicBold {
+  font-family: "NexonGothic_Bold";
+}
+
+.NexonGothicMedium {
+  font-family: "NexonGothic_Medium";
+}
+
+.NexonGothicLight {
+  font-family: "NexonGothic_Light";
+}
+
+.NexonFootballGothicBold {
+  font-family: "NexonFootballGothic_Bold";
+}
+
+.NexonFootballGothicLight {
+  font-family: "NexonFootballGothic_Light";
+}
+
+.FontL {
+  font-size: 60px;
+}
+.FontLM {
+  font-size: 48px;
+}
+.FontM {
+  font-size: 36px;
+}
+.FontMS {
+  font-size: 24px;
+}
+.FontS {
+  font-size: 12px;
+}
+
+.FontColorA {
+  color: #002266;
+}
+
+.FontColorB {
+  color: #00387e;
+}
+
+.FontColorC {
+  color: #01b8c8;
+}
+.FontColorD {
+  color: #a7d7d9;
+}
+.FontColorE {
+  color: #f7e1cc;
 }
