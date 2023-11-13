@@ -1,4 +1,4 @@
-package com.whereismyhome.house.house.model.service;
+package com.whereismyhome.house.house.service;
 
 import com.whereismyhome.house.house.dto.LocationCodeDto;
 
