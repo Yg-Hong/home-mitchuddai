@@ -6,12 +6,11 @@ import java.util.Map;
 
 import com.whereismyhome.house.house.dto.HouseDto;
 import com.whereismyhome.house.house.dao.HouseDao;
-import com.whereismyhome.house.house.dao.HouseDaoImpl;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HouseServiceImpl implements HouseService {
-	private HouseDao houseDao = new HouseDaoImpl();
+	private HouseDao houseDao;
 	
 	public List<HouseDto> searchByDongCode(String dongCode, int year, int month) throws SQLException {
 		return houseDao.searchByDongCode(dongCode, year, month);
