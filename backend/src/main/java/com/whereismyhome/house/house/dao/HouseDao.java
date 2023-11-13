@@ -1,4 +1,4 @@
-package com.whereismyhome.house.house.model.dao;
+package com.whereismyhome.house.house.dao;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.whereismyhome.house.house.controller;
 
 import com.whereismyhome.house.house.dto.HouseDto;
-import com.whereismyhome.house.house.model.service.HouseService;
+import com.whereismyhome.house.house.service.HouseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
