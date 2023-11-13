@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.StringTokenizer;
 
 @Service
 @Slf4j
@@ -29,7 +30,7 @@ public class LocationServiceImpl implements LocationService {
         param.append("&is_ignore_zero=true");
 
         JSONObject obj = getJsonObject(param.toString());
-        List<LocationCodeDto> result = parseCode(obj);
+        List<LocationCodeDto> result = parseCode(0, 0, obj);
 
         return result;
     }
@@ -46,7 +47,7 @@ public class LocationServiceImpl implements LocationService {
         log.info("Gugun param: " + param.toString());
 
         JSONObject obj = getJsonObject(param.toString());
-        List<LocationCodeDto> result = parseCode(obj);
+        List<LocationCodeDto> result = parseCode(1, 1, obj);
 
         return result;
     }
@@ -63,7 +64,7 @@ public class LocationServiceImpl implements LocationService {
         log.info("Dong param: " + param.toString());
 
         JSONObject obj = getJsonObject(param.toString());
-        List<LocationCodeDto> result = parseCode(obj);
+        List<LocationCodeDto> result = parseCode(1, 2, obj);
 
         return result;
     }
@@ -105,14 +106,30 @@ public class LocationServiceImpl implements LocationService {
         return obj;
     }
 
-    private List<LocationCodeDto> parseCode(JSONObject obj) {
+    private List<LocationCodeDto> parseCode(int startIdx, int parsingIdx, JSONObject obj) {
         List<LocationCodeDto> result = new ArrayList<>();
-
+        StringTokenizer st;
+        String codeValue;
+        String nameValue;
         JSONArray jsonArray = obj.getJSONArray("regcodes");
-        for(int i = 0; i < jsonArray.length(); i++) {
+        for(int i = startIdx; i < jsonArray.length(); i++) {
             JSONObject o = (JSONObject) jsonArray.get(i);
 
-            result.add(new LocationCodeDto((String) o.get("code"), (String) o.get("name")));
+            codeValue = o.getString("code");
+            nameValue = "error";
+
+            st = new StringTokenizer(o.getString("name"));
+            if(parsingIdx == 0) {
+                nameValue = st.nextToken();
+            } else if(parsingIdx == 1) {
+                st.nextToken();
+                nameValue = st.nextToken();
+            } else if (parsingIdx == 2) {
+                st.nextToken();
+                st.nextToken();
+                nameValue = st.nextToken();
+            }
+            result.add(new LocationCodeDto(codeValue, nameValue));
         }
         log.info(result.toString());
         return result;
