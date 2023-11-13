@@ -1,4 +1,4 @@
-package com.whereismyhome.house.house.service;
+package com.whereismyhome.house.house.model.service;
 
 import java.sql.SQLException;
 import java.util.List;
