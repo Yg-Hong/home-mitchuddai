@@ -1,6 +1,61 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import LocationAPI from "@/api/LocationAPI.js";
+
 const livingType = ref("");
+
+const sidoCode = ref("");
+const gugunCode = ref("");
+const dongCode = ref("");
+
+const sidoList = ref([]);
+const gugunList = ref([]);
+const dongList = ref([]);
+
+const getSidoList = () => {
+  LocationAPI.getSidoList(
+    ({ data }) => {
+      sidoList.value = data;
+    },
+    () => {
+      console.log("시도정보 조회에 실패하였습니다.");
+    }
+  );
+};
+
+const getGugunList = () => {
+  LocationAPI.getGugunList(
+    sidoCode.value,
+    ({ data }) => {
+      gugunList.value = data;
+    },
+    () => {
+      console.log("구군정보 조회에 실패하였습니다.");
+    }
+  );
+};
+
+const getDongList = () => {
+  LocationAPI.getDongList(
+    gugunCode.value,
+    ({ data }) => {
+      dongList.value = data;
+    },
+    () => {
+      console.log("동정보 조회에 실패하였습니다.");
+    }
+  );
+};
+
+getSidoList();
+
+watch(sidoCode, async () => {
+  getGugunList();
+});
+
+watch(gugunCode, async () => {
+  getDongList();
+});
 </script>
 
 <template>
@@ -40,7 +95,12 @@ const livingType = ref("");
               <label for="studio" class="radio-label">원룸</label>
             </a-col>
             <a-col :span="5">
-              <input type="radio" value="Imdae" class="radio_input" v-model="livingType" />
+              <input
+                type="radio"
+                value="Imdae"
+                class="radio_input"
+                v-model="livingType"
+              />
               <label for="one" class="radio-label">임대</label>
             </a-col>
           </a-row>
@@ -48,37 +108,46 @@ const livingType = ref("");
             <a-col :span="6">
               <a-select
                 ref="select"
-                v-model:value="sido"
+                v-model:value="sidoCode"
                 class="select_box"
                 show-search
                 placeholder="시도선택"
                 @focus="focus"
                 @change="handleChange"
               >
+                <a-select-option v-for="sido in sidoList" :key="sido.code">{{
+                  sido.name
+                }}</a-select-option>
               </a-select>
             </a-col>
             <a-col :span="6">
               <a-select
                 ref="select"
-                v-model:value="gugun"
+                v-model:value="gugunCode"
                 class="select_box"
                 show-search
                 placeholder="구군선택"
                 @focus="focus"
                 @change="handleChange"
               >
+                <a-select-option v-for="gugun in gugunList" :key="gugun.code">{{
+                  gugun.name
+                }}</a-select-option>
               </a-select>
             </a-col>
             <a-col :span="6">
               <a-select
                 ref="select"
-                v-model:value="dong"
+                v-model:value="dongCode"
                 class="select_box"
                 show-search
                 placeholder="동선택"
                 @focus="focus"
                 @change="handleChange"
               >
+                <a-select-option v-for="dong in dongList" :key="dong.code">{{
+                  dong.name
+                }}</a-select-option>
               </a-select>
             </a-col>
           </a-row>
