@@ -130,6 +130,9 @@ watch(gugunCode, async () => {
                 @focus="focus"
                 @change="handleChange"
               >
+                <a-select-option v-for="gugun in gugunList" :key="gugun.code">{{
+                  gugun.name
+                }}</a-select-option>
               </a-select>
             </a-col>
             <a-col :span="6">
@@ -142,6 +145,9 @@ watch(gugunCode, async () => {
                 @focus="focus"
                 @change="handleChange"
               >
+                <a-select-option v-for="dong in dongList" :key="dong.code">{{
+                  dong.name
+                }}</a-select-option>
               </a-select>
             </a-col>
           </a-row>

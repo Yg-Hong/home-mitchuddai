@@ -7,11 +7,11 @@ const getSidoList = (success, fail) => {
 };
 
 const getGugunList = (sido, success, fail) => {
-  LocationAPI.get(`/location/getSido/${sido}`).then(success).catch(fail);
+  LocationAPI.get(`/location/getGugun/${sido}`).then(success).catch(fail);
 };
 
 const getDongList = (gugun, success, fail) => {
-  LocationAPI.get(`/location/getSido${gugun}`).then(success).catch(fail);
+  LocationAPI.get(`/location/getDong/${gugun}`).then(success).catch(fail);
 };
 
 export default { getSidoList, getGugunList, getDongList };
