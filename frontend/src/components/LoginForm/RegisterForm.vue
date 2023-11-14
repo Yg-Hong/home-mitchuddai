@@ -1,8 +1,10 @@
 <script setup>
 import { reactive, computed } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import { UserOutlined, LockOutlined, CaretRightOutlined } from "@ant-design/icons-vue";
 import MemberAPI from "@/api/MemberAPI.js";
+
+const router = useRouter();
 
 const formState = reactive({
   userId: "",
@@ -74,7 +76,6 @@ const Register = () => {
     userName: formState.userName,
     emailId: formState.userEmail,
     emailDomain: formState.emailDomain,
-    joinDate: new Date(),
   };
 
   MemberAPI.tryRegister(
@@ -85,7 +86,9 @@ const Register = () => {
     () => {
       console.log("로그인 실패");
     }
-  );
+  ).then(() => {
+    router.replace("/login");
+  });
 };
 </script>
 
