@@ -10,13 +10,11 @@ import { RouterView } from "vue-router";
   <div class="contents">
     <router-view />
   </div>
-
-  <!-- 푸터 -->
-  <FotterForm />
 </template>
 
 <style scoped>
 .contents {
+  width: 1280px;
   padding-top: 75px;
 }
 </style>
