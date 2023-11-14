@@ -1,6 +1,9 @@
 package com.whereismyhome.house.member.service;
 
 import java.net.http.HttpRequest;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.whereismyhome.house.member.dao.MemberDao;
@@ -29,8 +32,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void registerMember(MemberDto member) throws Exception {
-        memberDao.registerMember(member);
+    public void registerMember(MemberDto memberDto) throws Exception {
+        LocalDateTime createAt = LocalDateTime.now();
+        memberDto.setJoinDate(createAt.toString());
+
+        memberDao.registerMember(memberDto);
     }
 
     @Override
