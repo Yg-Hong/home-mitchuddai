@@ -71,6 +71,10 @@ const Register = () => {
   const user = {
     userId: formState.userId,
     userPassword: formState.userPassword,
+    userName: formState.userName,
+    emailId: formState.userEmail,
+    emailDomain: formState.emailDomain,
+    joinDate: new Date(),
   };
 
   MemberAPI.tryRegister(

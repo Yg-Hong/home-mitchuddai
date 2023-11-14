@@ -1,4 +1,4 @@
-package com.whereismyhome.house.house.model.dao;
+package com.whereismyhome.house.house.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,7 +32,7 @@ public class HouseDaoImpl implements HouseDao {
 				+ " FROM houseinfo as info, housedeal as deal"
 				+ " WHERE info.aptCode = deal.aptCode AND"
 				+ " info.dongCode = ? AND deal.dealYear = ? AND deal.dealMonth = ?";
-		
+
 		List<HouseDto> houseList = new ArrayList<>();
 		try {
 			conn = DBUtil.getInstance().getConnection();
@@ -41,16 +41,16 @@ public class HouseDaoImpl implements HouseDao {
 			stmt.setString(1, dongCode);
 			stmt.setInt(2, year);
 			stmt.setInt(3, month);
-			
+
 			System.out.println(stmt);
-			
+
 			rs = stmt.executeQuery();
-			
+
 			while(rs.next()) {
 				houseList.add(new HouseDto(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6),
-				rs.getInt(7), rs.getInt(8), rs.getString(9)));	
+				rs.getInt(7), rs.getInt(8), rs.getString(9)));
 			}
-			
+
 		} finally {
 			DBUtil.getInstance().close(stmt, conn, rs);
 		}
@@ -68,22 +68,22 @@ public class HouseDaoImpl implements HouseDao {
 	@Override
 	public Map<String, String> searchLocationByDongCode(String dongCode) throws SQLException {
 		Map<String, String> location = new HashMap<>();
-		
+
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		
+
 		String sql = "select sidoName, gugunName, dongName from dongcode where dongCode = ?";
 		try {
 			conn = DBUtil.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql);
 
 			stmt.setString(1, dongCode);
-			
+
 			System.out.println(stmt);
-			
+
 			rs = stmt.executeQuery();
-			
+
 			if(rs.next()) {
 				location.put("sidoName" ,rs.getString(1));
 				location.put("gugunName" ,rs.getString(2));
@@ -92,7 +92,7 @@ public class HouseDaoImpl implements HouseDao {
 		} finally {
 			DBUtil.getInstance().close(stmt, conn, rs);
 		}
-		
+
 		return location;
 	}
 
@@ -100,10 +100,10 @@ public class HouseDaoImpl implements HouseDao {
 //	public List<HouseDealDto> searchByAptNo(long aptNo, int year, int month) throws SQLException {
 //		Connection conn = null;
 //		PreparedStatement stmt = null;
-//		
+//
 //		ResultSet rs = null;
 //		String sql = "SELECT * FROM HOUSEDEAL WHERE aptCode = ? AND dealYear = ? AND dealMonth = ?";
-//		
+//
 //		List<HouseDealDto> dealList = new ArrayList<>();
 //		try {
 //			conn = DBUtil.getInstance().getConnection();
@@ -112,12 +112,12 @@ public class HouseDaoImpl implements HouseDao {
 //			stmt.setLong(1, aptNo);
 //			stmt.setInt(2, year);
 //			stmt.setInt(3, month);
-//			
+//
 //			rs = stmt.executeQuery();
-//			
+//
 //			while(rs.next()) {
 //				HouseDealDto deal = new HouseDealDto();
-//				
+//
 //				deal.setNo(rs.getLong(1));
 //				deal.setDealAmount(rs.getString(2));
 //				deal.setDealYear(rs.getInt(3));
@@ -127,14 +127,14 @@ public class HouseDaoImpl implements HouseDao {
 //				deal.setFloor(rs.getString(7));
 //				deal.setCancelDealType(rs.getString(8));
 //				deal.setAptCode(rs.getLong(9));
-//				
+//
 //				dealList.add(deal);
 //			}
-//			
+//
 //		} finally {
 //			DBUtil.getInstance().close(stmt, conn, rs);
 //		}
-//		
+//
 //		return dealList;
 //	}
 
