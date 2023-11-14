@@ -26,6 +26,20 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: () => import("@/views/LoginView.vue"),
+      children: [
+        {
+          path: "",
+          component: () => import("@/components/LoginForm/LoginRightForm.vue"),
+        },
+        {
+          path: "register",
+          component: () => import("@/components/LoginForm/RegisterForm.vue"),
+        },
+        {
+          path: "findPw",
+          component: () => import("@/components/LoginForm/findPwForm.vue"),
+        },
+      ],
     },
   ],
 });
