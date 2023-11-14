@@ -12,6 +12,24 @@ const router = createRouter({
           path: "",
           component: () => import("@/components/MainForm/MainForm.vue"),
         },
+        {
+          path: "qna",
+          component: () => import("@/components/QnaForm/QnaForm.vue"),
+          children: [
+            {
+              path: "",
+              component: () => import("@/components/QnaForm/QnaList.vue"),
+            },
+            {
+              path: `:id`,
+              component: () => import("@/components/QnaForm/QnaDetail.vue"),
+            },
+            {
+              path: "write",
+              component: () => import("@/components/QnaForm/QnaWrite.vue"),
+            },
+          ],
+        },
       ],
     },
     {
