@@ -1,14 +1,11 @@
 <script setup>
 import { reactive, computed } from "vue";
-import {
-  UserOutlined,
-  LockOutlined,
-  CaretRightOutlined,
-} from "@ant-design/icons-vue";
+import { UserOutlined, LockOutlined, CaretRightOutlined } from "@ant-design/icons-vue";
+import MemberAPI from "@/api/MemberAPI.js";
 
 const formState = reactive({
   userId: "",
-  password: "",
+  userPassword: "",
   remeber: true,
 });
 
@@ -21,19 +18,34 @@ const onFinishFailed = (errorInfo) => {
 };
 
 const disabled = computed(() => {
-  return !(formState.userId && formState.password);
+  return !(formState.userId && formState.userPassword);
 });
+
+const Login = () => {
+  console.log("로그인 버튼 클릭");
+
+  const user = {
+    userId: formState.userId,
+    userPassword: formState.userPassword,
+  };
+
+  MemberAPI.tryLogin(
+    user,
+    ({ data }) => {
+      console.log("로그인 성공 Id: " + data.userId + " | password" + data.userPassword);
+    },
+    () => {
+      console.log("로그인 실패");
+    }
+  );
+};
 </script>
 
 <template>
   <a-col :span="8">
     <div class="right">
-      <div class="NexonFootballGothicBold FontL FontColorA">
-        Home Mitchuddai
-      </div>
-      <div class="NexonFootballGothicBold FontM FontColorB">
-        로그인 해주세요.
-      </div>
+      <div class="NexonFootballGothicBold FontL FontColorA">Home Mitchuddai</div>
+      <div class="NexonFootballGothicBold FontM FontColorB">로그인 해주세요.</div>
       <a-form
         :model="formState"
         name="normal_login"
@@ -41,15 +53,8 @@ const disabled = computed(() => {
         @finish="onfinish"
         @finishFailed="onfinishFailed"
       >
-        <a-form-item
-          name="userId"
-          :rules="[{ requried: true, messgae: 'Please input yout user ID!' }]"
-        >
-          <a-input
-            v-model:value="formState.userId"
-            placeholder="ID"
-            class="InputBox"
-          >
+        <a-form-item name="userId" :rules="[{ requried: true, messgae: '아이디를 입력해주세요!' }]">
+          <a-input v-model:value="formState.userId" placeholder="ID" class="InputBox">
             <template #prefix>
               <UserOutlined class="site-form-item-icon" />
             </template>
@@ -57,11 +62,11 @@ const disabled = computed(() => {
         </a-form-item>
 
         <a-form-item
-          name="password"
-          :rules="[{ required: true, message: 'Please input your password!' }]"
+          name="userPassword"
+          :rules="[{ required: true, message: '비밀번호를 입력해주세요!' }]"
         >
           <a-input-password
-            v-model:value="formState.password"
+            v-model:value="formState.userPassword"
             placeholder="Password"
             class="InputBox"
           >
@@ -75,9 +80,7 @@ const disabled = computed(() => {
           <a-row justify="space-between">
             <a-col :span="6">
               <a-form-item name="remember" no-style>
-                <a-checkbox
-                  v-model:checked="formState.remember"
-                  class="NexonGothicBold FontColorA"
+                <a-checkbox v-model:checked="formState.remember" class="NexonGothicBold FontColorA"
                   >아이디 저장
                 </a-checkbox>
               </a-form-item>
@@ -94,9 +97,9 @@ const disabled = computed(() => {
           <a-form-item>
             <a-button
               :disabled="disabled"
-              html-type="submit"
               class="login-form-button"
               id="login-form-button"
+              @click="Login"
             >
               <span>Log in </span> <CaretRightOutlined />
             </a-button>
@@ -106,9 +109,7 @@ const disabled = computed(() => {
 
       <a-flex :vertical="true" class="login-form-footer" justify="end">
         <a-row justify="space-between">
-          <a-col :span="12"
-            ><a class="NexonGothicBold FontColorC" href="">회원가입 하기</a>
-          </a-col>
+          <a-col :span="12"><a class="NexonGothicBold FontColorC" href="">회원가입 하기</a> </a-col>
         </a-row>
       </a-flex>
     </div>
