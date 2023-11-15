@@ -5,17 +5,11 @@ import { BellOutlined } from "@ant-design/icons-vue";
 <template>
   <div class="nav">
     <a-row>
-      <a-col
-        :span="5"
-        class="nav_logo NexonFootballGothicBold FontM FontColorA item_align_center"
-      >
+      <a-col :span="5" class="nav_logo NexonFootballGothicBold FontM FontColorA item_align_center">
         <router-link to="/">Home mitchuddai</router-link>
       </a-col>
       <a-col :span="10">
-        <a-row
-          justify="space-between"
-          class="NexonFootballGothicBold FontMS FontColorA"
-        >
+        <a-row justify="space-between" class="NexonFootballGothicBold FontMS FontColorA">
           <router-link to="/">소개</router-link>
           <router-link to="/">뉴스</router-link>
           <router-link to="/">실거래가 조회</router-link>
@@ -48,7 +42,11 @@ import { BellOutlined } from "@ant-design/icons-vue";
   left: 0;
   right: 0;
 
+  /* 하단 테두리 */
   border-bottom: 1px solid;
+
+  /* 배경색 */
+  background-color: white;
 
   /* display: flex;
   justify-content: space-between;

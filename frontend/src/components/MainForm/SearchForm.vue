@@ -1,6 +1,9 @@
 <script setup>
 import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
 import LocationAPI from "@/api/LocationAPI.js";
+
+const router = useRouter();
 
 const livingType = ref("");
 
@@ -45,6 +48,11 @@ const getDongList = () => {
       console.log("동정보 조회에 실패하였습니다.");
     }
   );
+};
+
+const onSearchByDongCode = () => {
+  console.log(dongCode.value);
+  router.push(`/house/${dongCode.value}`);
 };
 
 getSidoList();
@@ -95,12 +103,7 @@ watch(gugunCode, async () => {
               <label for="studio" class="radio-label">원룸</label>
             </a-col>
             <a-col :span="5">
-              <input
-                type="radio"
-                value="Imdae"
-                class="radio_input"
-                v-model="livingType"
-              />
+              <input type="radio" value="Imdae" class="radio_input" v-model="livingType" />
               <label for="one" class="radio-label">임대</label>
             </a-col>
           </a-row>
@@ -155,7 +158,7 @@ watch(gugunCode, async () => {
       </a-row>
     </a-col>
     <a-col :span="6">
-      <button class="search_button">검색하기</button>
+      <button class="search_button" @click="onSearchByDongCode">검색하기</button>
     </a-col>
   </a-row>
 </template>
