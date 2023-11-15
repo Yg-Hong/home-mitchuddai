@@ -30,6 +30,10 @@ const router = createRouter({
             },
           ],
         },
+        {
+          path: "house/:dongCode",
+          component: () => import("@/components/HouseForm/HouseForm.vue"),
+        },
       ],
     },
     {
