@@ -1,22 +1,31 @@
 package com.whereismyhome.house.house.service;
 
-import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.whereismyhome.house.house.dto.HouseDto;
-import com.whereismyhome.house.house.dao.HouseDao;
+import com.whereismyhome.house.house.VO.DetailResultVO;
+import com.whereismyhome.house.house.VO.SearchResultVO;
+import com.whereismyhome.house.house.dao.HouseMapper;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HouseServiceImpl implements HouseService {
-	private HouseDao houseDao;
-	
-	public List<HouseDto> searchByDongCode(String dongCode, int year, int month) throws SQLException {
-		return houseDao.searchByDongCode(dongCode, year, month);
+
+	private final HouseMapper houseMapper;
+
+	public HouseServiceImpl(HouseMapper houseMapper) {
+		this.houseMapper = houseMapper;
 	}
-	
-	public Map<String, String> searchLocationByDongCode(String dongCode) throws SQLException {
-		return houseDao.searchLocationByDongCode(dongCode);
+
+	public List<SearchResultVO> getHouseListByDongCode(Long dongCode) {
+		return houseMapper.selectHousesByDongCode(dongCode);
+	}
+
+	public List<DetailResultVO> getDealListByDongCode(Long dongCode, Long aptCode) {
+		HashMap<String, Long> params = new HashMap<>();
+		params.put("dongCode", dongCode);
+		params.put("aptCode", aptCode);
+
+		return houseMapper.selectDealsByAptCode(params);
 	}
 }

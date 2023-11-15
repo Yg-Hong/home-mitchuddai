@@ -1,5 +1,7 @@
 package com.whereismyhome.house.house.service;
 
+import com.whereismyhome.house.house.VO.DetailResultVO;
+import com.whereismyhome.house.house.VO.SearchResultVO;
 import com.whereismyhome.house.house.dto.HouseDto;
 
 import java.sql.SQLException;
@@ -8,6 +10,6 @@ import java.util.Map;
 
 public interface HouseService {
 
-    public List<HouseDto> searchByDongCode(String dongCode, int year, int month) throws SQLException;
-    public Map<String, String> searchLocationByDongCode(String dongCode) throws SQLException;
+    public List<SearchResultVO> getHouseListByDongCode(Long dongCode);
+    public List<DetailResultVO> getDealListByDongCode(Long dongCode, Long aptCode);
 }

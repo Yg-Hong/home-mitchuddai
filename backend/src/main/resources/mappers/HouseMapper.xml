@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.whereismyhome.house.house.dao.HouseMapper">
+    <select id="selectDealsByAptCode" parameterType="Map" resultType="com.whereismyhome.house.house.VO.DetailResultVO">
+        SELECT 	d.no, d.dealAmount, d.dealYear, d.dealMonth, d.area, d.floor, d.aptCode, i.buildYear, i.roadName, i.apartmentName, i.jibun, i.lng, i.lat, c.sidoName, c.gugunName, c.dongName
+        FROM 	housedeal d, houseinfo i, dongcode c
+        where 	d.aptCode = i.aptCode and
+            c.dongCode = i.dongCode and
+            i.dongCode = #{dongCode} and
+            i.aptCode = #{aptCode}
+        order by dealYear desc;
+    </select>
+
+    <select id="selectHousesByDongCode" parameterType="long" resultType="com.whereismyhome.house.house.VO.SearchResultVO">
+        SELECT 	i.aptCode, i.buildYear, i.roadName, i.roadNameBonbun, i.roadNameBubun, i.dongCode, i.apartmentName, i.lng, i.lat, c.sidoName, c.gugunName, c.dongName
+        FROM 	housedeal d, houseinfo i, dongcode c
+        WHERE 	d.aptCode = i.aptCode AND
+                c.dongCode = i.dongCode AND
+                i.dongCode = #{dongCode}
+        GROUP BY d.aptCode;
+    </select>
+</mapper>
