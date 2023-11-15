@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.whereismyhome.house.house.dto.HouseDto;
 import com.whereismyhome.house.house.dao.HouseDao;
+import com.whereismyhome.house.house.dao.HouseDaoImpl;
 import org.springframework.stereotype.Service;
 
 @Service
