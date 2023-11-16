@@ -21,7 +21,7 @@ const router = createRouter({
               component: () => import("@/components/QnaForm/QnaList.vue"),
             },
             {
-              path: `:id`,
+              path: ":id",
               component: () => import("@/components/QnaForm/QnaDetail.vue"),
             },
             {
@@ -33,6 +33,16 @@ const router = createRouter({
         {
           path: "house/:dongCode",
           component: () => import("@/components/HouseForm/HouseForm.vue"),
+          children: [
+            {
+              path: "",
+              component: () => import("@/components/HouseForm/HouseListForm.vue"),
+            },
+            {
+              path: ":aptCode",
+              component: () => import("@/components/HouseForm/HouseDetailForm.vue"),
+            },
+          ],
         },
       ],
     },
