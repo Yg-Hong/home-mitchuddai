@@ -5,11 +5,11 @@ import { RouterView } from "vue-router";
 
 import { ref } from "vue";
 
-const latAndLngList = ref([]);
+const MarkerList = ref([]);
 
 const changeLatAndLngList = (newList) => {
-  console.log(newList);
-  latAndLngList.value = newList;
+  console.log("HouseForm: " + newList.value);
+  MarkerList.value = newList;
 };
 </script>
 
@@ -17,7 +17,7 @@ const changeLatAndLngList = (newList) => {
   <a-row justify="center">
     <a-col :span="8" class="LeftForm">
       <!-- <HouseListForm @changeLatAndLngList="changeLatAndLngList" /> -->
-      <RouterView />
+      <RouterView @changeLatAndLngList="changeLatAndLngList" />
     </a-col>
     <a-col :span="16">
       <KakaoMapForm :latAndLngList="latAndLngList" />

@@ -1,113 +1,118 @@
-<script>
-import { toRaw, defineProps, watch } from "vue";
+<script setup>
+import { toRaw, defineProps, watch, watchEffect, onMounted, ref, onBeforeMount } from "vue";
 
 const props = defineProps({
-  latAndLngList: Object,
+  MarkerList: Object,
 });
 
-console.log(props);
+// 스크립트가 로딩되면 지도를 띄워주자!
+// 즉, dom이 구성된 후에 실행되어야 하므로 mounted hook(onMounted)에서 실행
+// 이 과정에서 kakao라는 객체는 window 객체 즉 전역에 등록
+// 따라서, mount가 될 때마다 여러 번 로딩할 필요가 없다
+// window 객체에 kakao가 등록되어 있는지 확인하고 없을 때만 loading
+onMounted(() => {
+  if (window.kakao?.map) {
+    console.log(`KakaoMapComp.vue - 이미 map 있음`, window.kakao.map);
+    initMap();
+  } else {
+    console.log(`KakaoMapComp.vue - map script loading 필요`);
+    loadScript();
+  }
+});
 
-let markers = [];
+const loadScript = () => {
+  const key = import.meta.env.VITE_KAKAO_MAP_API_KEY;
+  const script = document.createElement("script");
+  // 동적 로딩을 위한 autoload=false 추가
+  script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${key}`;
+  // kakaomap script loading 후 initMap 실행
+  script.addEventListener("load", () => kakao.maps.load(initMap));
+  document.head.appendChild(script);
+};
 
-const displayMarker = (markers, markerPositions) => {
+let map = null;
+const initMap = () => {
+  const container = document.getElementById("map");
+
+  const options = {
+    // center: new kakao.maps.LatLng(...centerLatLng),
+    center: new kakao.maps.LatLng(37.586305, 126.970672),
+    level: 5,
+  };
+
+  map = new kakao.maps.Map(container, options);
+};
+
+// const getMarkerPositions = () => {
+//   console.log(props.MarkerList);
+//   let markers = [];
+
+//   for (marker in props.MarkerList) {
+//     markers.push({
+//       title: marker.apartmentName,
+//       latlng: new kakao.maps.LatLng(...marker.latlng),
+//     });
+//   }
+
+//   console.log("getMarkerPositions :" + markers);
+
+//   return markers;
+// };
+
+const getMarkerPositions = () => {
+  return [
+    { title: "카카오", latlng: new kakao.maps.LatLng(33.450705, 126.570677) },
+    { title: "생태연못", latlng: new kakao.maps.LatLng(33.450936, 126.569477) },
+    { title: "텃밭", latlng: new kakao.maps.LatLng(33.450705, 126.570677) },
+    { title: "근린공원", latlng: new kakao.maps.LatLng(33.451393, 126.570738) },
+  ];
+};
+
+// 화면에 표시되어있는 marker들
+const markers = [];
+
+const displayMarkers = () => {
+  // marker 정보 로딩
+  const positions = getMarkerPositions();
+
+  // 1. 현재 표시되어있는 marker들이 있다면 marker에 등록된 map을 없애준다.
   if (markers.length > 0) {
-    markers.forEach((marker) => marker.setMap(null));
+    markers.forEach((item) => {
+      item.setMap(null);
+    });
   }
-
-  const positions = markerPositions.map((position) => new kakao.maps.LatLng(...position));
-
-  if (positions.length > 0) {
-    markers = positions.map(
-      (position) =>
-        new kakao.maps.Marker({
-          map: toRaw(this.map),
-          position,
-        })
-    );
-
-    const bounds = positions.reduce(
-      (bounds, latlng) => bounds.extend(latlng),
-      new kakao.maps.LatLngBounds()
-    );
-
-    toRaw(this.map).setBounds(bounds);
-  }
+  // 2. 마커 이미지 커스터마이징 하기
+  // javascript 영역에서 assets의 정보 가져오기
+  const imgSrc = "/src/assets/map/markerStar.png";
+  const imgSize = new kakao.maps.Size(24, 35);
+  const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
+  // 3. 마커 표시하기
+  positions.forEach((position) => {
+    const marker = new kakao.maps.Marker({
+      map,
+      position: position.latlng,
+      title: position.title,
+      image: markerImage,
+    });
+    markers.push(marker);
+  });
+  // 4. 지도를 이동시켜주기
+  // 배열.reduce( (누적값, 현재값, 인덱스, 요소)=>{ return 결과값}, 초기값);
+  const bounds = positions.reduce(
+    (bounds, position) => bounds.extend(position.latlng),
+    new kakao.maps.LatLngBounds()
+  );
+  map.setBounds(bounds);
 };
 
 watch(props, () => {
   console.log("hmm..");
-  displayMarker(markers, props.latAndLngList.value);
+  console.log("(KakaoMapForm) " + props.MarkerList.value);
 });
 
-export default {
-  name: "KakaoMap",
-  data() {
-    return {
-      markerPositions2: [
-        [37.499590490909185, 127.0263723554437],
-        [37.499427948430814, 127.02794423197847],
-        [37.498553760499505, 127.02882598822454],
-        [37.497625593121384, 127.02935713582038],
-        [37.49629291770947, 127.02587362608637],
-        [37.49754540521486, 127.02546694890695],
-        [37.49646391248451, 127.02675574250912],
-      ],
-      markers: [],
-      infowindow: null,
-    };
-  },
-  mounted() {
-    if (window.kakao && window.kakao.maps) {
-      this.initMap();
-    } else {
-      const script = document.createElement("script");
-      /* global kakao */
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=b0350300fd8a48810b080f1c100cf33b";
-      document.head.appendChild(script);
-    }
-  },
-  methods: {
-    initMap() {
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 5,
-      };
-
-      //지도 객체를 등록합니다.
-      //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
-      this.map = new kakao.maps.Map(container, options);
-    },
-    changeSize(size) {
-      const container = document.getElementById("map");
-      container.style.width = `${size}px`;
-      container.style.height = `${size}px`;
-      toRaw(this.map).relayout();
-    },
-    displayInfoWindow() {
-      if (this.infowindow && this.infowindow.getMap()) {
-        //이미 생성한 인포윈도우가 있기 때문에 지도 중심좌표를 인포윈도우 좌표로 이동시킨다.
-        toRaw(this.map).setCenter(this.infowindow.getPosition());
-        return;
-      }
-
-      var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        iwPosition = new kakao.maps.LatLng(33.450701, 126.570667), //인포윈도우 표시 위치입니다
-        iwRemoveable = true; // removeable 속성을 true 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-      this.infowindow = new kakao.maps.InfoWindow({
-        map: toRaw(this.map), // 인포윈도우가 표시될 지도
-        position: iwPosition,
-        content: iwContent,
-        removable: iwRemoveable,
-      });
-
-      toRaw(this.map).setCenter(iwPosition);
-    },
-  },
-};
+setTimeout(function () {
+  displayMarkers();
+}, 1000);
 </script>
 
 <template>

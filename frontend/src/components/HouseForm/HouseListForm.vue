@@ -2,6 +2,7 @@
 import HouseDetailCardForm from "@/components/HouseForm/HouseDetailCardForm.vue";
 import { ref, defineEmits, computed, watchEffect, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import HouseAPI from "../../api/HouseAPI";
 
 const emit = defineEmits(["changeLatAndLngList"]);
 const router = useRouter();
@@ -14,7 +15,7 @@ const houseList = ref([
     roadName: "자하문로 33길",
     readNameBonbun: 43,
     dongCode: 1111010100,
-    apartment: "청운현대",
+    apartmentName: "청운현대",
     lng: 126.970672,
     lat: 37.586305,
     area: 84.82,
@@ -28,7 +29,7 @@ const houseList = ref([
     roadName: "자하문로",
     readNameBonbun: 433,
     dongCode: 1111010100,
-    apartment: "청운현대",
+    apartmentName: "청운현대",
     lng: 126.970672,
     lat: 37.586305,
     area: 84.82,
@@ -43,7 +44,10 @@ watch(houseList, () => {
   let newArray = [];
 
   houseList.value.forEach((house) => {
-    newArray.push([house.lat, house.lng]);
+    newArray.push({
+      title: house.apartmentName,
+      latlng: [house.lat, house.lng],
+    });
   });
 
   console.log(newArray);
@@ -55,6 +59,20 @@ const onClickHouseDetailInfo = (aptCode) => {
   let dongCode = route.params.dongCode;
   router.push(`/house/${dongCode}/${aptCode}`);
 };
+
+const getHouseList = () => {
+  HouseAPI.getHouseList(
+    route.params.dongCode,
+    ({ data }) => {
+      houseList.value = data;
+    },
+    () => {
+      console.log("실거래 목록 조회에 실패하였습니다.");
+    }
+  );
+};
+
+getHouseList();
 </script>
 
 <template>
