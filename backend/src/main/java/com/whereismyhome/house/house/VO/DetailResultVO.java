@@ -3,16 +3,11 @@ package com.whereismyhome.house.house.VO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class DetailResultVO {
-    private Long no;
-    private String dealAmount;
-    private int dealYear;
-    private int dealMonth;
-    private String area;
-    private String floor;
-    
     private Long aptCode;
     private int buildYear;
     private String roadName;
@@ -24,4 +19,6 @@ public class DetailResultVO {
     private String sidoName;
     private String gugunName;
     private String dongName;
+
+    private List<HouseDealVO> houseDeals;
 }
