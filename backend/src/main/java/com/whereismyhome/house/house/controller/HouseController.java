@@ -4,12 +4,10 @@ import com.whereismyhome.house.house.VO.DetailResultVO;
 import com.whereismyhome.house.house.VO.SearchResultVO;
 import com.whereismyhome.house.house.service.HouseService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/house")
@@ -40,12 +38,33 @@ public class HouseController {
 
     @GetMapping("/{dongCode}/{aptCode}")
     public List<DetailResultVO> getDealListByDongCode(@PathVariable Long dongCode, @PathVariable Long aptCode) {
-        log.info("dptCode : " + aptCode);
+        log.info("aptCode : " + aptCode);
         List<DetailResultVO> list = null;
 
         list = houseService.getDealListByDongCode(dongCode, aptCode);
 
         log.info(list.toString());
         return list;
+    }
+
+    @GetMapping("/{dongCode}/{aptCode}/graph")
+    public Map<Integer, Integer> getGraphData(@PathVariable Long dongCode, @PathVariable Long aptCode) {
+        log.info("dongCode : " + dongCode + "aptCode : " + aptCode);
+
+        return null;
+    }
+
+    @GetMapping("/{dongCode}/{aptCode}/comment")
+    public List<DetailResultVO> getCommentListByAptCode(@PathVariable Long dongCode, @PathVariable Long aptCode) {
+        log.info("dongCode : " + dongCode + "aptCode : " + aptCode);
+
+        return null;
+    }
+
+    @PostMapping("/{dongCode}/{aptCode}/comment")
+    public DetailResultVO postCommentListByAptCode(@PathVariable Long dongCode, @PathVariable Long aptCode) {
+        log.info("dongCode : " + dongCode + "aptCode : " + aptCode);
+
+        return null;
     }
 }
