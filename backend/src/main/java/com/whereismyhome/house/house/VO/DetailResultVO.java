@@ -12,8 +12,7 @@ public class DetailResultVO {
     private int dealMonth;
     private String area;
     private String floor;
-
-
+    
     private Long aptCode;
     private int buildYear;
     private String roadName;
