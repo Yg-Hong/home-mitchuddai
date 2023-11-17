@@ -1,33 +1,64 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import CommentForm from "@/components/CommentForm/CommentForm.vue";
-import CommentInputForm from "../CommentForm/CommentInputForm.vue";
+import CommentInputForm from "@/components/CommentForm/CommentInputForm.vue";
+import DealCardForm from "@/components/HouseForm/DealCardForm.vue";
+import HouseAPI from "@/api/HouseAPI.js";
 
 const route = useRoute();
 const router = useRouter();
 
-const house = ref({
-  aptCode: 11110000000042,
-  buildYear: "2000",
-  roadName: "자하문로 33길",
-  roadNameBonbun: 43,
-  dongCode: 1111010100,
-  apartment: "청운현대",
-  lng: 126.970672,
-  lat: 37.586305,
-  area: 84.82,
-  sidoName: "서울특별시",
-  gugunName: "종로구",
-  dongName: "청운동",
+const houseDetailInfo = ref({
+  aptCode: 26110000000001,
+  buildYear: 1998,
+  roadName: "영주로",
+  apartmentName: "동아(92-0)",
+  jibun: "92",
+  lng: "129.029977555653",
+  lat: "35.1136527983158",
+  sidoName: "부산광역시",
+  gugunName: "중구",
+  dongName: "영주동",
+  houseDeals: [
+    {
+      no: 261102201000001,
+      dealAmount: "23,400",
+      dealYear: 2022,
+      dealMonth: 1,
+      area: "84.7",
+      floor: "8",
+      aptCode: 26110000000001,
+    },
+  ],
 });
 
-console.log(route.params.dongCode + " " + route.params.aptCode);
+// const houseDetailInfo = ref({});
+
+const getHouseDetail = () => {
+  HouseAPI.getHouseDetail(
+    route.params.dongCode,
+    route.params.aptCode,
+    ({ data }) => {
+      console.log(data);
+      houseDetailInfo.value = data;
+    },
+    () => {
+      console.log("실거래 상세정보 조회에 실패하였습니다.");
+    }
+  );
+};
+getHouseDetail();
 
 const onClickTobackToTheList = () => {
   console.log("뒤로가기");
   router.push(`/house/${route.params.dongCode}`);
 };
+
+const activeKey = ref([]);
+watch(activeKey, (val) => {
+  console.log(val);
+});
 </script>
 
 <template>
@@ -45,60 +76,69 @@ const onClickTobackToTheList = () => {
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
-      <a-col :span="6"> 건물명 </a-col>
-      <a-col :span="12">{{ house.apartment }}</a-col>
+      <a-col :span="6"> 건물명 : </a-col>
+      <a-col :span="12">{{ houseDetailInfo.apartmentName }}</a-col>
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
       <a-col :span="6"> 주소 : </a-col>
-      <a-col :span="12">{{ house.sidoName }} {{ house.gugunName }} {{ house.dongName }}</a-col>
+      <a-col :span="12"
+        >{{ houseDetailInfo.sidoName }} {{ houseDetailInfo.gugunName }}
+        {{ houseDetailInfo.dongName }}</a-col
+      >
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
       <a-col :span="6"> 상세주소 : </a-col>
-      <a-col :span="12">{{ house.roadName }} {{ house.roadNameBonbun }}</a-col>
+      <a-col :span="12">{{ houseDetailInfo.roadName }} {{ houseDetailInfo.roadNameBonbun }}</a-col>
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
       <a-col :span="6"> 면적 </a-col>
-      <a-col :span="12">{{ house.area }} m2</a-col>
+      <a-col :span="12">{{ houseDetailInfo.area }} m2</a-col>
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
       <a-col :span="6"> 건축년도 </a-col>
-      <a-col :span="12">{{ house.buildYear }} 년</a-col>
+      <a-col :span="12">{{ houseDetailInfo.buildYear }} 년</a-col>
     </a-row>
   </div>
 
   <div>
-    <a-row justify="start"> 실거래 목록 </a-row>
-  </div>
-  <div>
-    <a-row justify="start"> 실거래가 비교 통계 그래프 </a-row>
-  </div>
-  <div>
-    <a-row justify="start"> 주변 편의시설(도보) </a-row>
-    <a-row class="space_evenly_box">
-      <a-col :span="8"><a-row justify="center">편의점</a-row></a-col>
-      <a-col :span="8"><a-row justify="center">약국</a-row></a-col>
-    </a-row>
-    <a-row class="space_evenly_box">
-      <a-col :span="8"><a-row justify="center">은행</a-row></a-col>
-      <a-col :span="8"><a-row justify="center">병원</a-row></a-col>
-    </a-row>
-    <a-row class="space_evenly_box">
-      <a-col :span="8"><a-row justify="center">카페</a-row></a-col>
-      <a-col :span="8"><a-row justify="center">마트</a-row></a-col>
-    </a-row>
-    <a-row class="space_evenly_box">
-      <a-col :span="8"><a-row justify="center">편의점</a-row></a-col>
-      <a-col :span="8"><a-row justify="center">주유소</a-row></a-col>
-    </a-row>
-  </div>
-  <div>
-    <a-row justify="start">댓글</a-row>
-    <CommentForm />
-    <CommentInputForm />
+    <a-collapse v-model:activeKey="activeKey" accordion>
+      <a-collapse-panel key="1" header="실거래 목록">
+        <div class="dealList">
+          <template v-for="(deal, index) in houseDetailInfo.houseDeals" :key="index">
+            <a-row justify="center">
+              <DealCardForm :deal="deal" />
+            </a-row>
+          </template>
+        </div>
+      </a-collapse-panel>
+      <a-collapse-panel key="2" header="실거래가 비교 통계 그래프"> </a-collapse-panel>
+      <a-collapse-panel key="3" header="주변 편의시설">
+        <a-row class="space_evenly_box">
+          <a-col :span="8"><a-row justify="center">편의점</a-row></a-col>
+          <a-col :span="8"><a-row justify="center">약국</a-row></a-col>
+        </a-row>
+        <a-row class="space_evenly_box">
+          <a-col :span="8"><a-row justify="center">은행</a-row></a-col>
+          <a-col :span="8"><a-row justify="center">병원</a-row></a-col>
+        </a-row>
+        <a-row class="space_evenly_box">
+          <a-col :span="8"><a-row justify="center">카페</a-row></a-col>
+          <a-col :span="8"><a-row justify="center">마트</a-row></a-col>
+        </a-row>
+        <a-row class="space_evenly_box">
+          <a-col :span="8"><a-row justify="center">편의점</a-row></a-col>
+          <a-col :span="8"><a-row justify="center">주유소</a-row></a-col>
+        </a-row>
+      </a-collapse-panel>
+      <a-collapse-panel key="4" header="댓글">
+        <CommentForm />
+        <CommentInputForm />
+      </a-collapse-panel>
+    </a-collapse>
   </div>
 </template>
 
