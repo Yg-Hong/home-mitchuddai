@@ -20,7 +20,7 @@ const changeLatAndLngList = (newList) => {
       <RouterView @changeLatAndLngList="changeLatAndLngList" />
     </a-col>
     <a-col :span="16">
-      <KakaoMapForm :latAndLngList="latAndLngList" />
+      <!-- <KakaoMapForm :latAndLngList="latAndLngList" /> -->
     </a-col>
   </a-row>
 </template>
