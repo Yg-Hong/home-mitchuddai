@@ -13,5 +13,5 @@ import org.springframework.stereotype.Repository;
 public interface HouseMapper {
 
 	List<SearchResultVO> selectHousesByDongCode(Long dongCode);
-	List<DetailResultVO> selectDealsByAptCode(Map<String, Long> params);
+	DetailResultVO selectDealsByAptCode(Map<String, Long> params);
 }
