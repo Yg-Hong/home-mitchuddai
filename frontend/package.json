@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
+    "@toast-ui/editor": "^3.2.2",
     "@vue/cli-service": "^5.0.8",
     "@vueup/vue-quill": "^1.2.0",
     "ant-design-vue": "^4.0.7",
