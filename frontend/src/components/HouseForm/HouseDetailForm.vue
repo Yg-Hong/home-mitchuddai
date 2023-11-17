@@ -1,8 +1,9 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import { ref, onBeforeMount } from "vue";
+import { ref, watch } from "vue";
 import CommentForm from "@/components/CommentForm/CommentForm.vue";
 import CommentInputForm from "@/components/CommentForm/CommentInputForm.vue";
+import DealCardForm from "@/components/HouseForm/DealCardForm.vue";
 import HouseAPI from "@/api/HouseAPI.js";
 
 const route = useRoute();
@@ -47,13 +48,17 @@ const getHouseDetail = () => {
     }
   );
 };
+getHouseDetail();
 
 const onClickTobackToTheList = () => {
   console.log("뒤로가기");
   router.push(`/house/${route.params.dongCode}`);
 };
 
-getHouseDetail();
+const activeKey = ref([]);
+watch(activeKey, (val) => {
+  console.log(val);
+});
 </script>
 
 <template>
@@ -100,34 +105,40 @@ getHouseDetail();
   </div>
 
   <div>
-    <a-row justify="start"> 실거래 목록 </a-row>
-  </div>
-  <div>
-    <a-row justify="start"> 실거래가 비교 통계 그래프 </a-row>
-  </div>
-  <div>
-    <a-row justify="start"> 주변 편의시설(도보) </a-row>
-    <a-row class="space_evenly_box">
-      <a-col :span="8"><a-row justify="center">편의점</a-row></a-col>
-      <a-col :span="8"><a-row justify="center">약국</a-row></a-col>
-    </a-row>
-    <a-row class="space_evenly_box">
-      <a-col :span="8"><a-row justify="center">은행</a-row></a-col>
-      <a-col :span="8"><a-row justify="center">병원</a-row></a-col>
-    </a-row>
-    <a-row class="space_evenly_box">
-      <a-col :span="8"><a-row justify="center">카페</a-row></a-col>
-      <a-col :span="8"><a-row justify="center">마트</a-row></a-col>
-    </a-row>
-    <a-row class="space_evenly_box">
-      <a-col :span="8"><a-row justify="center">편의점</a-row></a-col>
-      <a-col :span="8"><a-row justify="center">주유소</a-row></a-col>
-    </a-row>
-  </div>
-  <div>
-    <a-row justify="start">댓글</a-row>
-    <CommentForm />
-    <CommentInputForm />
+    <a-collapse v-model:activeKey="activeKey" accordion>
+      <a-collapse-panel key="1" header="실거래 목록">
+        <div class="dealList">
+          <template v-for="(deal, index) in houseDetailInfo.houseDeals" :key="index">
+            <a-row justify="center">
+              <DealCardForm :deal="deal" />
+            </a-row>
+          </template>
+        </div>
+      </a-collapse-panel>
+      <a-collapse-panel key="2" header="실거래가 비교 통계 그래프"> </a-collapse-panel>
+      <a-collapse-panel key="3" header="주변 편의시설">
+        <a-row class="space_evenly_box">
+          <a-col :span="8"><a-row justify="center">편의점</a-row></a-col>
+          <a-col :span="8"><a-row justify="center">약국</a-row></a-col>
+        </a-row>
+        <a-row class="space_evenly_box">
+          <a-col :span="8"><a-row justify="center">은행</a-row></a-col>
+          <a-col :span="8"><a-row justify="center">병원</a-row></a-col>
+        </a-row>
+        <a-row class="space_evenly_box">
+          <a-col :span="8"><a-row justify="center">카페</a-row></a-col>
+          <a-col :span="8"><a-row justify="center">마트</a-row></a-col>
+        </a-row>
+        <a-row class="space_evenly_box">
+          <a-col :span="8"><a-row justify="center">편의점</a-row></a-col>
+          <a-col :span="8"><a-row justify="center">주유소</a-row></a-col>
+        </a-row>
+      </a-collapse-panel>
+      <a-collapse-panel key="4" header="댓글">
+        <CommentForm />
+        <CommentInputForm />
+      </a-collapse-panel>
+    </a-collapse>
   </div>
 </template>
 
