@@ -11,5 +11,5 @@ import java.util.Map;
 public interface HouseService {
 
     public List<SearchResultVO> getHouseListByDongCode(Long dongCode);
-    public List<DetailResultVO> getDealListByDongCode(Long dongCode, Long aptCode);
+    public DetailResultVO getDealListByDongCode(Long dongCode, Long aptCode);
 }

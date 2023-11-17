@@ -21,7 +21,7 @@ public class HouseServiceImpl implements HouseService {
 		return houseMapper.selectHousesByDongCode(dongCode);
 	}
 
-	public List<DetailResultVO> getDealListByDongCode(Long dongCode, Long aptCode) {
+	public DetailResultVO getDealListByDongCode(Long dongCode, Long aptCode) {
 		HashMap<String, Long> params = new HashMap<>();
 		params.put("dongCode", dongCode);
 		params.put("aptCode", aptCode);

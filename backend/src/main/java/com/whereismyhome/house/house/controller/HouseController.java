@@ -37,14 +37,14 @@ public class HouseController {
     }
 
     @GetMapping("/{dongCode}/{aptCode}")
-    public List<DetailResultVO> getDealListByDongCode(@PathVariable Long dongCode, @PathVariable Long aptCode) {
+    public DetailResultVO getDealListByDongCode(@PathVariable Long dongCode, @PathVariable Long aptCode) {
         log.info("aptCode : " + aptCode);
-        List<DetailResultVO> list = null;
+        DetailResultVO result = null;
 
-        list = houseService.getDealListByDongCode(dongCode, aptCode);
+        result = houseService.getDealListByDongCode(dongCode, aptCode);
 
-        log.info(list.toString());
-        return list;
+        log.info(result.toString());
+        return result;
     }
 
     @GetMapping("/{dongCode}/{aptCode}/graph")
