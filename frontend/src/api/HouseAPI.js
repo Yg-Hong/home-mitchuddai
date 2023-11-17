@@ -10,8 +10,4 @@ const getHouseDetail = (dongCode, aptCode, success, fail) => {
   HouseAPI.get(`house/${dongCode}/${aptCode}`).then(success).catch(fail);
 };
 
-const getDealList = (dongCode, aptCode, success, fail) => {
-  HouseAPI.get(`house/${dongCode}/${aptCode}/deal`).then(success).catch(fail);
-};
-
-export default { getHouseList, getHouseDetail, getDealList };
+export default { getHouseList, getHouseDetail };

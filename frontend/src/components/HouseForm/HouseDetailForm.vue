@@ -1,33 +1,59 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import CommentForm from "@/components/CommentForm/CommentForm.vue";
-import CommentInputForm from "../CommentForm/CommentInputForm.vue";
+import CommentInputForm from "@/components/CommentForm/CommentInputForm.vue";
+import HouseAPI from "@/api/HouseAPI.js";
 
 const route = useRoute();
 const router = useRouter();
 
-const house = ref({
-  aptCode: 11110000000042,
-  buildYear: "2000",
-  roadName: "자하문로 33길",
-  roadNameBonbun: 43,
-  dongCode: 1111010100,
-  apartment: "청운현대",
-  lng: 126.970672,
-  lat: 37.586305,
-  area: 84.82,
-  sidoName: "서울특별시",
-  gugunName: "종로구",
-  dongName: "청운동",
+const houseDetailInfo = ref({
+  aptCode: 26110000000001,
+  buildYear: 1998,
+  roadName: "영주로",
+  apartmentName: "동아(92-0)",
+  jibun: "92",
+  lng: "129.029977555653",
+  lat: "35.1136527983158",
+  sidoName: "부산광역시",
+  gugunName: "중구",
+  dongName: "영주동",
+  houseDeals: [
+    {
+      no: 261102201000001,
+      dealAmount: "23,400",
+      dealYear: 2022,
+      dealMonth: 1,
+      area: "84.7",
+      floor: "8",
+      aptCode: 26110000000001,
+    },
+  ],
 });
 
-console.log(route.params.dongCode + " " + route.params.aptCode);
+// const houseDetailInfo = ref({});
+
+const getHouseDetail = () => {
+  HouseAPI.getHouseDetail(
+    route.params.dongCode,
+    route.params.aptCode,
+    ({ data }) => {
+      console.log(data);
+      houseDetailInfo.value = data;
+    },
+    () => {
+      console.log("실거래 상세정보 조회에 실패하였습니다.");
+    }
+  );
+};
 
 const onClickTobackToTheList = () => {
   console.log("뒤로가기");
   router.push(`/house/${route.params.dongCode}`);
 };
+
+getHouseDetail();
 </script>
 
 <template>
@@ -45,28 +71,31 @@ const onClickTobackToTheList = () => {
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
-      <a-col :span="6"> 건물명 </a-col>
-      <a-col :span="12">{{ house.apartment }}</a-col>
+      <a-col :span="6"> 건물명 : </a-col>
+      <a-col :span="12">{{ houseDetailInfo.apartmentName }}</a-col>
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
       <a-col :span="6"> 주소 : </a-col>
-      <a-col :span="12">{{ house.sidoName }} {{ house.gugunName }} {{ house.dongName }}</a-col>
+      <a-col :span="12"
+        >{{ houseDetailInfo.sidoName }} {{ houseDetailInfo.gugunName }}
+        {{ houseDetailInfo.dongName }}</a-col
+      >
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
       <a-col :span="6"> 상세주소 : </a-col>
-      <a-col :span="12">{{ house.roadName }} {{ house.roadNameBonbun }}</a-col>
+      <a-col :span="12">{{ houseDetailInfo.roadName }} {{ houseDetailInfo.roadNameBonbun }}</a-col>
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
       <a-col :span="6"> 면적 </a-col>
-      <a-col :span="12">{{ house.area }} m2</a-col>
+      <a-col :span="12">{{ houseDetailInfo.area }} m2</a-col>
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
       <a-col :span="6"> 건축년도 </a-col>
-      <a-col :span="12">{{ house.buildYear }} 년</a-col>
+      <a-col :span="12">{{ houseDetailInfo.buildYear }} 년</a-col>
     </a-row>
   </div>
 
