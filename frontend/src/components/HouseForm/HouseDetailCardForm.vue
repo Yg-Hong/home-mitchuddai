@@ -16,9 +16,6 @@ const props = defineProps({
         {{ house.sidoName }} {{ house.gugunNAme }} {{ house.dongName }} {{ house.roadName }}
       </a-col>
     </a-row>
-    <a-row justify="start">
-      <a-col> 면적 : {{ house.area }} </a-col>
-    </a-row>
     <a-row>
       <a-col> 건축년도 : {{ house.buildYear }} </a-col>
     </a-row>

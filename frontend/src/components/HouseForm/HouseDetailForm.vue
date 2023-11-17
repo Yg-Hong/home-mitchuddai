@@ -2,6 +2,7 @@
 import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
 import CommentForm from "@/components/CommentForm/CommentForm.vue";
+import CommentInputForm from "../CommentForm/CommentInputForm.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -68,8 +69,12 @@ const onClickTobackToTheList = () => {
       <a-col :span="12">{{ house.buildYear }} 년</a-col>
     </a-row>
   </div>
+
   <div>
-    <a-row justify="start"> 거래가 비교 통계 그래프 </a-row>
+    <a-row justify="start"> 실거래 목록 </a-row>
+  </div>
+  <div>
+    <a-row justify="start"> 실거래가 비교 통계 그래프 </a-row>
   </div>
   <div>
     <a-row justify="start"> 주변 편의시설(도보) </a-row>
@@ -93,6 +98,7 @@ const onClickTobackToTheList = () => {
   <div>
     <a-row justify="start">댓글</a-row>
     <CommentForm />
+    <CommentInputForm />
   </div>
 </template>
 
