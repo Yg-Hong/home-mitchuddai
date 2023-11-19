@@ -14,6 +14,12 @@ export default {
       content: reactive(""),
     };
   },
+  props: {
+    EditableFlag: {
+      type: Boolean,
+      default: false,
+    },
+  },
   computed: {
     editor() {
       return null;
@@ -36,7 +42,7 @@ export default {
     <QuillEditor
       :theme="snow"
       :toolbar="essential"
-      :disabled="false"
+      :readOnly="EditableFlag"
       v-model:content="content"
       contentType="html"
       @update:content="onEditorContentChange"
