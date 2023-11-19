@@ -1,6 +1,8 @@
 package com.whereismyhome.house.member.controller;
 
 import com.whereismyhome.house.member.dto.MemberDto;
+import com.whereismyhome.house.member.entity.Member;
+import com.whereismyhome.house.member.request.SignUp;
 import com.whereismyhome.house.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +24,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-	public MemberDto login(@RequestBody MemberDto memberDto) throws Exception {
+	public Member login(@RequestBody MemberDto memberDto) throws Exception {
 		String userId = memberDto.getUserId();
 		String userPassword = memberDto.getUserPassword();
 		log.info("userId={}, userPassword={}", userId, userPassword);
@@ -36,11 +38,16 @@ public class MemberController {
 
 	@PostMapping("/register")
 	public void registerMember(@RequestBody MemberDto memberDto) throws Exception {
-		memberService.registerMember(memberDto);
+		SignUp signUp = SignUp.builder()
+				.email(memberDto.getEmail())
+				.password(memberDto.getUserPassword())
+				.name(memberDto.getUserName())
+				.build();
+		memberService.signUp(signUp);
 	}
 
 	@GetMapping("/detail/{id}")
-	public MemberDto memberDetail(@PathVariable String id) throws Exception {
+	public Member memberDetail(@PathVariable String id) throws Exception {
 		return memberService.getMember(id);
 	}
 

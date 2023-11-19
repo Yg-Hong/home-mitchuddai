@@ -11,17 +11,15 @@ public class MemberDto {
     private String userId;
     private String userName;
     private String userPassword;
-    private String emailId;
-    private String emailDomain;
+    private String email;
     private String joinDate;
 
     @Builder
-    public MemberDto(String userId, String userName, String userPassword, String emailId, String emailDomain, String joinDate) {
+    public MemberDto(String userId, String userName, String userPassword, String email, String emailDomain, String joinDate) {
         this.userId = userId;
         this.userName = userName;
         this.userPassword = userPassword;
-        this.emailId = emailId;
-        this.emailDomain = emailDomain;
+        this.email = email;
         this.joinDate = joinDate;
     }
 }
