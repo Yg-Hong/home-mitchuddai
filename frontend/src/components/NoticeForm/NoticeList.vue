@@ -2,14 +2,13 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-const qnaList = ref([]);
+const noticeList = ref([]);
 
 const router = useRouter();
 
 for (let i = 0; i < 100; i++) {
-  qnaList.value.push({
+  noticeList.value.push({
     no: i,
-    name: `홍윤기 ${i}`,
     title: "Hello world",
     date: "2021-10-01",
   });
@@ -20,11 +19,6 @@ const columns = [
     title: "no",
     dataIndex: "no",
     width: "10%",
-  },
-  {
-    title: "작성자",
-    dataIndex: "name",
-    width: "15%",
   },
   {
     title: "제목",
@@ -41,26 +35,20 @@ const customRow = (record) => {
   return {
     onClick: () => {
       console.log("click row", record);
-      router.push(`/qna/${record.no}`);
+      router.push(`/notice/${record.no}`);
     },
   };
 };
 </script>
 
 <template>
-  <a-table :customRow="customRow" :columns="columns" :data-source="qnaList">
+  <a-table :customRow="customRow" :columns="columns" :data-source="noticeList">
     <template #bodyCell="{ column, text }">
       <template v-if="column.dataIndex === 'title'">
         <a>{{ text }}</a>
       </template>
     </template>
   </a-table>
-
-  <a-row justify="end">
-    <a-button class="margin_top writeBtn" @click="router.push('/qna/write')"
-      >글쓰기</a-button
-    >
-  </a-row>
 </template>
 
 <style scoped>
