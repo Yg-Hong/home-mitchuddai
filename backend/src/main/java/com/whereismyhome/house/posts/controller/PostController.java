@@ -37,7 +37,7 @@ public class PostController {
 
     // 게시글 여러개 조회 - querydsl
     @GetMapping("")
-    public Map<String, Object> getList(@ModelAttribute PostSearch postSearch) {
+    public Map<String, Object> getList(@RequestBody PostSearch postSearch) {
         Map<String, Object> map = new HashMap<>();
         map.put("PagInfo", postService.getTotalSize());
         map.put("Result", postService.getList(postSearch));
