@@ -9,7 +9,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import jakarta.validation.Valid;
 
 @Slf4j
@@ -34,8 +37,11 @@ public class PostController {
 
     // 게시글 여러개 조회 - querydsl
     @GetMapping("")
-    public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
-        return postService.getList(postSearch);
+    public Map<String, Object> getList(@ModelAttribute PostSearch postSearch) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("PagInfo", postService.getTotalSize());
+        map.put("Result", postService.getList(postSearch));
+        return map;
     }
 
     // 게시글 수정
