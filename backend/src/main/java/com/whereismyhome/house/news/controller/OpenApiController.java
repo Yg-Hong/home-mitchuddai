@@ -25,21 +25,9 @@ public class OpenApiController {
     public ResponseEntity<JSONObject> getNews(@RequestBody OpenApiParameter openApiParameter) throws Exception {
 
         JSONParser parser = new JSONParser();
-        Object keyword;
-        JSONObject obj;
+        Object keyword = parser.parse(naver.search(openApiParameter.getKeyword()));;
+        JSONObject obj = (JSONObject) keyword;
 
-        if (openApiParameter.getEconomicTrend() != "") {
-            keyword = parser.parse(naver.search(openApiParameter.getEconomicTrend()));
-        } else if (openApiParameter.getHousing() != "") {
-            keyword = parser.parse(naver.search(openApiParameter.getHousing()));
-        } else if (openApiParameter.getOffice() != "") {
-            keyword = parser.parse(naver.search(openApiParameter.getOffice()));
-        }
-        else {
-            keyword = parser.parse(naver.search(openApiParameter.getRealEstate()));
-        }
-
-        obj = (JSONObject) keyword;
         return new ResponseEntity<>(obj, HttpStatus.OK);
     }
 
