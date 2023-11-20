@@ -2,8 +2,8 @@ import { localAxios } from "@/utils/http-commons";
 
 const QnaAPI = localAxios();
 
-const getQnaList = (success, fail) => {
-  QnaAPI.get(`/posts`).then(success).catch(fail);
+const getQnaList = (pageInfo, success, fail) => {
+  QnaAPI.get(`/posts`, pageInfo).then(success).catch(fail);
 };
 
 const getQnaDetail = (id, success, fail) => {
