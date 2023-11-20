@@ -8,26 +8,10 @@ const totalPage = ref(0);
 
 const router = useRouter();
 
-// for (let i = 0; i < 100; i++) {
-//   QnaAPI.writeQna(
-//     {
-//       title: `홍윤기 ${i}`,
-//       content: "Hello world",
-//       authorId: "admin",
-//     },
-//     (response) => {
-//       console.log(response);
-//     },
-//     (error) => {
-//       console.log(error);
-//     }
-//   );
-// }
-
 const columns = [
   {
     title: "no",
-    dataIndex: "no",
+    dataIndex: "id",
     width: "10%",
   },
   {
@@ -42,19 +26,26 @@ const columns = [
   },
   {
     title: "작성일자",
-    dataIndex: "createAt",
+    dataIndex: "createdAt",
   },
 ];
 
+// const getQnaList = (pageInfo, success, fail) => {
+//   QnaAPI.get(`/posts`, pageInfo).then(success).catch(fail);
+// };
+
 const getQnaList = (pageInfo) => {
+  console.log("getQnaList");
+  console.log(pageInfo);
+
   QnaAPI.getQnaList(
     pageInfo,
     ({ data }) => {
       console.log(data);
 
-      qnaList.value = data.result;
-      // totalPage.value = data.totalPage;
       // qnaList.value = data.result;
+      totalPage.value = data.total;
+      qnaList.value = data.Result;
     },
     (error) => {
       console.log(error);
@@ -66,12 +57,12 @@ const customRow = (record) => {
   return {
     onClick: () => {
       console.log("click row", record);
-      router.push(`/qna/${record.no}`);
+      router.push(`/qna/${record.id}`);
     },
   };
 };
 
-const onChangepageInfo = (page, size) => {
+const onChangePageInfo = (page, size) => {
   console.log("pageInfo changed");
 
   const pageInfo = {
@@ -84,7 +75,8 @@ const onChangepageInfo = (page, size) => {
   getQnaList(pageInfo);
 };
 
-getQnaList();
+// init
+getQnaList({ page: 1, size: 10 });
 </script>
 
 <template>
@@ -95,7 +87,7 @@ getQnaList();
       </template>
     </template>
   </a-table>
-  <a-pagination v-model:current="current" :total="100" show-less-items @change="onChangepageInfo" />
+  <a-pagination v-model:current="current" :total="100" show-less-items @change="onChangePageInfo" />
 
   <a-row justify="end">
     <a-button class="margin_top writeBtn" @click="router.push('/qna/write')">글쓰기</a-button>

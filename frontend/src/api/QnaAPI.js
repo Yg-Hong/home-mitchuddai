@@ -3,7 +3,7 @@ import { localAxios } from "@/utils/http-commons";
 const QnaAPI = localAxios();
 
 const getQnaList = (pageInfo, success, fail) => {
-  QnaAPI.get(`/posts`, pageInfo).then(success).catch(fail);
+  QnaAPI.get(`/posts?page=${pageInfo.page}&size=${pageInfo.size}`).then(success).catch(fail);
 };
 
 const getQnaDetail = (id, success, fail) => {
@@ -11,7 +11,7 @@ const getQnaDetail = (id, success, fail) => {
 };
 
 const writeQna = (qna, success, fail) => {
-  QnaAPI.post(`/posts`, qna).then(success).catch(fail);
+  QnaAPI.post("/posts", qna).then(success).catch(fail);
 };
 
 const updateQna = (id, qna, success, fail) => {

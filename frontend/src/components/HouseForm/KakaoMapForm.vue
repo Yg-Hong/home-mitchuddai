@@ -166,6 +166,8 @@ const searchPlaces = () => {
   ps.value.categorySearch(currCategory.value, placesSearchCB, {
     useMapBounds: true,
   });
+
+  console.log(ps.value.valueOf());
 };
 
 // 지도에 마커를 표출하는 함수입니다
