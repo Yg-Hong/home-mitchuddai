@@ -2,6 +2,7 @@ package com.whereismyhome.house.posts.response;
 
 
 import com.whereismyhome.house.posts.entity.Post;
+import jakarta.persistence.Lob;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,6 +13,7 @@ public class PostResponse {
 
     private final Long id;
     private final String title;
+    @Lob
     private final String content;
     private final String authorId;
     private final LocalDateTime createdAt;

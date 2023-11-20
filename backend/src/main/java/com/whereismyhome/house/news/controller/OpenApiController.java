@@ -25,7 +25,7 @@ public class OpenApiController {
     public ResponseEntity<JSONObject> getNews(@RequestBody OpenApiParameter openApiParameter) throws Exception {
 
         JSONParser parser = new JSONParser();
-        Object keyword = parser.parse(naver.search(openApiParameter.getKeyword()));;
+        Object keyword = parser.parse(naver.search(openApiParameter.getKeyword()));
         JSONObject obj = (JSONObject) keyword;
 
         return new ResponseEntity<>(obj, HttpStatus.OK);
