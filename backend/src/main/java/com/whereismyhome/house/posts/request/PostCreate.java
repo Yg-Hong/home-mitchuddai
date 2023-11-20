@@ -1,5 +1,6 @@
 package com.whereismyhome.house.posts.request;
 
+import jakarta.persistence.Lob;
 import lombok.*;
 
 @Getter
@@ -10,6 +11,7 @@ public class PostCreate {
 
     private String title;
 
+    @Lob
     private String content;
 
     private String authorId;

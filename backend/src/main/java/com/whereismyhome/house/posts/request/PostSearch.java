@@ -4,6 +4,7 @@ package com.whereismyhome.house.posts.request;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
