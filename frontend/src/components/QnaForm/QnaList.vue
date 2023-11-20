@@ -1,19 +1,28 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import QnaAPI from "@/api/QnaAPI.js";
 
 const qnaList = ref([]);
+const totalPage = ref(0);
 
 const router = useRouter();
 
-for (let i = 0; i < 100; i++) {
-  qnaList.value.push({
-    no: i,
-    name: `홍윤기 ${i}`,
-    title: "Hello world",
-    date: "2021-10-01",
-  });
-}
+// for (let i = 0; i < 100; i++) {
+//   QnaAPI.writeQna(
+//     {
+//       title: `홍윤기 ${i}`,
+//       content: "Hello world",
+//       authorId: "admin",
+//     },
+//     (response) => {
+//       console.log(response);
+//     },
+//     (error) => {
+//       console.log(error);
+//     }
+//   );
+// }
 
 const columns = [
   {
@@ -23,7 +32,7 @@ const columns = [
   },
   {
     title: "작성자",
-    dataIndex: "name",
+    dataIndex: "authorId",
     width: "15%",
   },
   {
@@ -33,9 +42,25 @@ const columns = [
   },
   {
     title: "작성일자",
-    dataIndex: "date",
+    dataIndex: "createAt",
   },
 ];
+
+const getQnaList = (pageInfo) => {
+  QnaAPI.getQnaList(
+    pageInfo,
+    ({ data }) => {
+      console.log(data);
+
+      qnaList.value = data.result;
+      // totalPage.value = data.totalPage;
+      // qnaList.value = data.result;
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
 
 const customRow = (record) => {
   return {
@@ -45,6 +70,21 @@ const customRow = (record) => {
     },
   };
 };
+
+const onChangepageInfo = (page, size) => {
+  console.log("pageInfo changed");
+
+  const pageInfo = {
+    page,
+    size,
+  };
+
+  console.log(pageInfo);
+
+  getQnaList(pageInfo);
+};
+
+getQnaList();
 </script>
 
 <template>
@@ -55,11 +95,10 @@ const customRow = (record) => {
       </template>
     </template>
   </a-table>
+  <a-pagination v-model:current="current" :total="100" show-less-items @change="onChangepageInfo" />
 
   <a-row justify="end">
-    <a-button class="margin_top writeBtn" @click="router.push('/qna/write')"
-      >글쓰기</a-button
-    >
+    <a-button class="margin_top writeBtn" @click="router.push('/qna/write')">글쓰기</a-button>
   </a-row>
 </template>
 

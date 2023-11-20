@@ -129,16 +129,14 @@ const displayHouseMarkers = () => {
   });
 
   console.log(markers.value);
-
+  console.log(positions);
   // 4. 지도 중심 좌표 이동시켜주기
-  map.value.setCenter(
-    new kakao.maps.LatLng(positions[0].latlng[0], positions[0].latlng[1])
-  );
+  map.value.setCenter(new kakao.maps.LatLng(positions[0].latlng[0], positions[0].latlng[1]));
 };
 
 setTimeout(function () {
   displayHouseMarkers();
-}, 20);
+}, 100);
 
 const test = () => {
   // findHouse();
@@ -174,16 +172,11 @@ const searchPlaces = () => {
 const displayPlaces = (places) => {
   // 몇번째 카테고리가 선택되어 있는지 얻어옵니다
   // 이 순서는 스프라이트 이미지에서의 위치를 계산하는데 사용됩니다
-  var order = document
-    .getElementById(currCategory.value)
-    .getAttribute("data-order");
+  var order = document.getElementById(currCategory.value).getAttribute("data-order");
 
   for (var i = 0; i < places.length; i++) {
     // 마커를 생성하고 지도에 표시합니다
-    var marker = addMarker(
-      new kakao.maps.LatLng(places[i].y, places[i].x),
-      order
-    );
+    var marker = addMarker(new kakao.maps.LatLng(places[i].y, places[i].x), order);
     // 마커와 검색결과 항목을 클릭 했을 때
     // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
     (function (marker, place) {
@@ -197,7 +190,7 @@ const displayPlaces = (places) => {
 // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
 const addMarker = (position, order) => {
   var imageSrc = `../src/assets/img/category${order}.png`,
-    imageSize = new kakao.maps.Size(27, 28), // 마커 이미지의 크기
+    imageSize = new kakao.maps.Size(40, 40), // 마커 이미지의 크기
     imgOptions = {
       // spriteSize: new kakao.maps.Size(72, 208), // 스프라이트 이미지의 크기
       // spriteOrigin: new kakao.maps.Point(46, order * 36), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
@@ -248,19 +241,11 @@ const displayplaceinfo = (place) => {
       ")</span><br />";
   } else {
     content +=
-      '    <span title="' +
-      place.address_name +
-      '">' +
-      place.address_name +
-      "</span><br />";
+      '    <span title="' + place.address_name + '">' + place.address_name + "</span><br />";
   }
 
   content +=
-    '    <span class="tel">' +
-    place.phone +
-    "</span>" +
-    "</div>" +
-    '<div class="after"></div>';
+    '    <span class="tel">' + place.phone + "</span>" + "</div>" + '<div class="after"></div>';
 
   contentNode.value.innerHTML = content;
   placeOverlay.value.setPosition(new kakao.maps.LatLng(place.y, place.x));
@@ -406,8 +391,7 @@ watchEffect(props.houseMarkerList, (newVal) => {
   font-weight: bold;
   overflow: hidden;
   background: #d95050;
-  background: #d95050
-    url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
     no-repeat right 14px center;
 }
 .overlay .title {
@@ -562,8 +546,7 @@ watchEffect(props.houseMarkerList, (newVal) => {
   padding: 10px;
   color: #fff;
   background: #ff8f27;
-  background: #ff8f27
-    url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+  background: #ff8f27 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
     no-repeat right 14px center;
 }
 .placeinfo .tel {
