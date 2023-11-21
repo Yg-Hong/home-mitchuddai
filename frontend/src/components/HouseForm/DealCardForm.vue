@@ -3,6 +3,8 @@ import { defineProps } from "vue";
 const props = defineProps({
   deal: Object,
 });
+
+console.log(props.deal);
 </script>
 
 <template>
