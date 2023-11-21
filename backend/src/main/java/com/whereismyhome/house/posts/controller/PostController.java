@@ -40,7 +40,7 @@ public class PostController {
     public Map<String, Object> getList(@RequestParam(name="page") int page, @RequestParam(name="size") int size) {
         PostSearch postSearch = new PostSearch(page, size);
         Map<String, Object> map = new HashMap<>();
-        map.put("total", (int) Math.ceil(postService.getTotalSize() / size)+1);
+        map.put("total", (int) Math.ceil(postService.getTotalSize() / (size+1))+1);
         map.put("Result", postService.getList(postSearch));
         return map;
     }
