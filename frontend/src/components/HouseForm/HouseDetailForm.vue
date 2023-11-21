@@ -2,8 +2,8 @@
 import { useRoute, useRouter } from "vue-router";
 import { ref, watch } from "vue";
 
-import { storeToRefs } from "pinia";
-import { useHouseDetailInfoStore } from "@/stores/HouseDetailInfo.js";
+// import { storeToRefs } from "pinia";
+// import { useHouseDetailInfoStore } from "@/stores/HouseDetailInfo.js";
 
 import CommentForm from "@/components/CommentForm/CommentForm.vue";
 import CommentInputForm from "@/components/CommentForm/CommentInputForm.vue";
@@ -100,7 +100,10 @@ watch(activeKey, (val) => {
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
       <a-col :span="6"> 상세주소 : </a-col>
-      <a-col :span="12">{{ houseDetailInfo.roadName }} {{ houseDetailInfo.roadNameBonbun }}</a-col>
+      <a-col :span="12"
+        >{{ houseDetailInfo.roadName }}
+        {{ houseDetailInfo.roadNameBonbun }}</a-col
+      >
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
@@ -118,14 +121,18 @@ watch(activeKey, (val) => {
     <a-collapse v-model:activeKey="activeKey" accordion>
       <a-collapse-panel key="1" header="실거래 목록">
         <div class="dealList">
-          <template v-for="(deal, index) in houseDetailInfo.houseDeals" :key="index">
+          <template
+            v-for="(deal, index) in houseDetailInfo.houseDeals"
+            :key="index"
+          >
             <a-row justify="center">
               <DealCardForm :deal="deal" />
             </a-row>
           </template>
         </div>
       </a-collapse-panel>
-      <a-collapse-panel key="2" header="실거래가 비교 통계 그래프"> </a-collapse-panel>
+      <a-collapse-panel key="2" header="실거래가 비교 통계 그래프">
+      </a-collapse-panel>
       <a-collapse-panel key="3" header="주변 편의시설">
         <a-row class="space_evenly_box">
           <a-col :span="8"><a-row justify="center">편의점</a-row></a-col>

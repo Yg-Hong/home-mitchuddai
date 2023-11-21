@@ -3,7 +3,7 @@
 #app {
   max-width: 1280px;
   width: 100%;
-  margin: 0 auto;
+  margin: 0 30px;
 
   min-height: 100%;
   position: relative;
@@ -23,7 +23,7 @@ a,
   }
 }
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
   body {
     min-height: 100%;
     display: flex;
@@ -35,4 +35,4 @@ a,
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
-}
+} */

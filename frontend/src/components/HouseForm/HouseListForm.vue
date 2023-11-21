@@ -71,13 +71,14 @@ const getHouseList = () => {
     }
   );
 };
+const current = ref(2);
 
 getHouseList();
 </script>
 
 <template>
   <div class="HouseListForm">
-    <a-row justify="centr">
+    <a-row justify="center" class="contenthHeader NexonGothicMedium">
       <span>실거래 목록</span>
     </a-row>
     <template v-for="(house, index) in houseList" :key="index">
@@ -86,6 +87,9 @@ getHouseList();
           v-bind:house="house"
           @click="onClickHouseDetailInfo(house.aptCode)"
         />
+        <template>
+          <a-pagination v-model:current="current" simple :total="10" />
+        </template>
       </a-row>
     </template>
   </div>
@@ -94,5 +98,13 @@ getHouseList();
 <style scoped>
 .HouseListForm {
   height: 850px;
+}
+
+.contenthHeader {
+  padding-top: 10px;
+
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 </style>

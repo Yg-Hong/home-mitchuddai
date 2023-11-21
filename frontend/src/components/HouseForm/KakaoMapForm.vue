@@ -1,6 +1,15 @@
 <script setup>
 import { defineProps, onMounted, ref, watchEffect, onUpdated } from "vue";
 
+const categories = ref([
+  { id: "BK9", name: "은행", order: 0, iconClass: "bank" },
+  { id: "MT1", name: "마트", order: 1, iconClass: "mart" },
+  { id: "PM9", name: "약국", order: 2, iconClass: "pharmacy" },
+  { id: "SC4", name: "학교", order: 3, iconClass: "school" },
+  { id: "CE7", name: "카페", order: 4, iconClass: "cafe" },
+  { id: "SW8", name: "교통", order: 5, iconClass: "subway" },
+]);
+
 const props = defineProps(["houseMarkerList"]);
 // 스크립트가 로딩되면 지도를 띄워주자!
 // 즉, dom이 구성된 후에 실행되어야 하므로 mounted hook(onMounted)에서 실행
@@ -9,10 +18,8 @@ const props = defineProps(["houseMarkerList"]);
 // window 객체에 kakao가 등록되어 있는지 확인하고 없을 때만 loading
 onMounted(() => {
   if (window.kakao && window.kakao.maps) {
-    console.log(`KakaoMapComp.vue - 이미 map 있음`, kakao.map);
     initMap();
   } else {
-    console.log(`KakaoMapComp.vue - map script loading 필요`);
     loadScript();
   }
 });
@@ -46,8 +53,6 @@ const ps = ref([]);
 const initMap = () => {
   const container = document.getElementById("map");
 
-  console.log("centerLatLng : ");
-  console.log(props.houseMarkerList.value);
   const lat = 37.2429362;
   const lng = 131.8624647;
 
@@ -131,7 +136,9 @@ const displayHouseMarkers = () => {
   console.log(markers.value);
   console.log(positions);
   // 4. 지도 중심 좌표 이동시켜주기
-  map.value.setCenter(new kakao.maps.LatLng(positions[0].latlng[0], positions[0].latlng[1]));
+  map.value.setCenter(
+    new kakao.maps.LatLng(positions[0].latlng[0], positions[0].latlng[1])
+  );
 };
 
 setTimeout(function () {
@@ -174,11 +181,16 @@ const searchPlaces = () => {
 const displayPlaces = (places) => {
   // 몇번째 카테고리가 선택되어 있는지 얻어옵니다
   // 이 순서는 스프라이트 이미지에서의 위치를 계산하는데 사용됩니다
-  var order = document.getElementById(currCategory.value).getAttribute("data-order");
+  var order = document
+    .getElementById(currCategory.value)
+    .getAttribute("data-order");
 
   for (var i = 0; i < places.length; i++) {
     // 마커를 생성하고 지도에 표시합니다
-    var marker = addMarker(new kakao.maps.LatLng(places[i].y, places[i].x), order);
+    var marker = addMarker(
+      new kakao.maps.LatLng(places[i].y, places[i].x),
+      order
+    );
     // 마커와 검색결과 항목을 클릭 했을 때
     // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
     (function (marker, place) {
@@ -243,11 +255,19 @@ const displayplaceinfo = (place) => {
       ")</span><br />";
   } else {
     content +=
-      '    <span title="' + place.address_name + '">' + place.address_name + "</span><br />";
+      '    <span title="' +
+      place.address_name +
+      '">' +
+      place.address_name +
+      "</span><br />";
   }
 
   content +=
-    '    <span class="tel">' + place.phone + "</span>" + "</div>" + '<div class="after"></div>';
+    '    <span class="tel">' +
+    place.phone +
+    "</span>" +
+    "</div>" +
+    '<div class="after"></div>';
 
   contentNode.value.innerHTML = content;
   placeOverlay.value.setPosition(new kakao.maps.LatLng(place.y, place.x));
@@ -332,33 +352,15 @@ watchEffect(props.houseMarkerList, (newVal) => {
   <div>
     <div id="map"></div>
     <div id="category">
-      <div id="BK9" data-order="0">
-        <span class="category_bg bank"></span>
-        은행
-      </div>
-      <div id="MT1" data-order="1">
-        <span class="category_bg mart"></span>
-        마트
-      </div>
-      <div id="HP8" data-order="2">
-        <span class="category_bg hosipital"></span>
-        병원
-      </div>
-      <div id="PM9" data-order="3">
-        <span class="category_bg pharmacy"></span>
-        약국
-      </div>
-      <div id="SC4" data-order="4">
-        <span class="category_bg school"></span>
-        학교
-      </div>
-      <div id="CE7" data-order="5">
-        <span class="category_bg cafe"></span>
-        카페
-      </div>
-      <div id="CS2" data-order="6">
-        <span class="category_bg convinient"></span>
-        편의점
+      <div
+        v-for="category in categories"
+        :key="category.id"
+        :id="category.id"
+        :data-order="category.order"
+        @click="onClickCategory(category.id, category.className)"
+      >
+        <span :class="['category_bg', category.iconClass]"></span>
+        {{ category.name }}
       </div>
     </div>
   </div>
@@ -367,7 +369,7 @@ watchEffect(props.houseMarkerList, (newVal) => {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #map {
-  width: 1000px;
+  width: 1400px;
   height: 850px;
 }
 
@@ -393,7 +395,8 @@ watchEffect(props.houseMarkerList, (newVal) => {
   font-weight: bold;
   overflow: hidden;
   background: #d95050;
-  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+  background: #d95050
+    url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
     no-repeat right 14px center;
 }
 .overlay .title {
@@ -472,7 +475,7 @@ watchEffect(props.houseMarkerList, (newVal) => {
 #category {
   position: absolute;
   top: 250px;
-  right: -145px;
+  right: -545px;
   border-radius: 3px;
   border: 1px solid #909090;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
@@ -548,7 +551,8 @@ watchEffect(props.houseMarkerList, (newVal) => {
   padding: 10px;
   color: #fff;
   background: #ff8f27;
-  background: #ff8f27 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+  background: #ff8f27
+    url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
     no-repeat right 14px center;
 }
 .placeinfo .tel {
