@@ -14,7 +14,7 @@ const changeLatAndLngList = (newList) => {
 </script>
 
 <template>
-  <a-row justify="center">
+  <a-row justify="start">
     <a-col :span="8" class="LeftForm">
       <!-- <HouseListForm @changeLatAndLngList="changeLatAndLngList" /> -->
       <RouterView @changeLatAndLngList="changeLatAndLngList" />
