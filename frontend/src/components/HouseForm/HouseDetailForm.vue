@@ -1,6 +1,10 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import { ref, watch } from "vue";
+
+import { storeToRefs } from "pinia";
+import { useHouseDetailInfoStore } from "@/stores/HouseDetailInfo.js";
+
 import CommentForm from "@/components/CommentForm/CommentForm.vue";
 import CommentInputForm from "@/components/CommentForm/CommentInputForm.vue";
 import DealCardForm from "@/components/HouseForm/DealCardForm.vue";
@@ -8,6 +12,9 @@ import HouseAPI from "@/api/HouseAPI.js";
 
 const route = useRoute();
 const router = useRouter();
+
+// const store = useHouseDetailInfoStore();
+// const { houseDetailInfo } = storeToRefs(store);
 
 const houseDetailInfo = ref({
   aptCode: 26110000000001,
@@ -34,6 +41,9 @@ const houseDetailInfo = ref({
 });
 
 // const houseDetailInfo = ref({});
+watch(route.params, () => {
+  getHouseDetail();
+});
 
 const getHouseDetail = () => {
   HouseAPI.getHouseDetail(
