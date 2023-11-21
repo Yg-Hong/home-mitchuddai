@@ -1,58 +1,54 @@
 package com.whereismyhome.house.member.service;
 
-import java.net.http.HttpRequest;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-import com.whereismyhome.house.member.dao.MemberDao;
-import com.whereismyhome.house.member.dao.MemberDaoImpl;
-import com.whereismyhome.house.member.dto.MemberDto;
-import jakarta.servlet.http.HttpSession;
+//import com.whereismyhome.house.crypt.PasswordEncoder;
+import com.whereismyhome.house.exception.DuplicateEmailException;
+import com.whereismyhome.house.exception.InvalidSignIn;
+import com.whereismyhome.house.member.entity.Member;
+import com.whereismyhome.house.member.repository.MemberRepository;
+import com.whereismyhome.house.member.request.SignUp;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    private MemberDao memberDao = MemberDaoImpl.getInstance();
+    private final MemberRepository memberRepository;
+//    private final PasswordEncoder passwordEncoder;
 
-    private static MemberService instance = new MemberServiceImpl();
-
-    private MemberServiceImpl() {}
-
-    public static MemberService getInstance() {
-        return instance;
-    }
-
-    @Override
-    public MemberDto getMember(String userId) throws Exception {
-        return memberDao.getMember(userId);
-    }
-
-    @Override
-    public void registerMember(MemberDto memberDto) throws Exception {
-        LocalDateTime createAt = LocalDateTime.now();
-        memberDto.setJoinDate(createAt.toString());
-
-        memberDao.registerMember(memberDto);
-    }
-
-    @Override
-    public List<MemberDto> getMembers() throws Exception {
-        return memberDao.getMembers();
-    }
-
-    @Override
-    public MemberDto loginMember(String userId, String userPassword) throws Exception {
-        MemberDto memberDto = memberDao.loginMember(userId, userPassword);
-
-        if(memberDto != null) {
-            return memberDto;
+    public void signUp(SignUp signUp) {
+        // 중복 이메일 체크
+        Optional<Member> userEmail = memberRepository.findByEmail(signUp.getEmail());
+        if (userEmail.isPresent()) {
+            throw new DuplicateEmailException();
         }
-        throw new IllegalStateException();
+
+//        String encodedPassword = passwordEncoder.encrypt(signUp.getPassword());
+
+        Member member = new Member(signUp.getName(), signUp.getEmail(), signUp.getPassword());
+        memberRepository.save(member);
     }
 
+    @Override
+    public Member getMember(String userId) throws Exception {
+        return memberRepository.findById(Long.parseLong(userId))
+                .orElseThrow(IllegalStateException::new);
+    }
+
+    @Override
+    public List<Member> getMembers() throws Exception {
+        return (List<Member>) memberRepository.findAll();
+    }
+
+    @Override
+    public Member loginMember(String userId, String userPassword) throws Exception {
+//        String encodedPassword = passwordEncoder.encrypt(userPassword);
+        Member member = memberRepository.findByEmailAndPassword(userId, userPassword)
+                .orElseThrow(InvalidSignIn::new);
+        return member;
+    }
 
 }

@@ -31,16 +31,33 @@ const router = createRouter({
           ],
         },
         {
+          path: "notice",
+          component: () => import("@/components/NoticeForm/NoticeForm.vue"),
+          children: [
+            {
+              path: "",
+              component: () => import("@/components/NoticeForm/NoticeList.vue"),
+            },
+            {
+              path: ":id",
+              component: () =>
+                import("@/components/NoticeForm/NoticeDetail.vue"),
+            },
+          ],
+        },
+        {
           path: "house/:dongCode",
           component: () => import("@/components/HouseForm/HouseForm.vue"),
           children: [
             {
               path: "",
-              component: () => import("@/components/HouseForm/HouseListForm.vue"),
+              component: () =>
+                import("@/components/HouseForm/HouseListForm.vue"),
             },
             {
               path: ":aptCode",
-              component: () => import("@/components/HouseForm/HouseDetailForm.vue"),
+              component: () =>
+                import("@/components/HouseForm/HouseDetailForm.vue"),
             },
           ],
         },

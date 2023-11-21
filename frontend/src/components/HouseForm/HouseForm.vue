@@ -1,15 +1,15 @@
 <script setup>
-import HouseListForm from "@/components/HouseForm/HouseListForm.vue";
 import KakaoMapForm from "./KakaoMapForm.vue";
 import { RouterView } from "vue-router";
 
 import { ref } from "vue";
 
-const MarkerList = ref([]);
+const houseMarkerList = ref([]);
 
 const changeLatAndLngList = (newList) => {
-  console.log("HouseForm: " + newList.value);
-  MarkerList.value = newList;
+  console.log("HouseForm: " + newList);
+  houseMarkerList.value = newList;
+  console.log(houseMarkerList.value);
 };
 </script>
 
@@ -20,7 +20,7 @@ const changeLatAndLngList = (newList) => {
       <RouterView @changeLatAndLngList="changeLatAndLngList" />
     </a-col>
     <a-col :span="16">
-      <!-- <KakaoMapForm :latAndLngList="latAndLngList" /> -->
+      <KakaoMapForm :houseMarkerList="houseMarkerList" />
     </a-col>
   </a-row>
 </template>

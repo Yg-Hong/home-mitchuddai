@@ -1,6 +1,6 @@
 <script setup>
 import HouseDetailCardForm from "@/components/HouseForm/HouseDetailCardForm.vue";
-import { ref, defineEmits, computed, watchEffect, watch } from "vue";
+import { ref, defineEmits, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import HouseAPI from "../../api/HouseAPI";
 
@@ -52,7 +52,7 @@ watch(houseList, () => {
 
   console.log(newArray);
 
-  emit("changeLatAndLngList", ref(newArray));
+  emit("changeLatAndLngList", newArray);
 });
 
 const onClickHouseDetailInfo = (aptCode) => {
@@ -82,7 +82,10 @@ getHouseList();
     </a-row>
     <template v-for="(house, index) in houseList" :key="index">
       <a-row justify="center">
-        <HouseDetailCardForm v-bind:house="house" @click="onClickHouseDetailInfo(house.aptCode)" />
+        <HouseDetailCardForm
+          v-bind:house="house"
+          @click="onClickHouseDetailInfo(house.aptCode)"
+        />
       </a-row>
     </template>
   </div>

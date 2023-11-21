@@ -20,7 +20,7 @@ public class HouseController {
         this.houseService = houseService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public void controllerTest() {
         log.trace("연결 완료");
     }
