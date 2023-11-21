@@ -1,5 +1,6 @@
 <script setup>
 import SearchForm from "@/components/MainForm/SearchForm.vue";
+import LowerContentForm from "@/components/MainForm/LowerContentForm.vue";
 </script>
 
 <template>
