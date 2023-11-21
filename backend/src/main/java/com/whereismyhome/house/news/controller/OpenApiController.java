@@ -1,7 +1,6 @@
 package com.whereismyhome.house.news.controller;
 
 import com.whereismyhome.house.news.api.NaverNewsApi;
-import com.whereismyhome.house.news.dto.OpenApiParameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
