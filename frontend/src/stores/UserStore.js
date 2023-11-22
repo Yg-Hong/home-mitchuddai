@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
+import VueCookies from "vue-cookies";
 
 export const useUserStore = defineStore("userStore", () => {
   const routeMenu = [
@@ -12,6 +13,16 @@ export const useUserStore = defineStore("userStore", () => {
   ];
 
   const loginState = ref(false);
+  const userId = ref("");
+  const userName = ref("");
+
+  //getter
+  const getUserId = computed(() => {
+    return userId.value;
+  });
+  const getUserName = computed(() => {
+    return userName.value;
+  });
 
   const isLogin = () => {
     //pinia에서 관리하는 객체가 있고, 값이 true이면 로그인 상태
@@ -34,17 +45,24 @@ export const useUserStore = defineStore("userStore", () => {
     return routerMenu.filter((menu) => menu.authorize === false);
   });
 
-  const login = () => {
+  const login = (id, name) => {
     // 로그인 요청 시 loginState 값ㅇ르 true로 바꿔주기
     // 새로고침 시에도 반영되도록, 쿠키에 저장해 줌
+    console.log("유저정보 저장 시도 | id : " + id + " & name : " + name + "");
     loginState.value = true;
+    userId.value = id;
+    userName.value = name;
+    console.log(loginState.value + " " + userId.value + " " + userName.value);
     VueCookies.set("userId", Date.now(), "1d");
+    console.log("유저정보 저장 성공");
   };
 
   const logout = () => {
     loginState.value = false;
+    userId.value = "";
+    userName.value = "";
     VueCookies.remove("userId");
   };
 
-  return { showMenu, login, logout, isLogin, loginState };
+  return { showMenu, login, logout, isLogin, loginState, getUserId, getUserName };
 });

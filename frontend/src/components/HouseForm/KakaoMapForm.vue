@@ -57,7 +57,8 @@ const map = ref(null);
 
 const placeOverlay = ref([]);
 const contentNode = ref([]);
-const markers = ref([]);
+const houseMarkers = ref([]);
+const categoryMarkers = ref([]);
 const currCategory = ref([]);
 const ps = ref([]);
 
@@ -86,7 +87,8 @@ const initMap = () => {
 
   placeOverlay.value = new kakao.maps.CustomOverlay({ zIndex: 1 });
   contentNode.value = document.createElement("div"); // 커스텀 오버레이의 컨텐츠 엘리먼트
-  markers.value = []; // 마커를 담을 배열입니다
+  houseMarkers.value = []; // 건물 마커를 담을 배열입니다
+  categoryMarkers.value = []; // 카테고리 마커를 담을 배열입니다
   currCategory.value = ""; // 현재 선택된 카테고리를 가지고 있을 변수
 
   // 장소 검색 객체를 생성합니다
@@ -111,8 +113,8 @@ const displayHouseMarkers = () => {
   console.log(positions);
 
   // 1. 현재 표시되어있는 마커를 모두 제거
-  if (markers.value.length > 0) {
-    markers.value.forEach((marker) => {
+  if (houseMarkers.value.length > 0) {
+    houseMarkers.value.forEach((marker) => {
       marker.setMap(null);
     });
   }
@@ -158,7 +160,7 @@ const displayHouseMarkers = () => {
       infowindow.close();
     });
 
-    markers.value.push(marker);
+    houseMarkers.value.push(marker);
   });
 
   // 4. 지도 중심 좌표 이동시켜주기
@@ -218,7 +220,7 @@ const searchPlaces = () => {
   placeOverlay.value.setMap(null);
 
   // 지도에 표시되고 있는 마커를 제거합니다
-  removeMarker();
+  removeCategoryMarker();
 
   ps.value.categorySearch(currCategory.value, placesSearchCB, {
     useMapBounds: true,
@@ -262,16 +264,16 @@ const addMarker = (position, order) => {
     });
 
   marker.setMap(map.value); // 지도 위에 마커를 표출합니다
-  markers.value.push(marker); // 배열에 생성된 마커를 추가합니다
+  categoryMarkers.value.push(marker); // 배열에 생성된 마커를 추가합니다
 
   return marker;
 };
 
-const removeMarker = () => {
-  for (var i = 0; i < markers.value.length; i++) {
-    markers.value[i].setMap(null);
+const removeCategoryMarker = () => {
+  for (var i = 0; i < categoryMarkers.value.length; i++) {
+    categoryMarkers.value[i].setMap(null);
   }
-  markers.value = [];
+  categoryMarkers.value = [];
 };
 
 // 클릭한 마커에 대한 장소 상세정보를 커스텀 오버레이로 표시하는 함수입니다
@@ -343,7 +345,7 @@ const onClickCategory = (id, className) => {
   if (className === "on") {
     currCategory.value = "";
     changeCategoryClass();
-    removeMarker();
+    removeCategoryMarker();
   } else {
     currCategory.value = id;
     if (id == "BK9") {

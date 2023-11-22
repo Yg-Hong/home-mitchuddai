@@ -1,6 +1,8 @@
 <script setup>
 import { reactive, computed } from "vue";
 import { UserOutlined, LockOutlined, CaretRightOutlined } from "@ant-design/icons-vue";
+import { useUserStore } from "@/stores/userStore.js";
+import { useRouter } from "vue-router";
 import MemberAPI from "@/api/MemberAPI.js";
 
 const formState = reactive({
@@ -8,6 +10,9 @@ const formState = reactive({
   userPassword: "",
   remeber: true,
 });
+
+const userStore = useUserStore();
+const router = useRouter();
 
 const onFinish = (values) => {
   console.log("Success: ", values);
@@ -29,10 +34,15 @@ const Login = () => {
     userPassword: formState.userPassword,
   };
 
+  console.log(user);
+
   MemberAPI.tryLogin(
     user,
     ({ data }) => {
-      console.log("로그인 성공 Id: " + data.userId + " | password" + data.userPassword);
+      console.log("로그인 성공 Id: " + data.email + " | password" + data.password);
+      userStore.login(data.email, data.name);
+
+      router.push("/");
     },
     () => {
       console.log("로그인 실패");

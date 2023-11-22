@@ -1,5 +1,5 @@
 <script setup>
-import WithoutLoginNavForm from "../components/nav/WithoutLoginNavForm.vue";
+import WithoutLoginNavForm from "@/components/nav/WithoutLoginNavForm.vue";
 import { RouterView } from "vue-router";
 </script>
 

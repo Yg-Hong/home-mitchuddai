@@ -17,7 +17,4 @@ app.use(router);
 app.use(Antd);
 app.use(VueCookies);
 
-// 글로벌 세팅
-App.$cookies.config("7d");
-
 app.mount("#app");

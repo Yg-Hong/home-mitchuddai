@@ -1,16 +1,19 @@
 <script setup>
 import { reactive, toRaw } from "vue";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/UserStore.js";
 import QnaAPI from "../../api/QnaAPI";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import QnaEditForm from "@/components/QnaForm/QnaEditForm.vue";
 
 const router = useRouter();
+const userStore = useUserStore();
 
 const formState = reactive({
   title: "",
   content: "",
-  authorId: "admin",
+  authorId: userStore.getUserId,
+  authorName: userStore.getUserName,
 });
 
 const wrapperCol = {
@@ -46,9 +49,7 @@ const onCancel = () => {
   <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
     <a-row class="rowForInputBox">
       <a-col :span="6">
-        <label class="NexonFootballGothicLight" for="inputBoxForTitle"
-          >제목</label
-        >
+        <label class="NexonFootballGothicLight" for="inputBoxForTitle">제목</label>
       </a-col>
       <a-col :span="18">
         <a-input id="inputBoxForTitle" v-model:value="formState.title" />
@@ -56,30 +57,18 @@ const onCancel = () => {
     </a-row>
     <a-row class="rowForInputBox">
       <a-col :span="6">
-        <label class="NexonFootballGothicLight" for="inputBoxForUserName"
-          >사용자 이름</label
-        >
+        <label class="NexonFootballGothicLight" for="inputBoxForUserName">사용자 이름</label>
       </a-col>
       <a-col :span="6">
-        <a-input
-          id="inputBoxForUserName"
-          v-model:value="formState.userName"
-          disabled
-        />
+        <a-input id="inputBoxForUserName" v-model:value="formState.userName" disabled />
       </a-col>
     </a-row>
     <a-row class="rowForInputBox">
       <a-col :span="6">
-        <label class="NexonFootballGothicLight" for="inputBoxForUserId"
-          >사용자 아이디</label
-        >
+        <label class="NexonFootballGothicLight" for="inputBoxForUserId">사용자 아이디</label>
       </a-col>
       <a-col :span="6">
-        <a-input
-          id="inputBoxForUserId"
-          v-model:value="formState.userId"
-          disabled
-        />
+        <a-input id="inputBoxForUserId" v-model:value="formState.userId" disabled />
       </a-col>
     </a-row>
 

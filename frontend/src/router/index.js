@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { VueCookies } from "vue-cookies";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,8 +41,7 @@ const router = createRouter({
             },
             {
               path: ":id",
-              component: () =>
-                import("@/components/NoticeForm/NoticeDetail.vue"),
+              component: () => import("@/components/NoticeForm/NoticeDetail.vue"),
             },
           ],
         },
@@ -51,13 +51,11 @@ const router = createRouter({
           children: [
             {
               path: "",
-              component: () =>
-                import("@/components/HouseForm/HouseListForm.vue"),
+              component: () => import("@/components/HouseForm/HouseListForm.vue"),
             },
             {
               path: ":aptCode",
-              component: () =>
-                import("@/components/HouseForm/HouseDetailForm.vue"),
+              component: () => import("@/components/HouseForm/HouseDetailForm.vue"),
             },
           ],
         },
@@ -91,6 +89,18 @@ const router = createRouter({
       ],
     },
   ],
+});
+
+router.beforeEach((to) => {
+  // 권한이 있는 페이지의 경우
+  if (to.meta.authorized) {
+    // 쿠키에서 권한을 확인 한다. // pinia 라우터에서 사용 불가능 하므로.
+    const id = VueCookies.get("id");
+    // 아이디가 없는 경우 로그인 페이지로 이동
+    if (!id) {
+      return "/login";
+    }
+  }
 });
 
 export default router;

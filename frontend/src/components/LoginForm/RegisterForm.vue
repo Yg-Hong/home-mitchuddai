@@ -68,23 +68,21 @@ const rules = {
 };
 
 const Register = () => {
-  console.log("로그인 버튼 클릭");
+  console.log("회원가입 버튼 클릭");
 
   const user = {
-    userId: formState.userId,
     userPassword: formState.userPassword,
     userName: formState.userName,
-    emailId: formState.userEmail,
-    emailDomain: formState.emailDomain,
+    email: formState.userEmail,
   };
 
   MemberAPI.tryRegister(
     user,
-    ({ data }) => {
-      console.log("회원가입 성공 Id: " + data.userId + " | password" + data.userPassword);
+    () => {
+      console.log("회원가입 성공");
     },
     () => {
-      console.log("로그인 실패");
+      console.log("회원가입 실패");
     }
   ).then(() => {
     router.replace("/login");
