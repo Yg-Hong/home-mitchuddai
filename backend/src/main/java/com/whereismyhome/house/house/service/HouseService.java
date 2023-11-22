@@ -12,4 +12,5 @@ public interface HouseService {
 
     public List<SearchResultVO> getHouseListByDongCode(Long dongCode);
     public DetailResultVO getDealListByDongCode(Long dongCode, Long aptCode);
+    public List<SearchResultVO> getHouseListByLatLng(String ha, String oa, String pa, String qa);
 }

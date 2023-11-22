@@ -6,8 +6,9 @@ import java.util.Date;
 
 @Data
 public class CommentVO {
+    private Long id;
     private String text;
-    private String authorId;
+    private String user_id;
     private String aptCode;
-    private Date createdAt;
+    private Date created;
 }

@@ -47,6 +47,12 @@ public class HouseController {
         return result;
     }
 
+//    ha, oa, pa, qa
+    @GetMapping("{ha}/{oa}/{pa}/{qa}")
+    public List<SearchResultVO> getHouseListByLatLng(@PathVariable String ha, @PathVariable String oa, @PathVariable String pa, @PathVariable String qa) {
+        return houseService.getHouseListByLatLng(ha, oa, pa, qa);
+    }
+
     @GetMapping("/{dongCode}/{aptCode}/graph")
     public Map<Integer, Integer> getGraphData(@PathVariable Long dongCode, @PathVariable Long aptCode) {
         log.info("dongCode : " + dongCode + "aptCode : " + aptCode);
