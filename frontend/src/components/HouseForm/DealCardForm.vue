@@ -10,19 +10,22 @@ console.log(props.deal);
 <template>
   <div class="dealCardComponent">
     <a-row>
-      <a-col> 거래일 : {{ props.deal.dealYear }} </a-col>
+      <a-col :span="8" class="NexonGothicMedium">거래일 :</a-col>
+      <a-col :span="12" class="NexonGothicMedium">
+        {{ props.deal.dealYear }}년 {{ props.deal.dealMonth }}월
+      </a-col>
     </a-row>
     <a-row>
-      <a-col> 거래금액 : {{ props.deal.dealAmount }} </a-col>
+      <a-col :span="8" class="NexonGothicMedium">거래금액 : </a-col>
+      <a-col :span="12" class="NexonGothicMedium"> {{ props.deal.dealAmount }} </a-col>
     </a-row>
     <a-row>
-      <a-col> 건축년도 : {{ props.deal.buildYear }} </a-col>
+      <a-col :span="8" class="NexonGothicMedium">전용면적 : </a-col>
+      <a-col :span="12" class="NexonGothicMedium"> {{ props.deal.area }} m2 </a-col>
     </a-row>
     <a-row>
-      <a-col> 전용면적 : {{ props.deal.area }} </a-col>
-    </a-row>
-    <a-row>
-      <a-col> 층 : {{ props.deal.floor }} </a-col>
+      <a-col :span="8" class="NexonGothicMedium">층 : </a-col>
+      <a-col :span="12" class="NexonGothicMedium"> {{ props.deal.floor }} </a-col>
     </a-row>
   </div>
 </template>
@@ -31,9 +34,19 @@ console.log(props.deal);
 .dealCardComponent {
   width: 400px;
 
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 
-  border: 1px solid black;
+  padding-left: 10px;
+
+  border-left: 7px solid #002266;
+  border-top: 1px solid rgb(226, 226, 226);
+  border-bottom: 1px solid rgb(226, 226, 226);
+  border-right: 1px solid rgb(226, 226, 226);
+
   border-radius: 5px;
+}
+
+.dealCardComponent:hover {
+  background-color: #f1f1f1;
 }
 </style>

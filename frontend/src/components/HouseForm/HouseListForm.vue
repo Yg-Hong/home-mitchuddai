@@ -2,7 +2,7 @@
 import HouseDetailCardForm from "@/components/HouseForm/HouseDetailCardForm.vue";
 import { ref, defineEmits, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import HouseAPI from "../../api/HouseAPI";
+import HouseAPI from "@/api/HouseAPI";
 
 const emit = defineEmits(["changeLatAndLngList"]);
 const router = useRouter();
@@ -45,6 +45,7 @@ watch(houseList, () => {
 
   houseList.value.forEach((house) => {
     newArray.push({
+      aptCode: house.aptCode,
       title: house.apartmentName,
       latlng: [house.lat, house.lng],
     });
@@ -83,10 +84,7 @@ getHouseList();
     </a-row>
     <template v-for="(house, index) in houseList" :key="index">
       <a-row justify="center">
-        <HouseDetailCardForm
-          v-bind:house="house"
-          @click="onClickHouseDetailInfo(house.aptCode)"
-        />
+        <HouseDetailCardForm v-bind:house="house" @click="onClickHouseDetailInfo(house.aptCode)" />
         <template>
           <a-pagination v-model:current="current" simple :total="10" />
         </template>

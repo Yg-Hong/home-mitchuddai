@@ -68,7 +68,7 @@ watch(gugunCode, async () => {
 
 <template>
   <a-row class="content">
-    <a-col :span="18">
+    <a-col :span="12">
       <a-row justify="end">
         <a-flex :vertical="true">
           <a-row justify="space-between" class="upper_row">

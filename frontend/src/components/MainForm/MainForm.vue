@@ -1,6 +1,6 @@
 <script setup>
 import SearchForm from "@/components/MainForm/SearchForm.vue";
-// import LowerContentForm from "@/components/MainForm/LowerContentForm.vue";
+import LowerContentForm from "@/components/MainForm/LowerContentForm.vue";
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import SearchForm from "@/components/MainForm/SearchForm.vue";
   <SearchForm />
 
   <!-- 하단 컨텐츠 -->
-  <!-- <LowerContentForm /> -->
+  <LowerContentForm />
 
   <!-- 푸터 -->
   <FooterForm />

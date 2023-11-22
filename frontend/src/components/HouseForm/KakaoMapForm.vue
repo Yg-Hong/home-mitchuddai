@@ -1,5 +1,10 @@
 <script setup>
-import { defineProps, onMounted, ref, watchEffect, onUpdated } from "vue";
+import { defineProps, onMounted, ref, watchEffect, watch, onUpdated } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useHouseStore } from "@/stores/HouseStore.js";
+import { storeToRefs } from "pinia";
+
+const houseStore = useHouseStore();
 
 const categories = ref([
   { id: "BK9", name: "은행", order: 0, iconClass: "bank" },
@@ -8,9 +13,16 @@ const categories = ref([
   { id: "SC4", name: "학교", order: 3, iconClass: "school" },
   { id: "CE7", name: "카페", order: 4, iconClass: "cafe" },
   { id: "SW8", name: "교통", order: 5, iconClass: "subway" },
+  { id: "HP8", name: "병원", order: 6, iconClass: "hosipital" },
+  { id: "CS2", name: "편의점", order: 7, iconClass: "convinientStore" },
+  { id: "OL7", name: "주유소", order: 8, iconClass: "gasStation" },
+  { id: "PK6", name: "주차장", order: 9, iconClass: "parkingLot" },
 ]);
 
 const props = defineProps(["houseMarkerList"]);
+const route = useRoute();
+const router = useRouter();
+
 // 스크립트가 로딩되면 지도를 띄워주자!
 // 즉, dom이 구성된 후에 실행되어야 하므로 mounted hook(onMounted)에서 실행
 // 이 과정에서 kakao라는 객체는 window 객체 즉 전역에 등록
@@ -24,9 +36,8 @@ onMounted(() => {
   }
 });
 
-onUpdated(() => {
-  console.log("KakaoMapComp.vue - onUpdated", props.houseMarkerList);
-  // findHouse();
+watch(route.params, () => {
+  console.log("KakaoMapComp.vue - route.params 변경됨", route.params);
 });
 
 const loadScript = () => {
@@ -121,7 +132,24 @@ const displayHouseMarkers = () => {
 
     // 이벤트 등록
     kakao.maps.event.addListener(marker, "click", function () {
-      infowindow.open(map.value, marker);
+      console.log(position);
+      map.value.setCenter(new kakao.maps.LatLng(position.latlng[0], position.latlng[1]));
+      houseStore.clearDistance();
+
+      for (let i = 0; i < categories.value.length; i++) {
+        // console.log(categories.value[i]);
+
+        calcDistanceFromPlace(
+          categories.value[i].id,
+          positions[0].latlng[0],
+          positions[0].latlng[1]
+        );
+      }
+
+      map.value.setLevel(2);
+      router.push(`/house/${route.params.dongCode}/${position.aptCode}`);
+
+      console.log(houseStore.getDistance);
     });
     kakao.maps.event.addListener(marker, "mouseover", function () {
       infowindow.open(map.value, marker);
@@ -133,11 +161,33 @@ const displayHouseMarkers = () => {
     markers.value.push(marker);
   });
 
-  console.log(markers.value);
-  console.log(positions);
   // 4. 지도 중심 좌표 이동시켜주기
-  map.value.setCenter(
-    new kakao.maps.LatLng(positions[0].latlng[0], positions[0].latlng[1])
+  map.value.setCenter(new kakao.maps.LatLng(positions[0].latlng[0], positions[0].latlng[1]));
+};
+
+const calcDistanceFromPlace = (category, lat, lng) => {
+  // 장소 검색 객체를 통해 카테고리로 장소검색을 요청합니다
+  ps.value.categorySearch(
+    category,
+    (data, status) => {
+      // console.log(data[0]);
+      // 정상적으로 검색이 완료됐으면 지도에 마커를 표출합니다
+      houseStore.setDistance({
+        category: data[0].category_group_code,
+        distance: data[0].distance,
+        timeOnFoot:
+          Math.round((data[0].distance / 1000 / 4) * 60) == 0
+            ? 1
+            : Math.round((data[0].distance / 1000 / 4) * 60),
+        x: data[0].x,
+        y: data[0].y,
+      });
+    },
+    {
+      location: new kakao.maps.LatLng(lat, lng),
+      size: 1,
+      sort: kakao.maps.services.SortBy.DISTANCE,
+    }
   );
 };
 
@@ -181,16 +231,11 @@ const searchPlaces = () => {
 const displayPlaces = (places) => {
   // 몇번째 카테고리가 선택되어 있는지 얻어옵니다
   // 이 순서는 스프라이트 이미지에서의 위치를 계산하는데 사용됩니다
-  var order = document
-    .getElementById(currCategory.value)
-    .getAttribute("data-order");
+  var order = document.getElementById(currCategory.value).getAttribute("data-order");
 
   for (var i = 0; i < places.length; i++) {
     // 마커를 생성하고 지도에 표시합니다
-    var marker = addMarker(
-      new kakao.maps.LatLng(places[i].y, places[i].x),
-      order
-    );
+    var marker = addMarker(new kakao.maps.LatLng(places[i].y, places[i].x), order);
     // 마커와 검색결과 항목을 클릭 했을 때
     // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
     (function (marker, place) {
@@ -255,19 +300,11 @@ const displayplaceinfo = (place) => {
       ")</span><br />";
   } else {
     content +=
-      '    <span title="' +
-      place.address_name +
-      '">' +
-      place.address_name +
-      "</span><br />";
+      '    <span title="' + place.address_name + '">' + place.address_name + "</span><br />";
   }
 
   content +=
-    '    <span class="tel">' +
-    place.phone +
-    "</span>" +
-    "</div>" +
-    '<div class="after"></div>';
+    '    <span class="tel">' + place.phone + "</span>" + "</div>" + '<div class="after"></div>';
 
   contentNode.value.innerHTML = content;
   placeOverlay.value.setPosition(new kakao.maps.LatLng(place.y, place.x));
@@ -369,7 +406,7 @@ watchEffect(props.houseMarkerList, (newVal) => {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #map {
-  width: 1400px;
+  width: 100%;
   height: 850px;
 }
 
@@ -395,8 +432,7 @@ watchEffect(props.houseMarkerList, (newVal) => {
   font-weight: bold;
   overflow: hidden;
   background: #d95050;
-  background: #d95050
-    url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
     no-repeat right 14px center;
 }
 .overlay .title {
@@ -475,7 +511,7 @@ watchEffect(props.houseMarkerList, (newVal) => {
 #category {
   position: absolute;
   top: 250px;
-  right: -545px;
+  right: 5px;
   border-radius: 3px;
   border: 1px solid #909090;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
@@ -551,8 +587,7 @@ watchEffect(props.houseMarkerList, (newVal) => {
   padding: 10px;
   color: #fff;
   background: #ff8f27;
-  background: #ff8f27
-    url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+  background: #ff8f27 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
     no-repeat right 14px center;
 }
 .placeinfo .tel {

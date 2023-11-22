@@ -19,7 +19,7 @@ console.log(props.house);
     </a-row>
     <a-row class="contentRow">
       <a-col class="NexonGothicLight FontS">
-        건축년도 : {{ house.buildYear }} 년
+        건축년도 : {{ house.buildYear }} 년 {{ house.build }}
       </a-col>
     </a-row>
   </div>
@@ -31,8 +31,16 @@ console.log(props.house);
 
   margin-bottom: 10px;
 
-  border-left: 7px solid rgb(213, 231, 53);
+  border-left: 7px solid #002266;
+  border-top: 1px solid rgb(226, 226, 226);
+  border-bottom: 1px solid rgb(226, 226, 226);
+  border-right: 1px solid rgb(226, 226, 226);
+
   border-radius: 5px;
+}
+
+.houseComponent:hover {
+  background-color: #f1f1f1;
 }
 
 .contentRow {

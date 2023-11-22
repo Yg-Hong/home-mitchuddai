@@ -14,7 +14,7 @@ import { RouterView } from "vue-router";
 
 <style scoped>
 .contents {
-  width: 1280px;
+  width: 100%;
   padding-top: 75px;
 }
 </style>

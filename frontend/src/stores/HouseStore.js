@@ -17,6 +17,8 @@ export const useHouseStore = defineStore("houseStore", () => {
   const addressName = ref(null);
   const option = ref(0);
 
+  const distance = ref([]);
+
   //getter
   const getSidos = computed(() => {
     return sidos.value;
@@ -51,6 +53,7 @@ export const useHouseStore = defineStore("houseStore", () => {
   const getOption = computed(() => {
     return option.value;
   });
+  const getDistance = computed(() => distance.value);
 
   //action
   const clearSidoList = () => {
@@ -74,6 +77,9 @@ export const useHouseStore = defineStore("houseStore", () => {
   };
   const clearOpen = () => {
     this.open.value = false;
+  };
+  const clearDistance = () => {
+    distance.value = [];
   };
   const setSidoList = (sidos) => {
     sidos.forEach((sido) => {
@@ -118,6 +124,9 @@ export const useHouseStore = defineStore("houseStore", () => {
   };
   const setSelectOpt = (option) => {
     this.option.value = option;
+  };
+  const setDistance = (item) => {
+    distance.value.push(item);
   };
 
   // fetch
@@ -184,4 +193,6 @@ export const useHouseStore = defineStore("houseStore", () => {
       }
     );
   };
+
+  return { setDistance, getDistance, clearDistance };
 });
