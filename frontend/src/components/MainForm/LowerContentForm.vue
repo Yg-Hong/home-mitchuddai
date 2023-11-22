@@ -1,6 +1,7 @@
 <script setup>
 import NewsContent from "@/components/MainForm/NewsContent.vue";
 import BoardContent from "@/components/MainForm/BoardContent.vue";
+import YoutubeContent from "./YoutubeContent.vue";
 </script>
 
 <template>
@@ -10,7 +11,17 @@ import BoardContent from "@/components/MainForm/BoardContent.vue";
         <h3>뉴스</h3>
         <NewsContent />
       </div>
-      <div><h3>유튜브</h3></div>
+      <div>
+        <h3>유튜브</h3>
+        <a-row justify="space-around">
+          <a-col :span="10">
+            <YoutubeContent src="https://www.youtube.com/watch?v=PCXOh-LhkaA" />
+          </a-col>
+          <a-col :span="10">
+            <YoutubeContent src="https://www.youtube.com/watch?v=lssPaAF_E9o&t=1s" />
+          </a-col>
+        </a-row>
+      </div>
       <div>
         <h3>공지사항</h3>
         <BoardContent />
