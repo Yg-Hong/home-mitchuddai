@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import { ref, watch, computed } from "vue";
+import { ref, watch } from "vue";
 import CommentForm from "@/components/CommentForm/CommentForm.vue";
 import CommentInputForm from "@/components/CommentForm/CommentInputForm.vue";
 import DealCardForm from "@/components/HouseForm/DealCardForm.vue";
@@ -9,6 +9,7 @@ import { useHouseStore } from "@/stores/HouseStore.js";
 import { storeToRefs } from "pinia";
 
 const houseStore = useHouseStore();
+const { house } = storeToRefs(houseStore);
 
 const route = useRoute();
 const router = useRouter();
@@ -64,6 +65,9 @@ getHouseDetail();
 const onClickTobackToTheList = () => {
   console.log("뒤로가기");
   router.push(`/house/${route.params.dongCode}`);
+
+  //선택된 house 초기화
+  house.value = {};
 };
 
 const activeKey = ref([]);
@@ -101,7 +105,10 @@ watch(activeKey, (val) => {
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
       <a-col :span="6"> 상세주소 : </a-col>
-      <a-col :span="12">{{ houseDetailInfo.roadName }} {{ houseDetailInfo.roadNameBonbun }}</a-col>
+      <a-col :span="12"
+        >{{ houseDetailInfo.roadName }}
+        {{ houseDetailInfo.roadNameBonbun }}</a-col
+      >
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
@@ -114,7 +121,10 @@ watch(activeKey, (val) => {
     <a-collapse v-model:activeKey="activeKey" accordion>
       <a-collapse-panel key="1" header="실거래 목록">
         <div class="dealList">
-          <template v-for="(deal, index) in houseDetailInfo.houseDeals" :key="index">
+          <template
+            v-for="(deal, index) in houseDetailInfo.houseDeals"
+            :key="index"
+          >
             <a-row justify="center">
               <DealCardForm :deal="deal" />
             </a-row>
@@ -124,42 +134,62 @@ watch(activeKey, (val) => {
       <a-collapse-panel key="3" header="주변 편의시설">
         <a-row class="space_evenly_box">
           <a-col :span="8"
-            ><a-row justify="center">편의점 {{ distanceList[7].timeOnFoot }}</a-row></a-col
+            ><a-row justify="center"
+              >편의점 {{ distanceList[7].timeOnFoot }}</a-row
+            ></a-col
           >
           <a-col :span="8"
-            ><a-row justify="center">지하철 {{ distanceList[4].timeOnFoot }}</a-row></a-col
-          >
-        </a-row>
-        <a-row class="space_evenly_box">
-          <a-col :span="8"
-            ><a-row justify="center">은행 {{ distanceList[1].timeOnFoot }}</a-row></a-col
-          >
-          <a-col :span="8"
-            ><a-row justify="center">병원 {{ distanceList[6].timeOnFoot }}</a-row></a-col
+            ><a-row justify="center"
+              >지하철 {{ distanceList[4].timeOnFoot }}</a-row
+            ></a-col
           >
         </a-row>
         <a-row class="space_evenly_box">
           <a-col :span="8"
-            ><a-row justify="center">학교 {{ distanceList[2].timeOnFoot }} </a-row></a-col
+            ><a-row justify="center"
+              >은행 {{ distanceList[1].timeOnFoot }}</a-row
+            ></a-col
           >
           <a-col :span="8"
-            ><a-row justify="center">약국 {{ distanceList[3].timeOnFoot }}</a-row></a-col
-          >
-        </a-row>
-        <a-row class="space_evenly_box">
-          <a-col :span="8"
-            ><a-row justify="center">카페 {{ distanceList[5].timeOnFoot }}</a-row></a-col
-          >
-          <a-col :span="8"
-            ><a-row justify="center">마트 {{ distanceList[0].timeOnFoot }}</a-row></a-col
+            ><a-row justify="center"
+              >병원 {{ distanceList[6].timeOnFoot }}</a-row
+            ></a-col
           >
         </a-row>
         <a-row class="space_evenly_box">
           <a-col :span="8"
-            ><a-row justify="center">주차장{{ distanceList[8].timeOnFoot }}</a-row></a-col
+            ><a-row justify="center"
+              >학교 {{ distanceList[2].timeOnFoot }}
+            </a-row></a-col
           >
           <a-col :span="8"
-            ><a-row justify="center">주유소 {{ distanceList[9].timeOnFoot }}</a-row></a-col
+            ><a-row justify="center"
+              >약국 {{ distanceList[3].timeOnFoot }}</a-row
+            ></a-col
+          >
+        </a-row>
+        <a-row class="space_evenly_box">
+          <a-col :span="8"
+            ><a-row justify="center"
+              >카페 {{ distanceList[5].timeOnFoot }}</a-row
+            ></a-col
+          >
+          <a-col :span="8"
+            ><a-row justify="center"
+              >마트 {{ distanceList[0].timeOnFoot }}</a-row
+            ></a-col
+          >
+        </a-row>
+        <a-row class="space_evenly_box">
+          <a-col :span="8"
+            ><a-row justify="center"
+              >주차장{{ distanceList[8].timeOnFoot }}</a-row
+            ></a-col
+          >
+          <a-col :span="8"
+            ><a-row justify="center"
+              >주유소 {{ distanceList[9].timeOnFoot }}</a-row
+            ></a-col
           >
         </a-row>
       </a-collapse-panel>

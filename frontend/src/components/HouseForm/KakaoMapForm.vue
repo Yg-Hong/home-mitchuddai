@@ -1,10 +1,19 @@
 <script setup>
-import { defineProps, onMounted, ref, watchEffect, watch, onUpdated } from "vue";
+import { defineProps, onMounted, ref, watchEffect, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useHouseStore } from "@/stores/HouseStore.js";
 import { storeToRefs } from "pinia";
+import { watchDebounced, useDebounceFn } from "@vueuse/core";
+import { useKakaoStore } from "@/stores/KakaoStore.js";
+import { useLoading } from "@/composables/loading";
 
+const { vLoading } = useLoading();
+const kakaoStore = useKakaoStore();
+const { mapCenterLatLng } = storeToRefs(kakaoStore);
 const houseStore = useHouseStore();
+const { houseList, house } = storeToRefs(houseStore);
+
+const emit = defineEmits(["updateHouseMarkerList"]);
 
 const categories = ref([
   { id: "BK9", name: "은행", order: 0, iconClass: "bank" },
@@ -61,6 +70,7 @@ const houseMarkers = ref([]);
 const categoryMarkers = ref([]);
 const currCategory = ref([]);
 const ps = ref([]);
+const bound = ref({});
 
 const initMap = () => {
   const container = document.getElementById("map");
@@ -106,10 +116,23 @@ const initMap = () => {
   placeOverlay.value.setContent(contentNode.value);
   // 각 카테고리에 클릭 이벤트를 등록합니다
   addCategoryClickEvent(); // 카테고리에 addEvent등록
+
+  // 중심좌표 추적 이벤트
+  kakao.maps.event.addListener(
+    map.value,
+    "center_changed",
+    useDebounceFn(() => {
+      if (house.value) return;
+
+      vLoading();
+      bound.value = map.value.getBounds();
+      // mapCenterLatLng.value = [latlng.getLat(), latlng.getLng()];
+      console.log(bound.value);
+    }, 500)
+  );
 };
 
-const displayHouseMarkers = () => {
-  const positions = props.houseMarkerList;
+const displayHouseMarkers = (positions) => {
   console.log(positions);
 
   // 1. 현재 표시되어있는 마커를 모두 제거
@@ -135,7 +158,9 @@ const displayHouseMarkers = () => {
     // 이벤트 등록
     kakao.maps.event.addListener(marker, "click", function () {
       console.log(position);
-      map.value.setCenter(new kakao.maps.LatLng(position.latlng[0], position.latlng[1]));
+      map.value.setCenter(
+        new kakao.maps.LatLng(position.latlng[0], position.latlng[1])
+      );
       houseStore.clearDistance();
 
       for (let i = 0; i < categories.value.length; i++) {
@@ -151,6 +176,7 @@ const displayHouseMarkers = () => {
       map.value.setLevel(2);
       router.push(`/house/${route.params.dongCode}/${position.aptCode}`);
 
+      console.log(positions);
       console.log(houseStore.getDistance);
     });
     kakao.maps.event.addListener(marker, "mouseover", function () {
@@ -164,14 +190,16 @@ const displayHouseMarkers = () => {
   });
 
   // 4. 지도 중심 좌표 이동시켜주기
-  map.value.setCenter(new kakao.maps.LatLng(positions[0].latlng[0], positions[0].latlng[1]));
+  map.value.setCenter(
+    new kakao.maps.LatLng(positions[0].latlng[0], positions[0].latlng[1])
+  );
 };
 
 const calcDistanceFromPlace = (category, lat, lng) => {
   // 장소 검색 객체를 통해 카테고리로 장소검색을 요청합니다
   ps.value.categorySearch(
     category,
-    (data, status) => {
+    (data) => {
       // console.log(data[0]);
       // 정상적으로 검색이 완료됐으면 지도에 마커를 표출합니다
       houseStore.setDistance({
@@ -194,11 +222,135 @@ const calcDistanceFromPlace = (category, lat, lng) => {
 };
 
 setTimeout(function () {
-  displayHouseMarkers();
+  //houseList를 markerList로 변환
+  const houseMarkerList = houseList.value.map((house) => {
+    return {
+      aptCode: house.aptCode,
+      title: house.apartmentName,
+      latlng: [house.lat, house.lng],
+    };
+  });
+
+  displayHouseMarkers(houseMarkerList);
 }, 100);
+
+watch(house, () => {
+  if (house.value) {
+    //marker 로 변환
+    const houseMarker = [
+      {
+        aptCode: house.value.aptCode,
+        title: house.value.apartmentName,
+        latlng: [house.value.lat, house.value.lng],
+      },
+    ];
+
+    displayHouseMarkers(houseMarker);
+    map.value.setCenter(
+      new kakao.maps.LatLng(house.value.lat, house.value.lng),
+      2
+    );
+  } else {
+    // houseList를 markerList로 변환
+    const houseMarkerList = houseList.value.map((house) => {
+      return {
+        aptCode: house.aptCode,
+        title: house.apartmentName,
+        latlng: [house.lat, house.lng],
+      };
+    });
+
+    displayHouseMarkers(houseMarkerList);
+    map.value.setCenter(
+      new kakao.maps.LatLng(houseList.value[0].lat, houseList.value[0].lng),
+      3
+    );
+  }
+});
 
 const test = () => {
   // findHouse();
+};
+
+// 중심좌표 추적 -> 마커 데이터 api call
+watchDebounced(
+  bound,
+  async (value) => {
+    console.log(value);
+    const { ha, oa, pa, qa } = value;
+    await displayHouseMarkers2(ha, oa, pa, qa);
+  },
+  { debounce: 500, maxWait: 5000 }
+);
+
+const displayHouseMarkers2 = async (ha, oa, pa, qa) => {
+  await houseStore.setHouseList2(ha, oa, pa, qa);
+
+  console.log(houseList.value);
+  // houseList를 markerList로 변환
+  const houseMarkerList = houseList.value.map((house) => {
+    return {
+      aptCode: house.aptCode,
+      title: house.apartmentName,
+      latlng: [house.lat, house.lng],
+    };
+  });
+
+  // 1. 현재 표시되어있는 마커를 모두 제거
+  if (houseMarkers.value.length > 0) {
+    houseMarkers.value.forEach((marker) => {
+      marker.setMap(null);
+    });
+  }
+
+  const positions = houseMarkerList;
+
+  // 3. 마커 표시하기
+  positions.forEach((position) => {
+    // infoWindow 생성
+    let infowindow = new kakao.maps.InfoWindow({
+      removable: true,
+      content: `<div style="padding:5px;font-size:12px;">${position.title}</div>`,
+    });
+
+    let marker = new kakao.maps.Marker({
+      map: map.value,
+      position: new kakao.maps.LatLng(position.latlng[0], position.latlng[1]),
+    });
+
+    // 이벤트 등록
+    kakao.maps.event.addListener(marker, "click", function () {
+      console.log(position);
+      map.value.setCenter(
+        new kakao.maps.LatLng(position.latlng[0], position.latlng[1])
+      );
+      houseStore.clearDistance();
+
+      for (let i = 0; i < categories.value.length; i++) {
+        // console.log(categories.value[i]);
+
+        calcDistanceFromPlace(
+          categories.value[i].id,
+          positions[0].latlng[0],
+          positions[0].latlng[1]
+        );
+      }
+
+      map.value.setLevel(2);
+      router.push(`/house/${route.params.dongCode}/${position.aptCode}`);
+
+      console.log(positions);
+      console.log(houseStore.getDistance);
+    });
+    kakao.maps.event.addListener(marker, "mouseover", function () {
+      infowindow.open(map.value, marker);
+    });
+    kakao.maps.event.addListener(marker, "mouseout", function () {
+      infowindow.close();
+    });
+
+    houseMarkers.value.push(marker);
+  });
 };
 
 // 카테고리별 장소 검색하기 ---------------------------
@@ -233,11 +385,16 @@ const searchPlaces = () => {
 const displayPlaces = (places) => {
   // 몇번째 카테고리가 선택되어 있는지 얻어옵니다
   // 이 순서는 스프라이트 이미지에서의 위치를 계산하는데 사용됩니다
-  var order = document.getElementById(currCategory.value).getAttribute("data-order");
+  var order = document
+    .getElementById(currCategory.value)
+    .getAttribute("data-order");
 
   for (var i = 0; i < places.length; i++) {
     // 마커를 생성하고 지도에 표시합니다
-    var marker = addMarker(new kakao.maps.LatLng(places[i].y, places[i].x), order);
+    var marker = addMarker(
+      new kakao.maps.LatLng(places[i].y, places[i].x),
+      order
+    );
     // 마커와 검색결과 항목을 클릭 했을 때
     // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
     (function (marker, place) {
@@ -302,11 +459,19 @@ const displayplaceinfo = (place) => {
       ")</span><br />";
   } else {
     content +=
-      '    <span title="' + place.address_name + '">' + place.address_name + "</span><br />";
+      '    <span title="' +
+      place.address_name +
+      '">' +
+      place.address_name +
+      "</span><br />";
   }
 
   content +=
-    '    <span class="tel">' + place.phone + "</span>" + "</div>" + '<div class="after"></div>';
+    '    <span class="tel">' +
+    place.phone +
+    "</span>" +
+    "</div>" +
+    '<div class="after"></div>';
 
   contentNode.value.innerHTML = content;
   placeOverlay.value.setPosition(new kakao.maps.LatLng(place.y, place.x));
@@ -384,6 +549,9 @@ const changeCategoryClass = (el) => {
 
 watchEffect(props.houseMarkerList, (newVal) => {
   console.log("KakaoMapComp.vue - HouseList 변경됨", newVal);
+
+  // 상위 컴포넌트에 변경된 값 emit으로 넘기기
+  emit("updateHouseMarkerList", newVal);
 });
 </script>
 
@@ -434,7 +602,8 @@ watchEffect(props.houseMarkerList, (newVal) => {
   font-weight: bold;
   overflow: hidden;
   background: #d95050;
-  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+  background: #d95050
+    url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
     no-repeat right 14px center;
 }
 .overlay .title {
@@ -589,7 +758,8 @@ watchEffect(props.houseMarkerList, (newVal) => {
   padding: 10px;
   color: #fff;
   background: #ff8f27;
-  background: #ff8f27 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+  background: #ff8f27
+    url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
     no-repeat right 14px center;
 }
 .placeinfo .tel {

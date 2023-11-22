@@ -1,80 +1,56 @@
 <script setup>
 import HouseDetailCardForm from "@/components/HouseForm/HouseDetailCardForm.vue";
-import { ref, defineEmits, watch } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import HouseAPI from "@/api/HouseAPI";
+import { useHouseStore } from "@/stores/HouseStore.js";
+import { storeToRefs } from "pinia";
 
-const emit = defineEmits(["changeLatAndLngList"]);
+const houseStore = useHouseStore();
+const { houseList, house } = storeToRefs(houseStore);
+console.log(houseList);
+
+onMounted(() => {
+  if (houseList.value.length == 0) {
+    console.log("houseList is empty");
+    houseStore.setHouseList1(route.params.dongCode);
+  }
+
+  console.log(houseStore.getHouseList);
+  console.log("mounted");
+});
+
 const router = useRouter();
 const route = useRoute();
 
-const houseList = ref([
-  {
-    aptCode: 11110000000042,
-    buildYear: "2000",
-    roadName: "자하문로 33길",
-    readNameBonbun: 43,
-    dongCode: 1111010100,
-    apartmentName: "청운현대",
-    lng: 126.970672,
-    lat: 37.586305,
-    area: 84.82,
-    sidoName: "서울특별시",
-    gugunName: "종로구",
-    dongName: "청운동",
-  },
-  {
-    aptCode: 11110000000043,
-    buildYear: "2110",
-    roadName: "자하문로",
-    readNameBonbun: 433,
-    dongCode: 1111010100,
-    apartmentName: "청운현대",
-    lng: 126.970672,
-    lat: 37.586305,
-    area: 84.82,
-    sidoName: "서울특별시",
-    gugunName: "종로구",
-    dongName: "청운동",
-  },
-]);
+// watch(houseList, () => {
+//   console.log("houseList changed");
+//   let newArray = [];
 
-watch(houseList, () => {
-  console.log("houseList changed");
-  let newArray = [];
+//   houseList.value.forEach((house) => {
+//     newArray.push({
+//       aptCode: house.aptCode,
+//       title: house.apartmentName,
+//       latlng: [house.lat, house.lng],
+//     });
+//   });
 
-  houseList.value.forEach((house) => {
-    newArray.push({
-      aptCode: house.aptCode,
-      title: house.apartmentName,
-      latlng: [house.lat, house.lng],
-    });
-  });
+//   console.log(newArray);
 
-  console.log(newArray);
-
-  emit("changeLatAndLngList", newArray);
-});
+//   emit("changeLatAndLngList", newArray);
+// });
 
 const onClickHouseDetailInfo = (aptCode) => {
   let dongCode = route.params.dongCode;
   router.push(`/house/${dongCode}/${aptCode}`);
-};
 
-const getHouseList = () => {
-  HouseAPI.getHouseList(
-    route.params.dongCode,
-    ({ data }) => {
-      houseList.value = data;
-    },
-    () => {
-      console.log("실거래 목록 조회에 실패하였습니다.");
+  for (let i = 0; i < houseList.value.length; i++) {
+    if (houseList.value[i].aptCode == aptCode) {
+      house.value = houseList.value[i];
     }
-  );
+  }
 };
-const current = ref(2);
 
-getHouseList();
+const current = ref(2);
 </script>
 
 <template>
@@ -84,7 +60,10 @@ getHouseList();
     </a-row>
     <template v-for="(house, index) in houseList" :key="index">
       <a-row justify="center">
-        <HouseDetailCardForm v-bind:house="house" @click="onClickHouseDetailInfo(house.aptCode)" />
+        <HouseDetailCardForm
+          v-bind:house="house"
+          @click="onClickHouseDetailInfo(house.aptCode)"
+        />
         <template>
           <a-pagination v-model:current="current" simple :total="10" />
         </template>
