@@ -72,7 +72,7 @@ const Register = () => {
     userId: formState.userId,
     password: formState.userPassword,
     name: formState.userName,
-    email: formState.userEmail,
+    email: formState.emailId + "@" + formState.emailDomain,
     address: formState.address,
     phoneNumber: formState.phonenumber,
     createdAt: new Date(),
@@ -247,17 +247,17 @@ const Register = () => {
 
     <a-row justify="space-between" class="input_row">
       <a-col :span="5">
-        <label for="normal_login_userEmail" class="NexonFootballGothicLight">
+        <label for="normal_login_emailId" class="NexonFootballGothicLight">
           이메일 :
         </label>
       </a-col>
       <a-col :span="9">
         <a-form-item
-          name="userEmail"
-          :rules="[{ requried: true, messgae: '이메일을 입력해주세요!' }]"
+          name="emailId"
+          :rules="[{ required: true, message: '이메일을 입력해주세요!' }]"
         >
           <a-input
-            v-model:value="formState.userEmail"
+            v-model:value="formState.emailId"
             placeholder="이메일"
             class="select_box"
           >

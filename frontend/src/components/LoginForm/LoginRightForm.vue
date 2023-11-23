@@ -27,7 +27,7 @@ const Login = () => {
 
   const user = {
     userId: formState.userId,
-    userPassword: formState.userPassword,
+    password: formState.userPassword,
   };
 
   console.log(user);

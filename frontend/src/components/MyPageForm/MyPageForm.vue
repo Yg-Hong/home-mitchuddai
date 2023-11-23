@@ -1,22 +1,18 @@
 <script setup>
-import { reactive } from "vue";
 import { useUserStore } from "@/stores/UserStore.js";
 import { storeToRefs } from "pinia";
+import {useRouter} from "vue-router";
 
-// const formState = reactive({
-//   userId: "",
-//   userPassword: "",
-//   PasswordCheck: "",
-//   userName: "",
-//   emailId: "",
-//   emailDomain: "",
-//   address: "",
-//   phoneNumber: "",
-// });
-
+const router = useRouter();
 const userStore = useUserStore();
-const { userId, userName, emailId, address, phoneNumber } =
+const { userId, userName, email, address, phoneNumber } =
   storeToRefs(userStore);
+
+
+const onCancel = () => {
+  router.go(-1);
+}
+
 </script>
 
 <template>
@@ -100,7 +96,7 @@ const { userId, userName, emailId, address, phoneNumber } =
                   >
                 </a-col>
                 <a-col :span="18">
-                  <a-input id="inputBoxForUserId" v-model:value="emailId" />
+                  <a-input id="inputBoxForUserId" v-model:value="email" />
                 </a-col>
               </a-row>
 
