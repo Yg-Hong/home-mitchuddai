@@ -420,7 +420,7 @@ const displayPlaces = (places) => {
 
 // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
 const addMarker = (position, order) => {
-  var imageSrc = `../src/assets/img/category${order}.png`,
+  var imageSrc = `../../src/assets/img/category${order}.png`,
     imageSize = new kakao.maps.Size(40, 40), // 마커 이미지의 크기
     imgOptions = {
       // spriteSize: new kakao.maps.Size(72, 208), // 스프라이트 이미지의 크기

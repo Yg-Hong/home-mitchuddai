@@ -102,7 +102,7 @@ getQnaList({ page: 1, size: 10 });
     <a-row class="paginationButtonRow">
       <a-pagination
         v-model:current="current"
-        :total="totalPage"
+        :total="totalPage*10"
         show-less-items
         @change="onChangePageInfo"
       />

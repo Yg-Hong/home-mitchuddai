@@ -108,7 +108,7 @@ const onCancel = () => {
                     저장하기
                   </a-button>
                   <a-button style="margin-left: 10px" @click="onCancel">
-                    취소하기
+                    뒤로가기
                   </a-button>
                 </a-row>
               </a-form-item>

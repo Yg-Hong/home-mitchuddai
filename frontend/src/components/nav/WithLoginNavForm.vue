@@ -22,21 +22,21 @@ import { BellOutlined } from "@ant-design/icons-vue";
         </router-link>
       </a-col>
       <a-col :span="15">
-        <a-row justify="right">
+          <a-row justify="right">
           <a-col :span="18">
             <a-row class="navBarMenu">
-              <a-col
-                :span="4"
-                class="navBarItem NexonFootballGothicBold FontMMS FontColorA"
-              >
-                <router-link to="/">소개</router-link>
-              </a-col>
-              <a-col
-                :span="4"
-                class="navBarItem NexonFootballGothicBold FontMMS FontColorA"
-              >
-                <router-link to="/news">뉴스</router-link>
-              </a-col>
+<!--              <a-col-->
+<!--                :span="4"-->
+<!--                class="navBarItem NexonFootballGothicBold FontMMS FontColorA"-->
+<!--              >-->
+<!--                <router-link to="/">소개</router-link>-->
+<!--              </a-col>-->
+<!--              <a-col-->
+<!--                :span="4"-->
+<!--                class="navBarItem NexonFootballGothicBold FontMMS FontColorA"-->
+<!--              >-->
+<!--                <router-link to="/news">뉴스</router-link>-->
+<!--              </a-col>-->
               <a-col
                 :span="6"
                 class="navBarItem NexonFootballGothicBold FontMMS FontColorA"

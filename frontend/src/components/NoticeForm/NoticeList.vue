@@ -6,11 +6,11 @@ const noticeList = ref([]);
 
 const router = useRouter();
 
-for (let i = 0; i < 100; i++) {
+for (let i = 1; i < 2; i++) {
   noticeList.value.push({
     no: i,
-    title: "Hello world",
-    date: "2021-10-01",
+    title: "home mitchuddai(홈미쳐따이) 첫 개장 (간장게장 아님 주의)...",
+    date: "2021-08-20",
   });
 }
 
