@@ -26,7 +26,7 @@ public class MemberController {
     @PostMapping("/login")
 	public Member login(@RequestBody MemberDto memberDto) throws Exception {
 		String userId = memberDto.getUserId();
-		String userPassword = memberDto.getUserPassword();
+		String userPassword = memberDto.getPassword();
 		log.info("userId={}, userPassword={}", userId, userPassword);
 		return memberService.loginMember(userId, userPassword);
 	}
@@ -39,9 +39,12 @@ public class MemberController {
 	@PostMapping("/register")
 	public void registerMember(@RequestBody MemberDto memberDto) throws Exception {
 		SignUp signUp = SignUp.builder()
+				.userId(memberDto.getUserId())
+				.name(memberDto.getName())
+				.password(memberDto.getPassword())
 				.email(memberDto.getEmail())
-				.password(memberDto.getUserPassword())
-				.name(memberDto.getUserName())
+				.address(memberDto.getAddress())
+				.createdAt(memberDto.getCreatedAt())
 				.build();
 		memberService.signUp(signUp);
 	}

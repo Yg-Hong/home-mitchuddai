@@ -1,10 +1,11 @@
 package com.whereismyhome.house.member.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-//import com.whereismyhome.house.crypt.PasswordEncoder;
-import com.whereismyhome.house.exception.DuplicateEmailException;
+import com.whereismyhome.house.exception.DuplicateUserIdException;
 import com.whereismyhome.house.exception.InvalidSignIn;
 import com.whereismyhome.house.member.entity.Member;
 import com.whereismyhome.house.member.repository.MemberRepository;
@@ -17,18 +18,27 @@ import org.springframework.stereotype.Service;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
-//    private final PasswordEncoder passwordEncoder;
 
     public void signUp(SignUp signUp) {
-        // 중복 이메일 체크
-        Optional<Member> userEmail = memberRepository.findByEmail(signUp.getEmail());
-        if (userEmail.isPresent()) {
-            throw new DuplicateEmailException();
+        // 중복 아이디 체크
+        Optional<Member> foundId = memberRepository.findByUserId(signUp.getEmail());
+        if (foundId.isPresent()) {
+            throw new DuplicateUserIdException();
         }
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = now.format(formatter);
 
-//        String encodedPassword = passwordEncoder.encrypt(signUp.getPassword());
+        Member member = Member.builder()
+                .userId(signUp.getUserId())
+                .name(signUp.getName())
+                .email(signUp.getEmail())
+                .password(signUp.getPassword())
+                .createdAt(formattedDate)
+                .address(signUp.getAddress())
+                .phoneNumber(signUp.getPhoneNumber())
+                .build();
 
-        Member member = new Member(signUp.getName(), signUp.getEmail(), signUp.getPassword());
         memberRepository.save(member);
     }
 
@@ -45,8 +55,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member loginMember(String userId, String userPassword) throws Exception {
-//        String encodedPassword = passwordEncoder.encrypt(userPassword);
-        Member member = memberRepository.findByEmailAndPassword(userId, userPassword)
+        Member member = memberRepository.findByUserIdAndPassword(userId, userPassword)
                 .orElseThrow(InvalidSignIn::new);
         return member;
     }

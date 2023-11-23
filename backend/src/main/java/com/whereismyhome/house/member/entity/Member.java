@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Entity
@@ -20,20 +21,32 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String userId;
+
     private String name;
 
     private String email;
 
     private String password;
 
-    private LocalDateTime createdAt;
+    private String createdAt;
+
+    private String address;
+
+    private String phoneNumber;
 
     @Builder
-    public Member(String name, String email, String password) {
+    public Member(String userId, String name, String email, String createdAt, String password, String address, String phoneNumber) {
+        this.userId = userId;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.createdAt = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = now.format(formatter);
+        this.createdAt = formattedDate;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
     }
 
 }

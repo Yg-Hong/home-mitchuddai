@@ -9,17 +9,20 @@ import lombok.NoArgsConstructor;
 public class MemberDto {
 
     private String userId;
-    private String userName;
-    private String userPassword;
+    private String name;
+    private String password;
     private String email;
-    private String joinDate;
+    private String address;
+    private String createdAt;
+
 
     @Builder
-    public MemberDto(String userId, String userName, String userPassword, String email, String emailDomain, String joinDate) {
+    public MemberDto(String userId, String name, String password, String address, String email, String createdAt) {
         this.userId = userId;
-        this.userName = userName;
-        this.userPassword = userPassword;
+        this.name = name;
+        this.password = password;
         this.email = email;
-        this.joinDate = joinDate;
+        this.address = address;
+        this.createdAt = createdAt;
     }
 }
