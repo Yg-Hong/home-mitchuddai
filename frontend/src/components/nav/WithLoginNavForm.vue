@@ -4,27 +4,51 @@ import { BellOutlined } from "@ant-design/icons-vue";
 
 <template>
   <div class="nav">
-    <a-row>
-      <a-col :span="5" class="nav_logo NexonFootballGothicBold FontM FontColorA item_align_center">
-        <router-link to="/">Home mitchuddai</router-link>
+    <a-row class="nav_row" justify="space-between">
+      <a-col :span="3">
+        <router-link to="/">
+          <a-row
+            justify="start"
+            class="nav_logo NexonFootballGothicBold FontM FontColorA item_align_center"
+          >
+            Home
+          </a-row>
+          <a-row
+            justify="center"
+            class="nav_logo NexonFootballGothicBold FontM FontColorA item_align_center"
+          >
+            mitchuddai
+          </a-row>
+        </router-link>
       </a-col>
-      <a-col :span="10">
-        <a-row justify="space-between" class="NexonFootballGothicBold FontMS FontColorA">
-          <router-link to="/">소개</router-link>
-          <router-link to="/">뉴스</router-link>
-          <router-link to="/">실거래가 조회</router-link>
-          <router-link to="/">공지사항</router-link>
-          <router-link to="/">Q&A</router-link>
-        </a-row>
-      </a-col>
-      <a-col :span="8">
-        <a-row justify="end" class="NexonFootballGothicBold FontMS FontColorA">
-          <router-link to="/login">
-            <BellOutlined />
-          </router-link>
-          <div class="margin_left">
-            <router-link to="/">마이페이지</router-link>
-          </div>
+      <a-col :span="15">
+        <a-row justify="right">
+          <a-col :span="18">
+            <a-row class="navBarMenu">
+              <a-col :span="4" class="navBarItem NexonFootballGothicBold FontMMS FontColorA">
+                <router-link to="/">소개</router-link>
+              </a-col>
+              <a-col :span="4" class="navBarItem NexonFootballGothicBold FontMMS FontColorA">
+                <router-link to="/news">뉴스</router-link>
+              </a-col>
+              <a-col :span="6" class="navBarItem NexonFootballGothicBold FontMMS FontColorA">
+                <router-link to="/house">실거래가 조회</router-link>
+              </a-col>
+              <a-col :span="4" class="navBarItem NexonFootballGothicBold FontMMS FontColorA">
+                <router-link to="/notice">공지사항</router-link>
+              </a-col>
+              <a-col :span="4" class="navBarItem NexonFootballGothicBold FontMMS FontColorA">
+                <router-link to="/qna">Q&A</router-link>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="6">
+            <a-row justify="end" class="navBarMenu NexonFootballGothicBold FontMS FontColorA">
+              <router-link to="">
+                <div class="margin_right navBarItem">마이페이지</div>
+              </router-link>
+            </a-row>
+          </a-col>
         </a-row>
       </a-col>
       <!-- <router-link></router-link> -->
@@ -34,7 +58,7 @@ import { BellOutlined } from "@ant-design/icons-vue";
 
 <style scoped>
 .nav {
-  height: 75px;
+  height: 110px;
 
   /* 상단 고정 */
   position: fixed;
@@ -42,34 +66,42 @@ import { BellOutlined } from "@ant-design/icons-vue";
   left: 0;
   right: 0;
 
+  z-index: 1;
+
   /* 하단 테두리 */
   border-bottom: 1px solid;
 
   /* 배경색 */
   background-color: white;
-
-  /* display: flex;
-  justify-content: space-between;
-  align-items: center; */
 }
 
-/* .item_align_center {
+.FontMMS {
+  font-size: 30px;
+}
+
+.alignCenterContainer {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+}
+
+.navBarMenu {
+  display: flex;
+  justify-content: right;
+
+  margin-top: 30px;
+}
+
+.navBarItem {
+  display: flex;
   justify-content: center;
-} */
+}
 
 .navigation_list {
   align-items: center;
 }
 
-.margin_left {
-  margin-left: 10px;
-}
-
-.anticon_bell {
-  height: 20px;
-  width: 20px;
+.margin_right {
+  margin-right: 20px;
 }
 
 a {
@@ -78,5 +110,9 @@ a {
 
 a:hover {
   color: #00387e;
+}
+
+.nav_row {
+  width: 100%;
 }
 </style>

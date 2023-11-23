@@ -74,9 +74,8 @@ const bound = ref({});
 
 const initMap = () => {
   const container = document.getElementById("map");
-
-  const lat = 37.2429362;
-  const lng = 131.8624647;
+  const lat = 37.50117248464235;
+  const lng = 127.0398477503283;
 
   const options = {
     // center: new kakao.maps.LatLng(...centerLatLng),
@@ -158,9 +157,7 @@ const displayHouseMarkers = (positions) => {
     // 이벤트 등록
     kakao.maps.event.addListener(marker, "click", function () {
       console.log(position);
-      map.value.setCenter(
-        new kakao.maps.LatLng(position.latlng[0], position.latlng[1])
-      );
+      map.value.setCenter(new kakao.maps.LatLng(position.latlng[0], position.latlng[1]));
       houseStore.clearDistance();
 
       for (let i = 0; i < categories.value.length; i++) {
@@ -190,9 +187,7 @@ const displayHouseMarkers = (positions) => {
   });
 
   // 4. 지도 중심 좌표 이동시켜주기
-  map.value.setCenter(
-    new kakao.maps.LatLng(positions[0].latlng[0], positions[0].latlng[1])
-  );
+  map.value.setCenter(new kakao.maps.LatLng(positions[0].latlng[0], positions[0].latlng[1]));
 };
 
 const calcDistanceFromPlace = (category, lat, lng) => {
@@ -246,10 +241,7 @@ watch(house, () => {
     ];
 
     displayHouseMarkers(houseMarker);
-    map.value.setCenter(
-      new kakao.maps.LatLng(house.value.lat, house.value.lng),
-      2
-    );
+    map.value.setCenter(new kakao.maps.LatLng(house.value.lat, house.value.lng), 2);
   } else {
     // houseList를 markerList로 변환
     const houseMarkerList = houseList.value.map((house) => {
@@ -261,10 +253,7 @@ watch(house, () => {
     });
 
     displayHouseMarkers(houseMarkerList);
-    map.value.setCenter(
-      new kakao.maps.LatLng(houseList.value[0].lat, houseList.value[0].lng),
-      3
-    );
+    map.value.setCenter(new kakao.maps.LatLng(houseList.value[0].lat, houseList.value[0].lng), 3);
   }
 });
 
@@ -321,9 +310,7 @@ const displayHouseMarkers2 = async (ha, oa, pa, qa) => {
     // 이벤트 등록
     kakao.maps.event.addListener(marker, "click", function () {
       console.log(position);
-      map.value.setCenter(
-        new kakao.maps.LatLng(position.latlng[0], position.latlng[1])
-      );
+      map.value.setCenter(new kakao.maps.LatLng(position.latlng[0], position.latlng[1]));
       houseStore.clearDistance();
 
       for (let i = 0; i < categories.value.length; i++) {
@@ -385,16 +372,11 @@ const searchPlaces = () => {
 const displayPlaces = (places) => {
   // 몇번째 카테고리가 선택되어 있는지 얻어옵니다
   // 이 순서는 스프라이트 이미지에서의 위치를 계산하는데 사용됩니다
-  var order = document
-    .getElementById(currCategory.value)
-    .getAttribute("data-order");
+  var order = document.getElementById(currCategory.value).getAttribute("data-order");
 
   for (var i = 0; i < places.length; i++) {
     // 마커를 생성하고 지도에 표시합니다
-    var marker = addMarker(
-      new kakao.maps.LatLng(places[i].y, places[i].x),
-      order
-    );
+    var marker = addMarker(new kakao.maps.LatLng(places[i].y, places[i].x), order);
     // 마커와 검색결과 항목을 클릭 했을 때
     // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
     (function (marker, place) {
@@ -459,19 +441,11 @@ const displayplaceinfo = (place) => {
       ")</span><br />";
   } else {
     content +=
-      '    <span title="' +
-      place.address_name +
-      '">' +
-      place.address_name +
-      "</span><br />";
+      '    <span title="' + place.address_name + '">' + place.address_name + "</span><br />";
   }
 
   content +=
-    '    <span class="tel">' +
-    place.phone +
-    "</span>" +
-    "</div>" +
-    '<div class="after"></div>';
+    '    <span class="tel">' + place.phone + "</span>" + "</div>" + '<div class="after"></div>';
 
   contentNode.value.innerHTML = content;
   placeOverlay.value.setPosition(new kakao.maps.LatLng(place.y, place.x));
@@ -602,8 +576,7 @@ watchEffect(props.houseMarkerList, (newVal) => {
   font-weight: bold;
   overflow: hidden;
   background: #d95050;
-  background: #d95050
-    url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
     no-repeat right 14px center;
 }
 .overlay .title {
@@ -758,8 +731,7 @@ watchEffect(props.houseMarkerList, (newVal) => {
   padding: 10px;
   color: #fff;
   background: #ff8f27;
-  background: #ff8f27
-    url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+  background: #ff8f27 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
     no-repeat right 14px center;
 }
 .placeinfo .tel {

@@ -55,15 +55,14 @@ const current = ref(2);
 
 <template>
   <div class="HouseListForm">
-    <a-row justify="center" class="contenthHeader NexonGothicMedium">
-      <span>실거래 목록</span>
+    <a-row justify="center" class="titleRow">
+      <a-typography-title :level="2" class="NexonGothicMedium">
+        실거래 건물 목록
+      </a-typography-title>
     </a-row>
     <template v-for="(house, index) in houseList" :key="index">
       <a-row justify="center">
-        <HouseDetailCardForm
-          v-bind:house="house"
-          @click="onClickHouseDetailInfo(house.aptCode)"
-        />
+        <HouseDetailCardForm v-bind:house="house" @click="onClickHouseDetailInfo(house.aptCode)" />
         <template>
           <a-pagination v-model:current="current" simple :total="10" />
         </template>
@@ -77,11 +76,37 @@ const current = ref(2);
   height: 850px;
 }
 
-.contenthHeader {
+.titleRow {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.contentHeader {
   padding-top: 10px;
 
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 10px;
+}
+
+.title h2 {
+  text-align: center;
+
+  text-transform: uppercase;
+  font-size: 26px;
+  letter-spacing: 1px;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: 16px 0;
+  grid-gap: 22px;
+}
+
+.title h2:after,
+.title h2:before {
+  content: " ";
+  display: block;
+  border-bottom: 2px solid #ccc;
+  background-color: #f8f8f8;
 }
 </style>

@@ -21,11 +21,11 @@ const updateHouseMarkerList = (newList) => {
 
 <template>
   <a-row justify="start">
-    <a-col :span="8" class="LeftForm">
+    <a-col :span="6" class="LeftForm">
       <!-- <HouseListForm @changeLatAndLngList="changeLatAndLngList" /> -->
       <RouterView @changeLatAndLngList="changeLatAndLngList" />
     </a-col>
-    <a-col :span="16">
+    <a-col :span="18">
       <KakaoMapForm
         :houseMarkerList="houseMarkerList"
         @updateHouseMarkerList="updateHouseMarkerList"
@@ -40,5 +40,20 @@ const updateHouseMarkerList = (newList) => {
   height: 850px;
 
   border-right: 1px solid black;
+
+  overflow: auto;
+}
+
+.LeftForm::-webkit-scrollbar {
+  width: 5px;
+}
+.LeftForm::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+  border-radius: 5px;
+}
+.LeftForm::-webkit-scrollbar-track {
+  background-color: rgb(202, 201, 201);
+  border-radius: 5px;
+  box-shadow: inset 0px 0px 5px white;
 }
 </style>

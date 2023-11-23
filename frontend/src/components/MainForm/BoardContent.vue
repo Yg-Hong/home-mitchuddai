@@ -21,7 +21,7 @@ const onClickBoards = () => {
 <template>
   <div>
     <a-row justify="center">
-      <a-col :span="24">
+      <a-col :span="16">
         <a-card>
           <a-list :item-layout="horizontal" :dataSource="boardList" :renderItem="item">
             <template #renderItem="{ item }">

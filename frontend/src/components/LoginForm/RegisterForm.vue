@@ -104,7 +104,7 @@ const Register = () => {
       <a-col :span="5">
         <label for="normal_login_userId" class="NexonFootballGothicLight"> 아이디 : </label>
       </a-col>
-      <a-col :span="19">
+      <a-col :span="19" class="inputBoxContainer">
         <a-form-item name="userId" :rules="[{ requried: true, messgae: '아이디를 입력해주세요!' }]">
           <a-input v-model:value="formState.userId" placeholder="ID" class="InputBox">
             <template #prefix>
@@ -120,20 +120,22 @@ const Register = () => {
         <label for="normal_login_userPassword" class="NexonFootballGothicLight"> 비밀번호 : </label>
       </a-col>
       <a-col :span="19">
-        <a-form-item
-          name="userPassword"
-          :rules="[{ required: true, message: '비밀번호를 입력해주세요!' }]"
-        >
-          <a-input-password
-            v-model:value="formState.userPassword"
-            placeholder="Password"
-            class="InputBox"
+        <div stlye="inputBoxContainer">
+          <a-form-item
+            name="userPassword"
+            :rules="[{ required: true, message: '비밀번호를 입력해주세요!' }]"
           >
-            <template #prefix>
-              <LockOutlined class="site-form-item-icon" />
-            </template>
-          </a-input-password>
-        </a-form-item>
+            <a-input-password
+              v-model:value="formState.userPassword"
+              placeholder="Password"
+              class="InputBox"
+            >
+              <template #prefix>
+                <LockOutlined class="site-form-item-icon" />
+              </template>
+            </a-input-password>
+          </a-form-item>
+        </div>
       </a-col>
     </a-row>
 
@@ -144,18 +146,20 @@ const Register = () => {
         </label>
       </a-col>
       <a-col :span="19">
-        <a-form-item has-feedback name="PasswordCheck">
-          <a-input
-            v-model:value="formState.PasswordCheck"
-            type="password"
-            class="InputBox"
-            autocomplete="off"
-          >
-            <template #prefix>
-              <LockOutlined class="site-form-item-icon" />
-            </template>
-          </a-input>
-        </a-form-item>
+        <div stlye="inputBoxContainer">
+          <a-form-item has-feedback name="PasswordCheck">
+            <a-input
+              v-model:value="formState.PasswordCheck"
+              type="password"
+              class="InputBox"
+              autocomplete="off"
+            >
+              <template #prefix>
+                <LockOutlined class="site-form-item-icon" />
+              </template>
+            </a-input>
+          </a-form-item>
+        </div>
       </a-col>
     </a-row>
 
@@ -183,7 +187,7 @@ const Register = () => {
           name="userEmail"
           :rules="[{ requried: true, messgae: '이메일을 입력해주세요!' }]"
         >
-          <a-input v-model:value="formState.userEmail" placeholder="이메일" class="InputBox">
+          <a-input v-model:value="formState.userEmail" placeholder="이메일" class="select_box">
             <template #prefix>
               <UserOutlined class="site-form-item-icon" />
             </template>
@@ -191,7 +195,7 @@ const Register = () => {
         </a-form-item>
       </a-col>
       <a-col :span="1">
-        <span class="NexonFootballGothicLight FontMS">@</span>
+        <span class="NexonFootballGothicLight FontMS atSign">@</span>
       </a-col>
       <a-col :span="9">
         <a-select
@@ -204,6 +208,8 @@ const Register = () => {
           @change="handleChange"
         >
           <a-select-option key="gmail.com"> gmail.com </a-select-option>
+          <a-select-option key="naver.com"> naver.com </a-select-option>
+          <a-select-option key="hanmail.net"> hanmail.net </a-select-option>
         </a-select>
       </a-col>
     </a-row>
@@ -234,6 +240,13 @@ const Register = () => {
 </template>
 
 <style scoped>
+.ant-form-item {
+  margin-bottom: 12px;
+  margin-top: 12px;
+}
+.ant-select {
+  margin-left: 10px;
+}
 #components-form-demo-normal-login .login-form {
   max-width: 300px;
 }
@@ -250,10 +263,8 @@ const Register = () => {
 .InputBox {
   height: 40px;
 }
-
 .select_box {
-  width: 140px;
-  height: 40px;
+  width: 150px;
 }
 
 .duplicated_id_btn {

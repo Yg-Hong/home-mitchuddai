@@ -1,13 +1,17 @@
 @import "./base.css";
 
 #app {
-  max-width: 1850px;
+  max-width: 1920px;
   width: 100%;
-  margin: 0 30px;
 
   min-height: 100%;
   position: relative;
-  padding-bottom: 170px;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-text);
+  transition: 0.4s;
 }
 
 a,
@@ -22,17 +26,3 @@ a,
     background-color: hsla(160, 100%, 37%, 0.2);
   }
 }
-
-/* @media (min-width: 1024px) {
-  body {
-    min-height: 100%;
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-} */

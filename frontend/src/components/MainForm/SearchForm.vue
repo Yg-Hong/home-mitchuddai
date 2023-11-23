@@ -5,8 +5,6 @@ import LocationAPI from "@/api/LocationAPI.js";
 
 const router = useRouter();
 
-const livingType = ref("");
-
 const sidoCode = ref("");
 const gugunCode = ref("");
 const dongCode = ref("");
@@ -68,47 +66,11 @@ watch(gugunCode, async () => {
 
 <template>
   <a-row class="content">
-    <a-col :span="12">
-      <a-row justify="end">
-        <a-flex :vertical="true">
-          <a-row justify="space-between" class="upper_row">
-            <a-col :span="5">
-              <input
-                type="radio"
-                id="apartment"
-                value="apartment"
-                class="radio_input"
-                v-model="livingType"
-              />
-              <label for="apartment" class="radio-label">아파트</label>
-            </a-col>
-            <a-col :span="5">
-              <input
-                type="radio"
-                id="officetel"
-                value="officetel"
-                class="radio_input"
-                v-model="livingType"
-              />
-              <label for="officetel" class="radio-label">오피스텔</label>
-            </a-col>
-            <a-col :span="5">
-              <input
-                type="radio"
-                id="studio"
-                value="studio"
-                class="radio_input"
-                v-model="livingType"
-              />
-              <label for="studio" class="radio-label">원룸</label>
-            </a-col>
-            <a-col :span="5">
-              <input type="radio" value="Imdae" class="radio_input" v-model="livingType" />
-              <label for="one" class="radio-label">임대</label>
-            </a-col>
-          </a-row>
-          <a-row justify="space-between" class="lower_row">
-            <a-col :span="6">
+    <a-row class="contentRow">
+      <a-col :span="24">
+        <a-row justify="center">
+          <a-col :span="6">
+            <a-row justify="center">
               <a-select
                 ref="select"
                 v-model:value="sidoCode"
@@ -122,8 +84,10 @@ watch(gugunCode, async () => {
                   sido.name
                 }}</a-select-option>
               </a-select>
-            </a-col>
-            <a-col :span="6">
+            </a-row>
+          </a-col>
+          <a-col :span="6">
+            <a-row justify="center">
               <a-select
                 ref="select"
                 v-model:value="gugunCode"
@@ -137,8 +101,10 @@ watch(gugunCode, async () => {
                   gugun.name
                 }}</a-select-option>
               </a-select>
-            </a-col>
-            <a-col :span="6">
+            </a-row>
+          </a-col>
+          <a-col :span="6">
+            <a-row justify="center">
               <a-select
                 ref="select"
                 v-model:value="dongCode"
@@ -152,25 +118,32 @@ watch(gugunCode, async () => {
                   dong.name
                 }}</a-select-option>
               </a-select>
-            </a-col>
-          </a-row>
-        </a-flex>
-      </a-row>
-    </a-col>
-    <a-col :span="6">
-      <button class="search_button" @click="onSearchByDongCode">검색하기</button>
-    </a-col>
+            </a-row>
+          </a-col>
+        </a-row>
+      </a-col>
+      <a-col :span="24">
+        <a-row justify="center">
+          <button class="search_button" @click="onSearchByDongCode">
+            <span class="NexonGothicMedium">검색하기</span>
+          </button>
+        </a-row>
+      </a-col>
+    </a-row>
   </a-row>
 </template>
 
 <style scoped>
 .content {
   width: 100%;
-  height: 300px;
-  background-color: blanchedalmond;
+  height: 500px;
+  /* background-color: blanchedalmond; */
   align-items: center;
   display: flex;
   justify-content: center;
+
+  background-image: url("@/assets/img/SearchFormBackgroundImg.jpg");
+  background-size: cover;
 }
 
 .radio_input {
@@ -184,12 +157,6 @@ watch(gugunCode, async () => {
 
   /* 패딩 */
   margin-bottom: 20px;
-}
-
-.lower_row {
-  /* 사이즈 */
-  height: 35px;
-  width: 600px;
 }
 
 .radio-label {
@@ -220,12 +187,28 @@ watch(gugunCode, async () => {
 
 .search_button {
   /* 마진 */
-  margin-left: 15px;
-
-  /* 사이즈 */
-  height: 90px;
+  margin-top: 20px;
 
   /* 테두리 */
-  border-radius: 3px;
+  border-radius: 5px;
+  border: 1px solid black;
+
+  background-color: #f7e1cc;
+
+  /* 사이즈 */
+  height: 38px;
+  width: 560px;
+}
+
+.search_button:hover {
+  background-color: #f7d8b8;
+}
+
+.search_button > span {
+  font-size: 20px;
+}
+
+.contentRow {
+  width: 800px;
 }
 </style>
