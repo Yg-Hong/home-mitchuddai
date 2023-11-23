@@ -96,36 +96,67 @@ getQnaDetail();
 
 <template>
   <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
-    <a-row class="rowForInputBox">
-      <a-col :span="6">
-        <label class="NexonFootballGothicLight" for="inputBoxForTitle">제목</label>
-      </a-col>
-      <a-col :span="18">
-        <a-input id="inputBoxForTitle" v-model:value="formState.title" :disabled="readOnlyFlag" />
+    <a-row justify="center">
+      <a-col :span="24">
+        <a-row justify="center">
+          <a-col :span="18">
+            <a-row class="rowForInputBox">
+              <a-col :span="6">
+                <label class="NexonFootballGothicLight" for="inputBoxForTitle"
+                  >제목</label
+                >
+              </a-col>
+              <a-col :span="18">
+                <a-input
+                  id="inputBoxForTitle"
+                  v-model:value="formState.title"
+                  :disabled="readOnlyFlag"
+                />
+              </a-col>
+            </a-row>
+            <a-row class="rowForInputBox">
+              <a-col :span="6">
+                <label class="NexonFootballGothicLight" for="inputBoxForUserId"
+                  >사용자 아이디</label
+                >
+              </a-col>
+              <a-col :span="6">
+                <a-input
+                  id="inputBoxForUserId"
+                  v-model:value="formState.authorId"
+                  disabled
+                />
+              </a-col>
+            </a-row>
+
+            <QnaEditForm
+              @updateContent="updateContent"
+              :readOnlyFlag="readOnlyFlag"
+              :prevContent="formState.content"
+            />
+          </a-col>
+        </a-row>
       </a-col>
     </a-row>
-    <a-row class="rowForInputBox">
-      <a-col :span="6">
-        <label class="NexonFootballGothicLight" for="inputBoxForUserId">사용자 아이디</label>
-      </a-col>
-      <a-col :span="6">
-        <a-input id="inputBoxForUserId" v-model:value="formState.authorId" disabled />
-      </a-col>
-    </a-row>
 
-    <QnaEditForm
-      @updateContent="updateContent"
-      :readOnlyFlag="readOnlyFlag"
-      :prevContent="formState.content"
-    />
+    <a-form-item>
+      <a-row justify="start">
+        <a-col :span="5"> </a-col>
+        <a-col :span="18">
+          <a-button class="actionBtnBox" @click="onModify">수정하기</a-button>
+          <a-button class="actionBtnBox" @click="onSave">저장하기</a-button>
+          <a-button class="actionBtnBox" @click="onReply"
+            >답변 입력하기</a-button
+          >
 
-    <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
-      <a-button class="actionBtnBox" @click="onModify">수정하기</a-button>
-      <a-button class="actionBtnBox" @click="onSave">저장하기</a-button>
-      <a-button class="actionBtnBox" @click="onReply">답변 입력하기</a-button>
-
-      <a-button style="margin-left: 10px" @click="onDelete">삭제하기</a-button>
-      <a-button style="margin-left: 10px" @click="onCancel">뒤로 가기</a-button>
+          <a-button style="margin-left: 10px" @click="onDelete">
+            삭제하기
+          </a-button>
+          <a-button style="margin-left: 10px" @click="onCancel">
+            뒤로 가기
+          </a-button>
+        </a-col>
+      </a-row>
     </a-form-item>
   </a-form>
 </template>

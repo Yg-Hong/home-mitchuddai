@@ -3,11 +3,26 @@ import { RouterView } from "vue-router";
 </script>
 
 <template>
-  <div class="QnaBoardTitle">
-    <a-row justify="center"> 공지사항 게시판임요 </a-row>
-    <a-row justify="center"> 불만 있음 짱까시던가 </a-row>
-  </div>
+  <a-row justify="center" class="NoticeTitle">
+    <a-col :span="18">
+      <a-row justify="center">
+        <span class="FontLM NexonFootballGothicBold subTitleBox">
+          공지사항</span
+        >
+      </a-row>
+    </a-col>
+  </a-row>
+
   <RouterView />
 </template>
 
-<style scoped></style>
+<style scoped>
+.NoticeTitle {
+  width: 100%;
+  padding-top: 110px;
+}
+
+.subTitleBox {
+  margin-bottom: 20px;
+}
+</style>

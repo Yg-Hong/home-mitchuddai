@@ -42,13 +42,25 @@ const customRow = (record) => {
 </script>
 
 <template>
-  <a-table :customRow="customRow" :columns="columns" :data-source="noticeList">
-    <template #bodyCell="{ column, text }">
-      <template v-if="column.dataIndex === 'title'">
-        <a>{{ text }}</a>
-      </template>
-    </template>
-  </a-table>
+  <a-row justify="center">
+    <a-col :span="24">
+      <a-row justify="center">
+        <a-col :span="18">
+          <a-table
+            :customRow="customRow"
+            :columns="columns"
+            :data-source="noticeList"
+          >
+            <template #bodyCell="{ column, text }">
+              <template v-if="column.dataIndex === 'title'">
+                <a>{{ text }}</a>
+              </template>
+            </template>
+          </a-table>
+        </a-col>
+      </a-row>
+    </a-col>
+  </a-row>
 </template>
 
 <style scoped>
