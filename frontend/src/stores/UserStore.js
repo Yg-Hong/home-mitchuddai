@@ -3,18 +3,12 @@ import { ref, computed } from "vue";
 import VueCookies from "vue-cookies";
 
 export const useUserStore = defineStore("userStore", () => {
-  const routeMenu = [
-    { name: "Home", path: "/", authorize: false },
-    { name: "house", path: "/house", authorize: false },
-    { name: "login", path: "/login", authorize: false },
-    { name: "profile", path: "/profile", authorize: true },
-    { name: "qna", path: "/qna", authorize: true },
-    { name: "logout", path: "/logout", authorize: true },
-  ];
-
   const loginState = ref(false);
   const userId = ref("");
   const userName = ref("");
+  const phoneNumber = ref("");
+  const address = ref("");
+  const email = ref("");
 
   //getter
   const getUserId = computed(() => {
@@ -22,6 +16,15 @@ export const useUserStore = defineStore("userStore", () => {
   });
   const getUserName = computed(() => {
     return userName.value;
+  });
+  const getPhoneNumber = computed(() => {
+    return phoneNumber.value;
+  });
+  const getAddress = computed(() => {
+    return address.value;
+  });
+  const getEmail = computed(() => {
+    return email.value;
   });
 
   const isLogin = () => {
@@ -45,13 +48,21 @@ export const useUserStore = defineStore("userStore", () => {
     return routerMenu.filter((menu) => menu.authorize === false);
   });
 
-  const login = (id, name) => {
-    // 로그인 요청 시 loginState 값ㅇ르 true로 바꿔주기
+  const login = (member) => {
+    // 로그인 요청 시 loginState 값을 true로 바꿔주기
     // 새로고침 시에도 반영되도록, 쿠키에 저장해 줌
-    console.log("유저정보 저장 시도 | id : " + id + " & name : " + name + "");
+    console.log(
+      "유저정보 저장 시도 | id : " + member.userId + " & name : " + name + ""
+    );
+
     loginState.value = true;
-    userId.value = id;
-    userName.value = name;
+
+    userId.value = member.userId;
+    email.value = member.email;
+    userName.value = member.name;
+    phoneNumber.value = member.phoneNumber;
+    address.value = member.address;
+
     console.log(loginState.value + " " + userId.value + " " + userName.value);
     VueCookies.set("userId", Date.now(), "1d");
     console.log("유저정보 저장 성공");
@@ -59,10 +70,30 @@ export const useUserStore = defineStore("userStore", () => {
 
   const logout = () => {
     loginState.value = false;
+
     userId.value = "";
     userName.value = "";
+    phoneNumber.value = "";
+    address.value = "";
+    email.value = "";
+
     VueCookies.remove("userId");
   };
 
-  return { showMenu, login, logout, isLogin, loginState, getUserId, getUserName };
+  return {
+    login,
+    logout,
+    isLogin,
+    loginState,
+    getUserId,
+    getUserName,
+    getPhoneNumber,
+    getAddress,
+    getEmail,
+    userId,
+    userName,
+    phoneNumber,
+    address,
+    email,
+  };
 });

@@ -1,6 +1,10 @@
 <script setup>
 import { reactive, computed } from "vue";
-import { UserOutlined, LockOutlined, CaretRightOutlined } from "@ant-design/icons-vue";
+import {
+  UserOutlined,
+  LockOutlined,
+  CaretRightOutlined,
+} from "@ant-design/icons-vue";
 import { useUserStore } from "@/stores/userStore.js";
 import { useRouter } from "vue-router";
 import MemberAPI from "@/api/MemberAPI.js";
@@ -13,14 +17,6 @@ const formState = reactive({
 
 const userStore = useUserStore();
 const router = useRouter();
-
-const onFinish = (values) => {
-  console.log("Success: ", values);
-};
-
-const onFinishFailed = (errorInfo) => {
-  console.log("Failed: ", errorInfo);
-};
 
 const disabled = computed(() => {
   return !(formState.userId && formState.userPassword);
@@ -39,8 +35,10 @@ const Login = () => {
   MemberAPI.tryLogin(
     user,
     ({ data }) => {
-      console.log("로그인 성공 Id: " + data.email + " | password" + data.password);
-      userStore.login(data.email, data.name);
+      console.log(
+        "로그인 성공 Id: " + data.userId + " | password" + data.password
+      );
+      userStore.login(data);
 
       router.push("/");
     },
@@ -61,8 +59,15 @@ const Login = () => {
     @finish="onfinish"
     @finishFailed="onfinishFailed"
   >
-    <a-form-item name="userId" :rules="[{ requried: true, messgae: '아이디를 입력해주세요!' }]">
-      <a-input v-model:value="formState.userId" placeholder="ID" class="InputBox">
+    <a-form-item
+      name="userId"
+      :rules="[{ requried: true, messgae: '아이디를 입력해주세요!' }]"
+    >
+      <a-input
+        v-model:value="formState.userId"
+        placeholder="ID"
+        class="InputBox"
+      >
         <template #prefix>
           <UserOutlined class="site-form-item-icon" />
         </template>
@@ -88,7 +93,9 @@ const Login = () => {
       <a-row justify="space-between">
         <a-col :span="6">
           <a-form-item name="remember" no-style>
-            <a-checkbox v-model:checked="formState.remember" class="NexonGothicBold FontColorA"
+            <a-checkbox
+              v-model:checked="formState.remember"
+              class="NexonGothicBold FontColorA"
               >아이디 저장
             </a-checkbox>
           </a-form-item>

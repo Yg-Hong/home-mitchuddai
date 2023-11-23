@@ -41,7 +41,8 @@ const router = createRouter({
             },
             {
               path: ":id",
-              component: () => import("@/components/NoticeForm/NoticeDetail.vue"),
+              component: () =>
+                import("@/components/NoticeForm/NoticeDetail.vue"),
             },
           ],
         },
@@ -51,13 +52,19 @@ const router = createRouter({
           children: [
             {
               path: "",
-              component: () => import("@/components/HouseForm/HouseListForm.vue"),
+              component: () =>
+                import("@/components/HouseForm/HouseListForm.vue"),
             },
             {
               path: ":aptCode",
-              component: () => import("@/components/HouseForm/HouseDetailForm.vue"),
+              component: () =>
+                import("@/components/HouseForm/HouseDetailForm.vue"),
             },
           ],
+        },
+        {
+          path: "mypage",
+          component: () => import("@/components/MyPageForm/MyPageForm.vue"),
         },
       ],
     },

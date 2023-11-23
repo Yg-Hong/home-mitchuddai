@@ -62,7 +62,7 @@ import { BellOutlined } from "@ant-design/icons-vue";
               justify="end"
               class="navBarMenu NexonFootballGothicBold FontMS FontColorA"
             >
-              <router-link to="">
+              <router-link to="/mypage">
                 <div class="margin_right navBarItem">마이페이지</div>
               </router-link>
             </a-row>
