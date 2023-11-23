@@ -3,10 +3,14 @@ import { RouterView } from "vue-router";
 </script>
 
 <template>
-  <div class="QnaBoardTitle">
-    <a-row justify="center"> Qna게시판임요 </a-row>
-  </div>
+  <a-row justify="center" class="QnaBoardTitle"> Qna게시판임요 </a-row>
+
   <RouterView />
 </template>
 
-<style scoped></style>
+<style scoped>
+.QnaBoardTitle {
+  width: 80%;
+  padding-top: 110px;
+}
+</style>

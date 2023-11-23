@@ -57,16 +57,12 @@ const dislike = () => {
       </span>
       <span key="comment-basic-reply-to">Reply to</span>
     </template>
-    <template #author><a>Han Solo</a></template>
+    <template #author><a>홍윤기</a></template>
     <template #avatar>
       <AliwangwangOutlined alt="Han Solo" />
     </template>
     <template #content>
-      <p>
-        We supply a series of design principles, practical patterns and high quality design
-        resources (Sketch and Axure), to help people create their product prototypes beautifully and
-        efficiently.
-      </p>
+      <p>살기 좋은 집!!! 민수에게 추천해요~~!!</p>
     </template>
     <template #datetime>
       <a-tooltip :title="dayjs().format('YYYY-MM-DD HH:mm:ss')">

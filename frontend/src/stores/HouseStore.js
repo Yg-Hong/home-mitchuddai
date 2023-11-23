@@ -5,7 +5,23 @@ import { ref, computed } from "vue";
 
 export const useHouseStore = defineStore("houseStore", () => {
   const houseList = ref([]);
-  const house = ref(null);
+  const house = ref({
+    aptCode: "",
+    aptName: "",
+    buildYear: "",
+    code: "",
+    dealAmount: "",
+    dealYear: "",
+    dealMonth: "",
+    dealDay: "",
+    area: "",
+    floor: "",
+    jibun: "",
+    lat: "",
+    lng: "",
+    dong: "",
+    img: "",
+  });
 
   const distance = ref([]);
 
@@ -19,7 +35,23 @@ export const useHouseStore = defineStore("houseStore", () => {
     houseList.value = [];
   };
   const clearHouse = () => {
-    house.value = null;
+    house.value = {
+      aptCode: "",
+      aptName: "",
+      buildYear: "",
+      code: "",
+      dealAmount: "",
+      dealYear: "",
+      dealMonth: "",
+      dealDay: "",
+      area: "",
+      floor: "",
+      jibun: "",
+      lat: "",
+      lng: "",
+      dong: "",
+      img: "",
+    };
   };
   const clearDistance = () => {
     distance.value = [];

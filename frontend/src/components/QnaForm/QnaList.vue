@@ -80,15 +80,25 @@ getQnaList({ page: 1, size: 10 });
 </script>
 
 <template>
-  <a-table :customRow="customRow" :columns="columns" :data-source="qnaList">
-    <template #bodyCell="{ column, text }">
-      <template v-if="column.dataIndex === 'title'">
-        <a>{{ text }}</a>
-      </template>
-    </template>
-  </a-table>
-  <a-pagination v-model:current="current" :total="100" show-less-items @change="onChangePageInfo" />
-
+  <a-row justify="center">
+    <a-col :span="24">
+      <a-table :customRow="customRow" :columns="columns" :data-source="qnaList">
+        <template #bodyCell="{ column, text }">
+          <template v-if="column.dataIndex === 'title'">
+            <a>{{ text }}</a>
+          </template>
+        </template>
+      </a-table>
+    </a-col>
+    <a-row>
+      <a-pagination
+        v-model:current="current"
+        :total="100"
+        show-less-items
+        @change="onChangePageInfo"
+      />
+    </a-row>
+  </a-row>
   <a-row justify="end">
     <a-button class="margin_top writeBtn" @click="router.push('/qna/write')">글쓰기</a-button>
   </a-row>

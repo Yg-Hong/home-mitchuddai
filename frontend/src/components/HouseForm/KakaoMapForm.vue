@@ -53,6 +53,7 @@ const loadScript = () => {
   const key = import.meta.env.VITE_KAKAO_MAP_API_KEY;
   const script = document.createElement("script");
   /* global kakao */
+
   // 동적 로딩을 위한 autoload=false 추가
   script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&libraries=services&appkey=${key}`;
   // services 라이브러리 불러오기
@@ -121,7 +122,7 @@ const initMap = () => {
     map.value,
     "center_changed",
     useDebounceFn(() => {
-      if (house.value) return;
+      // if (house.value) return;
 
       vLoading();
       bound.value = map.value.getBounds();
@@ -239,6 +240,12 @@ watch(house, () => {
         latlng: [house.value.lat, house.value.lng],
       },
     ];
+
+    for (let i = 0; i < categories.value.length; i++) {
+      // console.log(categories.value[i]);
+
+      calcDistanceFromPlace(categories.value[i].id, positions[0].latlng[0], positions[0].latlng[1]);
+    }
 
     displayHouseMarkers(houseMarker);
     map.value.setCenter(new kakao.maps.LatLng(house.value.lat, house.value.lng), 2);

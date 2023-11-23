@@ -7,6 +7,7 @@ import DealCardForm from "@/components/HouseForm/DealCardForm.vue";
 import HouseAPI from "@/api/HouseAPI.js";
 import { useHouseStore } from "@/stores/HouseStore.js";
 import { storeToRefs } from "pinia";
+import { MenuFoldOutlined, CaretDownOutlined } from "@ant-design/icons-vue";
 
 const houseStore = useHouseStore();
 const { house } = storeToRefs(houseStore);
@@ -18,27 +19,14 @@ const router = useRouter();
 // const { houseDetailInfo } = storeToRefs(store);
 
 const houseDetailInfo = ref({
-  aptCode: 26110000000001,
-  buildYear: 1998,
-  roadName: "영주로",
-  apartmentName: "동아(92-0)",
-  jibun: "92",
-  lng: "129.029977555653",
-  lat: "35.1136527983158",
-  sidoName: "부산광역시",
-  gugunName: "중구",
-  dongName: "영주동",
-  houseDeals: [
-    {
-      no: 261102201000001,
-      dealAmount: "23,400",
-      dealYear: 2022,
-      dealMonth: 1,
-      area: "84.7",
-      floor: "8",
-      aptCode: 26110000000001,
-    },
-  ],
+  apartmentName: "",
+  sidoName: "",
+  gugunName: "",
+  dongName: "",
+  roadName: "",
+  roadNameBonbun: "",
+  buildYear: "",
+  houseDeals: [],
 });
 
 const distanceList = houseStore.getDistance;
@@ -80,40 +68,62 @@ watch(activeKey, (val) => {
   <br />
 
   <a-row justify="start">
-    <span @click="onClickTobackToTheList"> &lArr; 목록으로 </span>
+    <a-typography-title :level="4" class="NexonGothicMedium backToHouseListButton">
+      <span @click="onClickTobackToTheList"> <MenuFoldOutlined /> 목록으로 </span>
+    </a-typography-title>
   </a-row>
   <a-row justify="center">
-    <div>실거래 상세 자료</div>
+    <div class="title">
+      <a-typography-title :level="1" class="NexonGothicMedium">
+        실거래 상세 자료
+      </a-typography-title>
+    </div>
   </a-row>
   <div class="detailInfoBox">
-    <a-row>
-      <a-col :span="24">기본정보</a-col>
+    <a-row class="subTitle">
+      <a-col :span="1"></a-col>
+      <a-col :span="22">
+        <a-typography-title :level="3" class="NexonGothicLight">
+          <CaretDownOutlined />기본정보
+        </a-typography-title>
+      </a-col>
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
-      <a-col :span="6"> 건물명 : </a-col>
-      <a-col :span="12">{{ houseDetailInfo.apartmentName }}</a-col>
+      <a-col :span="6"
+        ><span class="NexonGothicLight FontCustom">건 &nbsp &nbsp &nbsp 물 : </span>
+      </a-col>
+      <a-col :span="12">
+        <span class="NexonGothicLight FontCustom">{{ houseDetailInfo.apartmentName }}</span>
+      </a-col>
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
-      <a-col :span="6"> 주소 : </a-col>
-      <a-col :span="12"
-        >{{ houseDetailInfo.sidoName }} {{ houseDetailInfo.gugunName }}
-        {{ houseDetailInfo.dongName }}</a-col
+      <a-col :span="6"
+        ><span class="NexonGothicLight FontCustom"> 주 &nbsp &nbsp &nbsp 소 : </span></a-col
       >
+      <a-col :span="12">
+        <span class="NexonGothicLight FontCustom">
+          {{ houseDetailInfo.sidoName }} {{ houseDetailInfo.gugunName }}
+          {{ houseDetailInfo.dongName }}
+        </span>
+      </a-col>
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
-      <a-col :span="6"> 상세주소 : </a-col>
-      <a-col :span="12"
-        >{{ houseDetailInfo.roadName }}
-        {{ houseDetailInfo.roadNameBonbun }}</a-col
-      >
+      <a-col :span="6"><span class="NexonGothicLight FontCustom"> 상세주소 :</span></a-col>
+      <a-col :span="12">
+        <span class="NexonGothicLight FontCustom">
+          {{ houseDetailInfo.roadName }} {{ houseDetailInfo.roadNameBonbun }}
+        </span>
+      </a-col>
     </a-row>
     <a-row justity="space-between">
       <a-col :span="2"></a-col>
-      <a-col :span="6"> 건축년도 </a-col>
-      <a-col :span="12">{{ houseDetailInfo.buildYear }} 년</a-col>
+      <a-col :span="6"><span class="NexonGothicLight FontCustom"> 건축년도 : </span></a-col>
+      <a-col :span="12">
+        <span class="NexonGothicLight FontCustom">{{ houseDetailInfo.buildYear }} 년 </span>
+      </a-col>
     </a-row>
   </div>
 
@@ -121,10 +131,7 @@ watch(activeKey, (val) => {
     <a-collapse v-model:activeKey="activeKey" accordion>
       <a-collapse-panel key="1" header="실거래 목록">
         <div class="dealList">
-          <template
-            v-for="(deal, index) in houseDetailInfo.houseDeals"
-            :key="index"
-          >
+          <template v-for="(deal, index) in houseDetailInfo.houseDeals" :key="index">
             <a-row justify="center">
               <DealCardForm :deal="deal" />
             </a-row>
@@ -133,64 +140,134 @@ watch(activeKey, (val) => {
       </a-collapse-panel>
       <a-collapse-panel key="3" header="주변 편의시설">
         <a-row class="space_evenly_box">
-          <a-col :span="8"
-            ><a-row justify="center"
-              >편의점 {{ distanceList[7].timeOnFoot }}</a-row
-            ></a-col
-          >
-          <a-col :span="8"
-            ><a-row justify="center"
-              >지하철 {{ distanceList[4].timeOnFoot }}</a-row
-            ></a-col
-          >
+          <a-col :span="12">
+            <a-row justify="center">
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS">편의점</a-row>
+              </a-col>
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS">
+                  {{ distanceList[7].timeOnFoot }} 분
+                </a-row>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="12">
+            <a-row justify="center">
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS"> 지하철 </a-row>
+              </a-col>
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS">
+                  {{ distanceList[4].timeOnFoot }} 분
+                </a-row>
+              </a-col>
+            </a-row>
+          </a-col>
         </a-row>
         <a-row class="space_evenly_box">
-          <a-col :span="8"
-            ><a-row justify="center"
-              >은행 {{ distanceList[1].timeOnFoot }}</a-row
-            ></a-col
-          >
-          <a-col :span="8"
-            ><a-row justify="center"
-              >병원 {{ distanceList[6].timeOnFoot }}</a-row
-            ></a-col
-          >
+          <a-col :span="12">
+            <a-row justify="center">
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS">은행</a-row>
+              </a-col>
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS">
+                  {{ distanceList[1].timeOnFoot }} 분
+                </a-row>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="12">
+            <a-row justify="center">
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS"> 병원 </a-row>
+              </a-col>
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS">
+                  {{ distanceList[6].timeOnFoot }} 분
+                </a-row>
+              </a-col>
+            </a-row>
+          </a-col>
         </a-row>
         <a-row class="space_evenly_box">
-          <a-col :span="8"
-            ><a-row justify="center"
-              >학교 {{ distanceList[2].timeOnFoot }}
-            </a-row></a-col
-          >
-          <a-col :span="8"
-            ><a-row justify="center"
-              >약국 {{ distanceList[3].timeOnFoot }}</a-row
-            ></a-col
-          >
+          <a-col :span="12">
+            <a-row justify="center">
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS"> 학교 </a-row>
+              </a-col>
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS">
+                  {{ distanceList[2].timeOnFoot }} 분
+                </a-row>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="12">
+            <a-row justify="center">
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS"> 약국 </a-row>
+              </a-col>
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS">
+                  {{ distanceList[3].timeOnFoot }} 분
+                </a-row>
+              </a-col>
+            </a-row>
+          </a-col>
         </a-row>
         <a-row class="space_evenly_box">
-          <a-col :span="8"
-            ><a-row justify="center"
-              >카페 {{ distanceList[5].timeOnFoot }}</a-row
-            ></a-col
-          >
-          <a-col :span="8"
-            ><a-row justify="center"
-              >마트 {{ distanceList[0].timeOnFoot }}</a-row
-            ></a-col
-          >
+          <a-col :span="12">
+            <a-row justify="center">
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS"> 카페 </a-row>
+              </a-col>
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS">
+                  {{ distanceList[5].timeOnFoot }} 분
+                </a-row>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="12">
+            <a-row justify="center">
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS"> 마트 </a-row>
+              </a-col>
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS">
+                  {{ distanceList[0].timeOnFoot }} 분
+                </a-row>
+              </a-col>
+            </a-row>
+          </a-col>
         </a-row>
         <a-row class="space_evenly_box">
-          <a-col :span="8"
-            ><a-row justify="center"
-              >주차장{{ distanceList[8].timeOnFoot }}</a-row
-            ></a-col
-          >
-          <a-col :span="8"
-            ><a-row justify="center"
-              >주유소 {{ distanceList[9].timeOnFoot }}</a-row
-            ></a-col
-          >
+          <a-col :span="12">
+            <a-row justify="center">
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS"> 주차장 </a-row>
+              </a-col>
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS">
+                  {{ distanceList[8].timeOnFoot }} 분
+                </a-row>
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="12">
+            <a-row justify="center">
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS"> 주유소 </a-row>
+              </a-col>
+              <a-col :span="10">
+                <a-row justify="center" class="NexonGothicLight FontMMS">
+                  {{ distanceList[9].timeOnFoot }} 분
+                </a-row>
+              </a-col>
+            </a-row>
+          </a-col>
         </a-row>
       </a-collapse-panel>
       <a-collapse-panel key="4" header="댓글">
@@ -202,8 +279,40 @@ watch(activeKey, (val) => {
 </template>
 
 <style scoped>
+.subTitle {
+  margin-top: 20px;
+}
+
 .space_evenly_box {
   display: flex;
   justify-content: space-evenly;
+}
+
+.dealList {
+  height: 500px;
+  overflow: auto;
+}
+
+.houseDealInfo {
+  margin-top: 5px;
+}
+
+.backToHouseListButton {
+  cursor: pointer;
+}
+
+.backToHouseListButton:hover {
+  background-color: #f0f0f0;
+}
+.FontCustom {
+  font-size: 18px;
+}
+
+.ant-collapse-item {
+  font-size: 18px;
+}
+
+.FontMMS {
+  font-size: 15px;
 }
 </style>

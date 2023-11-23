@@ -37,6 +37,7 @@ const updateHouseMarkerList = (newList) => {
 <style scoped>
 .LeftForm {
   padding-right: 30px;
+  padding-left: 30px;
   height: 850px;
 
   border-right: 1px solid black;
