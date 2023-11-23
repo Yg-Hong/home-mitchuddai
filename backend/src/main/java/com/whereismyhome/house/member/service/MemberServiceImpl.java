@@ -21,7 +21,7 @@ public class MemberServiceImpl implements MemberService {
 
     public void signUp(SignUp signUp) {
         // 중복 아이디 체크
-        Optional<Member> foundId = memberRepository.findByUserId(signUp.getEmail());
+        Optional<Member> foundId = memberRepository.findByUserId(signUp.getUserId());
         if (foundId.isPresent()) {
             throw new DuplicateUserIdException();
         }
