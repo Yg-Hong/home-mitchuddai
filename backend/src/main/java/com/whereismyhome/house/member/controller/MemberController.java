@@ -45,6 +45,7 @@ public class MemberController {
 				.email(memberDto.getEmail())
 				.address(memberDto.getAddress())
 				.createdAt(memberDto.getCreatedAt())
+				.phoneNumber(memberDto.getPhoneNumber())
 				.build();
 		memberService.signUp(signUp);
 	}
