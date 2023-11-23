@@ -1,7 +1,11 @@
 <script setup>
 import { reactive, computed } from "vue";
 import { RouterLink, useRouter } from "vue-router";
-import { UserOutlined, LockOutlined, CaretRightOutlined } from "@ant-design/icons-vue";
+import {
+  UserOutlined,
+  LockOutlined,
+  CaretRightOutlined,
+} from "@ant-design/icons-vue";
 import MemberAPI from "@/api/MemberAPI.js";
 
 const router = useRouter();
@@ -13,15 +17,9 @@ const formState = reactive({
   userName: "",
   emailId: "",
   emailDomain: "",
+  address: "",
+  phoneNumber: "",
 });
-
-const onFinish = (values) => {
-  console.log("Success: ", values);
-};
-
-const onFinishFailed = (errorInfo) => {
-  console.log("Failed: ", errorInfo);
-};
 
 const disabled = computed(() => {
   return !(formState.userId && formState.userPassword);
@@ -71,9 +69,13 @@ const Register = () => {
   console.log("회원가입 버튼 클릭");
 
   const user = {
-    userPassword: formState.userPassword,
-    userName: formState.userName,
+    userId: formState.userId,
+    password: formState.userPassword,
+    name: formState.userName,
     email: formState.userEmail,
+    address: formState.address,
+    phoneNumber: formState.phonenumber,
+    createdAt: new Date(),
   };
 
   MemberAPI.tryRegister(
@@ -102,11 +104,20 @@ const Register = () => {
   >
     <a-row justify="space-between" class="input_row">
       <a-col :span="5">
-        <label for="normal_login_userId" class="NexonFootballGothicLight"> 아이디 : </label>
+        <label for="normal_login_userId" class="NexonFootballGothicLight">
+          아이디 :
+        </label>
       </a-col>
       <a-col :span="19" class="inputBoxContainer">
-        <a-form-item name="userId" :rules="[{ requried: true, messgae: '아이디를 입력해주세요!' }]">
-          <a-input v-model:value="formState.userId" placeholder="ID" class="InputBox">
+        <a-form-item
+          name="userId"
+          :rules="[{ requried: true, messgae: '아이디를 입력해주세요!' }]"
+        >
+          <a-input
+            v-model:value="formState.userId"
+            placeholder="ID"
+            class="InputBox"
+          >
             <template #prefix>
               <UserOutlined class="site-form-item-icon" />
             </template>
@@ -117,7 +128,9 @@ const Register = () => {
 
     <a-row justify="space-between" class="input_row">
       <a-col :span="5">
-        <label for="normal_login_userPassword" class="NexonFootballGothicLight"> 비밀번호 : </label>
+        <label for="normal_login_userPassword" class="NexonFootballGothicLight">
+          비밀번호 :
+        </label>
       </a-col>
       <a-col :span="19">
         <div stlye="inputBoxContainer">
@@ -141,7 +154,10 @@ const Register = () => {
 
     <a-row justify="space-between" class="input_row">
       <a-col :span="5">
-        <label for="normal_login_PasswordCheck" class="NexonFootballGothicLight">
+        <label
+          for="normal_login_PasswordCheck"
+          class="NexonFootballGothicLight"
+        >
           비밀번호 확인 :
         </label>
       </a-col>
@@ -165,11 +181,62 @@ const Register = () => {
 
     <a-row justify="space-between" class="input_row">
       <a-col :span="5">
-        <label for="normal_login_userName" class="NexonFootballGothicLight"> 이름 : </label>
+        <label for="normal_login_address" class="NexonFootballGothicLight">
+          주소 :
+        </label>
       </a-col>
       <a-col :span="19">
-        <a-form-item name="userName" :rules="[{ requried: true, messgae: '이름을 입력해주세요!' }]">
-          <a-input v-model:value="formState.userName" placeholder="이름" class="InputBox">
+        <a-form-item
+          name="address"
+          :rules="[{ requried: true, messgae: '주소를 입력해주세요!' }]"
+        >
+          <a-input
+            v-model:value="formState.address"
+            placeholder="주소"
+            class="InputBox"
+          >
+          </a-input>
+        </a-form-item>
+      </a-col>
+    </a-row>
+
+    <a-row justify="space-between" class="input_row">
+      <a-col :span="5">
+        <label for="normal_login_phonenumber" class="NexonFootballGothicLight">
+          전화번호 :
+        </label>
+      </a-col>
+      <a-col :span="19">
+        <a-form-item
+          name="phonenumber"
+          :rules="[{ requried: true, messgae: '전화번호를 입력해주세요!' }]"
+        >
+          <a-input
+            v-model:value="formState.phonenumber"
+            placeholder="전화번호"
+            class="InputBox"
+          >
+          </a-input>
+        </a-form-item>
+      </a-col>
+    </a-row>
+
+    <a-row justify="space-between" class="input_row">
+      <a-col :span="5">
+        <label for="normal_login_userName" class="NexonFootballGothicLight">
+          이름 :
+        </label>
+      </a-col>
+      <a-col :span="19">
+        <a-form-item
+          name="userName"
+          :rules="[{ requried: true, messgae: '이름을 입력해주세요!' }]"
+        >
+          <a-input
+            v-model:value="formState.userName"
+            placeholder="이름"
+            class="InputBox"
+          >
             <template #prefix>
               <UserOutlined class="site-form-item-icon" />
             </template>
@@ -180,14 +247,20 @@ const Register = () => {
 
     <a-row justify="space-between" class="input_row">
       <a-col :span="5">
-        <label for="normal_login_userEmail" class="NexonFootballGothicLight"> 이메일 : </label>
+        <label for="normal_login_userEmail" class="NexonFootballGothicLight">
+          이메일 :
+        </label>
       </a-col>
       <a-col :span="9">
         <a-form-item
           name="userEmail"
           :rules="[{ requried: true, messgae: '이메일을 입력해주세요!' }]"
         >
-          <a-input v-model:value="formState.userEmail" placeholder="이메일" class="select_box">
+          <a-input
+            v-model:value="formState.userEmail"
+            placeholder="이메일"
+            class="select_box"
+          >
             <template #prefix>
               <UserOutlined class="site-form-item-icon" />
             </template>
@@ -285,7 +358,7 @@ const Register = () => {
 }
 
 .login-form-footer {
-  margin-top: 80px;
+  margin-top: 40px;
 
   border-top: 1px solid;
 }

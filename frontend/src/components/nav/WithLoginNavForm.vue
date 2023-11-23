@@ -25,26 +25,44 @@ import { BellOutlined } from "@ant-design/icons-vue";
         <a-row justify="right">
           <a-col :span="18">
             <a-row class="navBarMenu">
-              <a-col :span="4" class="navBarItem NexonFootballGothicBold FontMMS FontColorA">
+              <a-col
+                :span="4"
+                class="navBarItem NexonFootballGothicBold FontMMS FontColorA"
+              >
                 <router-link to="/">소개</router-link>
               </a-col>
-              <a-col :span="4" class="navBarItem NexonFootballGothicBold FontMMS FontColorA">
+              <a-col
+                :span="4"
+                class="navBarItem NexonFootballGothicBold FontMMS FontColorA"
+              >
                 <router-link to="/news">뉴스</router-link>
               </a-col>
-              <a-col :span="6" class="navBarItem NexonFootballGothicBold FontMMS FontColorA">
-                <router-link to="/house">실거래가 조회</router-link>
+              <a-col
+                :span="6"
+                class="navBarItem NexonFootballGothicBold FontMMS FontColorA"
+              >
+                <router-link to="/house/1168010100">실거래가 조회</router-link>
               </a-col>
-              <a-col :span="4" class="navBarItem NexonFootballGothicBold FontMMS FontColorA">
+              <a-col
+                :span="4"
+                class="navBarItem NexonFootballGothicBold FontMMS FontColorA"
+              >
                 <router-link to="/notice">공지사항</router-link>
               </a-col>
-              <a-col :span="4" class="navBarItem NexonFootballGothicBold FontMMS FontColorA">
+              <a-col
+                :span="4"
+                class="navBarItem NexonFootballGothicBold FontMMS FontColorA"
+              >
                 <router-link to="/qna">Q&A</router-link>
               </a-col>
             </a-row>
           </a-col>
           <a-col :span="6">
-            <a-row justify="end" class="navBarMenu NexonFootballGothicBold FontMS FontColorA">
-              <router-link to="">
+            <a-row
+              justify="end"
+              class="navBarMenu NexonFootballGothicBold FontMS FontColorA"
+            >
+              <router-link to="/mypage">
                 <div class="margin_right navBarItem">마이페이지</div>
               </router-link>
             </a-row>

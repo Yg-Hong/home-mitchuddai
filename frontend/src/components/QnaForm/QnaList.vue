@@ -82,25 +82,44 @@ getQnaList({ page: 1, size: 10 });
 <template>
   <a-row justify="center">
     <a-col :span="24">
-      <a-table :customRow="customRow" :columns="columns" :data-source="qnaList">
-        <template #bodyCell="{ column, text }">
-          <template v-if="column.dataIndex === 'title'">
-            <a>{{ text }}</a>
-          </template>
-        </template>
-      </a-table>
+      <a-row justify="center">
+        <a-col :span="18">
+          <a-table
+            :customRow="customRow"
+            :pagination="false"
+            :columns="columns"
+            :data-source="qnaList"
+          >
+            <template #bodyCell="{ column, text }">
+              <template v-if="column.dataIndex === 'title'">
+                <a>{{ text }}</a>
+              </template>
+            </template>
+          </a-table>
+        </a-col>
+      </a-row>
     </a-col>
-    <a-row>
+    <a-row class="paginationButtonRow">
       <a-pagination
         v-model:current="current"
-        :total="100"
+        :total="totalPage"
         show-less-items
         @change="onChangePageInfo"
       />
     </a-row>
   </a-row>
   <a-row justify="end">
-    <a-button class="margin_top writeBtn" @click="router.push('/qna/write')">글쓰기</a-button>
+    <a-col :span="3">
+      <a-row justify="end">
+        <a-button
+          class="margin_top writeBtn"
+          @click="router.push('/qna/write')"
+        >
+          글쓰기
+        </a-button>
+      </a-row>
+    </a-col>
+    <a-col :span="3"></a-col>
   </a-row>
 </template>
 
@@ -113,5 +132,9 @@ getQnaList({ page: 1, size: 10 });
 .writeBtn:hover {
   background-color: #00387e;
   color: white;
+}
+
+.paginationButtonRow {
+  margin-top: 20px;
 }
 </style>
