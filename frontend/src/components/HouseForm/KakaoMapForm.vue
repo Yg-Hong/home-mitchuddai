@@ -395,6 +395,9 @@ const searchPlaces = () => {
 const displayPlaces = (places) => {
   // 몇번째 카테고리가 선택되어 있는지 얻어옵니다
   // 이 순서는 스프라이트 이미지에서의 위치를 계산하는데 사용됩니다
+
+  console.log(currCategory.value);
+
   var order = document
     .getElementById(currCategory.value)
     .getAttribute("data-order");
@@ -523,6 +526,7 @@ const onClickCategory = (id, className) => {
     removeCategoryMarker();
   } else {
     currCategory.value = id;
+    console.log(currCategory.value);
     if (id == "BK9") {
       changeCategoryClass(document.getElementById("category").children.BK9);
     } else if (id == "CE7") {
@@ -535,6 +539,12 @@ const onClickCategory = (id, className) => {
       changeCategoryClass(document.getElementById("category").children.OL7);
     } else if (id == "PM9") {
       changeCategoryClass(document.getElementById("category").children.PM9);
+    } else if (id == "SC4") {
+      changeCategoryClass(document.getElementById("category").children.SC4);
+    } else if (id == "SW8") {
+      changeCategoryClass(document.getElementById("category").children.SW8);
+    } else if (id == "HP8") {
+      changeCategoryClass(document.getElementById("category").children.HP8);
     }
 
     console.log(currCategory.value);
