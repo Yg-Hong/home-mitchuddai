@@ -38,7 +38,7 @@ public class HouseController {
 
     @GetMapping("/{dongCode}/{aptCode}")
     public DetailResultVO getDealListByDongCode(@PathVariable Long dongCode, @PathVariable Long aptCode) {
-        log.info("aptCode : " + aptCode);
+        log.info("aptCode : " + aptCode + " | dongCode : " + dongCode);
         DetailResultVO result = null;
 
         result = houseService.getDealListByDongCode(dongCode, aptCode);
