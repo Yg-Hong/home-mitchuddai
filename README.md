@@ -22,15 +22,9 @@
 
 ## 기술 스택
 
-<img src="https://user-images.githubusercontent.com/59018852/207268950-39f3ceb2-6da1-493f-9dc9-59faa238368d.png" width=800/>
-
-</br>
-
-## 기술 스택
-
-<div style="text-align:center">
+<!-- <div style="text-align:center">
     <img src="https://github.com/tjsduq0423/WhereIsMyHome/assets/66876894/d89b0cc8-baba-497e-a325-b814022d1eca" style="width:500px; margin-bottom:20px"/>
-</div>
+</div> -->
 
 ---
 
@@ -48,9 +42,9 @@
 
 - 움직인 지도상 좌표를 기준으로 새롭게 건물 리스트 갱신
 
-### 기능 4
+<!-- ### 기능 4
 
-- Haversine Formula(구의 최단거리 알고리즘)을 활용한 아파트 주변 편의시설 정보 제공
+- Haversine Formula(구의 최단거리 알고리즘)을 활용한 아파트 주변 편의시설 정보 제공 -->
 
 ---
 
