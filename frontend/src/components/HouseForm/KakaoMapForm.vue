@@ -72,6 +72,8 @@ const categoryMarkers = ref([]);
 const currCategory = ref([]);
 const ps = ref([]);
 const bound = ref({});
+const center = ref({});
+const zoomlevel = ref({});
 
 const initMap = () => {
   const container = document.getElementById("map");
@@ -126,6 +128,8 @@ const initMap = () => {
 
       vLoading();
       bound.value = map.value.getBounds();
+      center.value = map.value.getCenter();
+      zoomlevel.value = map.value.getLevel();
       // mapCenterLatLng.value = [latlng.getLat(), latlng.getLng()];
       console.log(bound.value);
     }, 500)
@@ -286,6 +290,8 @@ const test = () => {
 watchDebounced(
   bound,
   async (value) => {
+    console.log("중심좌표 추적");
+    console.log(center.value + " " + zoomlevel.value);
     console.log(value);
     const { ha, oa, pa, qa } = value;
     await displayHouseMarkers2(ha, oa, pa, qa);

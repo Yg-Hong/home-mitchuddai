@@ -42,4 +42,27 @@ public class HouseServiceImpl implements HouseService {
 
 		return houseMapper.selectHousesByLatLng(params);
 	}
+
+	public List<SearchResultVO> getHouseListByLatLng2(String lng, String lat, int level){
+		HashMap<String, Object> params = new HashMap<>();
+		params.put("lng", lng);
+		params.put("lat", lat);
+		params.put("dist", getDist(level));
+
+		log.info(params.toString());
+
+		return houseMapper.selectHousesByLatLng2(params);
+	}
+
+	//지도 zoomLevel
+	public double getDist(int zoomLevel) {
+
+		return switch (zoomLevel) {
+			case 1 -> 0.003;
+			case 2 -> 0.0075;
+			case 3 -> 0.0125;
+			case 4 -> 0.018;
+			default -> 0.02;
+		};
+	}
 }

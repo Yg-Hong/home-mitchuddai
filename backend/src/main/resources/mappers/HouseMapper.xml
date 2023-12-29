@@ -63,6 +63,30 @@
         order by dealYear desc;
     </select>
 
+    <select id="selectHousesByLatLng2" parameterType="Map" resultMap="HouseDetailInfo">
+        SELECT 	deal.no,
+                  deal.dealAmount,
+                  deal.dealYear,
+                  deal.dealMonth,
+                  deal.area,
+                  deal.floor,
+                  info.aptCode,
+                  info.buildYear,
+                  info.roadName,
+                  info.apartmentName,
+                  info.jibun,
+                  info.lng,
+                  info.lat,
+                  code.sidoName,
+                  code.gugunName,
+                  code.dongName
+        FROM 	housedeal deal, houseinfo info, dongcode code
+        WHERE 	deal.aptCode = info.aptCode and
+                code.dongCode = info.dongCode and
+                st_contains(st_buffer(Point(#{lng}, #{lat}), #{dist}), info.location_point)
+        ORDER BY dealYear desc;
+    </select>
+
     <resultMap id="HouseDetailInfo" type="com.whereismyhome.house.house.VO.DetailResultVO">
         <id property="aptCode" column="aptCode"/>
         <result property="buildYear" column="buildYear"/>

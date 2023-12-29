@@ -67,4 +67,15 @@ public class HouseController {
     public List<SearchResultVO> getHouseListByLatLng(@PathVariable String ha, @PathVariable String oa, @PathVariable String pa, @PathVariable String qa) {
         return houseService.getHouseListByLatLng(ha, oa, pa, qa);
     }
+
+    @Operation(summary = "카카오 지도 좌표 기준 건물 정보 조회(공간인덱스로 쿼리 최적화)", description = "카카오 지도의 중심 위경도와 지도 확대 레벨을 기준으로 건물 정보를 조회합니다.")
+    @Parameter(name = "lng", description = "지도 중앙 경도")
+    @Parameter(name = "lat", description = "지도 중앙 위도")
+    @Parameter(name = "level", description = "지도 확대 레벨")
+    @GetMapping("{lng}/{lat}/{level}")
+    public List<SearchResultVO> getHouseListByLatLng2(@PathVariable String lng, @PathVariable String lat, @PathVariable int level) {
+        log.info("lng: " + lng + " || lat: " + lat + " || zoom level: " + level);
+
+        return houseService.getHouseListByLatLng2(lng, lat, level);
+    }
 }

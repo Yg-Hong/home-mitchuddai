@@ -15,4 +15,5 @@ public interface HouseMapper {
 	List<SearchResultVO> selectHousesByDongCode(Long dongCode);
 	DetailResultVO selectDealsByAptCode(Map<String, Long> params);
 	List<SearchResultVO> selectHousesByLatLng(Map<String, String> params);
+	List<SearchResultVO> selectHousesByLatLng2(Map<String, Object> params);
 }
